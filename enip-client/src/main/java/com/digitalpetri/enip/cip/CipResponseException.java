@@ -28,6 +28,8 @@ public class CipResponseException extends Exception {
 
         sb.append(String.format("status=0x%02X", generalStatus));
 
+        CipStatusCodes.getName(generalStatus).ifPresent(name -> sb.append(" [").append(name).append("] "));
+
         List<String> as = Arrays.stream(additionalStatus)
                 .mapToObj(a -> String.format("0x%04X", a))
                 .collect(Collectors.toList());
