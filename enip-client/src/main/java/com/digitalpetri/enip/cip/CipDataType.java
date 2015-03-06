@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * CIP elementary data types and their identification codes, as defined by Volume 1, Appendix C.
  */
-public enum DataType {
+public enum CipDataType {
 
     /**
      * Logical Boolean with values TRUE and FALSE.
@@ -159,7 +159,7 @@ public enum DataType {
 
     private final int code;
 
-    DataType(int code) {
+    CipDataType(int code) {
         this.code = code;
     }
 
@@ -168,13 +168,13 @@ public enum DataType {
     }
 
     /**
-     * Look up the elementary {@link DataType} for a given identification code.
+     * Look up the elementary {@link CipDataType} for a given identification code.
      *
      * @param code the code to look up.
-     * @return an {@link Optional} containing the {@link DataType}, if one exists.
+     * @return an {@link Optional} containing the {@link CipDataType}, if one exists.
      */
-    public static Optional<DataType> fromCode(int code) {
-        for (DataType dataType : values()) {
+    public static Optional<CipDataType> fromCode(int code) {
+        for (CipDataType dataType : values()) {
             if (dataType.getCode() == code) {
                 return Optional.of(dataType);
             }
