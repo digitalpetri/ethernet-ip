@@ -1,9 +1,11 @@
 package com.digitalpetri.enip.cip;
 
+import java.util.Optional;
+
 /**
  * CIP elementary data types and their identification codes, as defined by Volume 1, Appendix C.
  */
-public enum DataType implements CipDataType {
+public enum DataType {
 
     /**
      * Logical Boolean with values TRUE and FALSE.
@@ -161,15 +163,23 @@ public enum DataType implements CipDataType {
         this.code = code;
     }
 
-    @Override
     public final int getCode() {
         return code;
     }
 
-    @Override
-    public final boolean isStructured() {
-        return false;
+    /**
+     * Look up the elementary {@link DataType} for a given identification code.
+     *
+     * @param code the code to look up.
+     * @return an {@link Optional} containing the {@link DataType}, if one exists.
+     */
+    public static Optional<DataType> fromCode(int code) {
+        for (DataType dataType : values()) {
+            if (dataType.getCode() == code) {
+                return Optional.of(dataType);
+            }
+        }
+        return Optional.empty();
     }
-
 
 }
