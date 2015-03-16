@@ -1,8 +1,9 @@
 package com.digitalpetri.enip.cip.structs;
 
-import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
 
-import javax.annotation.Nullable;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public class MessageRouterResponse {
 
@@ -10,13 +11,12 @@ public class MessageRouterResponse {
     private final int generalStatus;
     private final int[] additionalStatus;
 
-    @Nullable
     private final ByteBuf data;
 
     public MessageRouterResponse(int serviceCode,
                                  int generalStatus,
                                  int[] additionalStatus,
-                                 @Nullable ByteBuf data) {
+                                 @Nonnull ByteBuf data) {
 
         this.serviceCode = serviceCode;
         this.generalStatus = generalStatus;
@@ -36,7 +36,7 @@ public class MessageRouterResponse {
         return additionalStatus;
     }
 
-    @Nullable
+    @Nonnull
     public ByteBuf getData() {
         return data;
     }
@@ -53,7 +53,7 @@ public class MessageRouterResponse {
         }
 
         ByteBuf data = buffer.isReadable() ?
-                buffer.readSlice(buffer.readableBytes()).retain() : null;
+                buffer.readSlice(buffer.readableBytes()).retain() : Unpooled.EMPTY_BUFFER;
 
         return new MessageRouterResponse(serviceCode, generalStatus, additionalStatus, data);
     }

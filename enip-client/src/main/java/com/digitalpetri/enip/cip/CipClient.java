@@ -1,5 +1,6 @@
 package com.digitalpetri.enip.cip;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -7,8 +8,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.digitalpetri.enip.EtherNetIpClient;
 import com.digitalpetri.enip.EtherNetIpClientConfig;
 import com.digitalpetri.enip.cip.epath.EPath;
@@ -25,11 +24,17 @@ import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.NullAddressItem;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemRequest;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.Timeout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final ConnectedDataHandler connectedDataHandler = new ConnectedDataHandler();
     private final List<CpfItemHandler> additionalHandlers = Lists.newCopyOnWriteArrayList();
@@ -81,6 +86,11 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
 
     @Override
     public <T> CompletableFuture<T> invokeUnconnected(CipService<T> service) {
+        return invokeUnconnected(service, 0);
+    }
+
+    @Override
+    public <T> CompletableFuture<T> invokeUnconnected(CipService<T> service, int maxRetries) {
         CompletableFuture<T> future = new CompletableFuture<>();
 
         UnconnectedSendService<T> uss = new UnconnectedSendService<T>(
@@ -89,10 +99,13 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
                 getConfig().getTimeout()
         );
 
-        return invokeUnconnected(uss, future);
+        return invokeUnconnected(uss, future, 0, maxRetries);
     }
 
-    private <T> CompletableFuture<T> invokeUnconnected(CipService<T> service, CompletableFuture<T> future) {
+    private <T> CompletableFuture<T> invokeUnconnected(CipService<T> service,
+                                                       CompletableFuture<T> future,
+                                                       int count, int max) {
+
         sendUnconnectedData(service::encodeRequest).whenComplete((buffer, ex) -> {
             if (buffer != null) {
                 try {
@@ -100,9 +113,20 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
 
                     future.complete(response);
                 } catch (CipService.PartialResponseException e) {
-                    invokeUnconnected(service, future);
+                    invokeUnconnected(service, future, count, max);
                 } catch (CipResponseException e) {
-                    future.completeExceptionally(e);
+                    if (e.getGeneralStatus() == 0x01) {
+                        boolean requestTimedOut = Arrays.stream(e.getAdditionalStatus()).anyMatch(i -> i == 0x0204);
+
+                        if (requestTimedOut && count < max) {
+                            logger.debug("Unconnected request timed out; retrying, count={}, max={}", count, max);
+                            invokeUnconnected(service, future, count + 1, max);
+                        } else {
+                            future.completeExceptionally(e);
+                        }
+                    } else {
+                        future.completeExceptionally(e);
+                    }
                 } finally {
                     ReferenceCountUtil.release(buffer);
                 }
@@ -113,47 +137,6 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
 
         return future;
     }
-
-//    public <T> CompletableFuture<?> invokeMultiple(int connectionId,
-//                                                   List<CipService<T>> services,
-//                                                   List<CompletableFuture<T>> futures) {
-//
-//        List<Consumer<ByteBuf>> encoders = Lists.newArrayListWithCapacity(services.size());
-//        services.forEach(s -> encoders.add(s::encodeRequest));
-//
-//        MultipleServicePacketService mService = new MultipleServicePacketService(encoders, futures);
-//
-//        invokeConnected(connectionId, mService).whenComplete((bbs, ex) -> {
-//            if (bbs != null) {
-//                List<CipService<T>> partialServices = Lists.newArrayList();
-//                List<CompletableFuture<T>> partialFutures = Lists.newArrayList();
-//
-//                for (int i = 0; i < services.size(); i++) {
-//                    CipService<T> service = services.get(i);
-//                    CompletableFuture<T> future = futures.get(i);
-//
-//                    try {
-//                        T response = service.decodeResponse(bbs[i]);
-//
-//                        future.complete(response);
-//                    } catch (CipResponseException e) {
-//                        future.completeExceptionally(e);
-//                    } catch (CipService.PartialResponseException e) {
-//                        partialServices.add(service);
-//                        partialFutures.add(future);
-//                    }
-//                }
-//
-//                if (!partialServices.isEmpty()) {
-//                    invokeMultiple(connectionId, partialServices, partialFutures);
-//                }
-//            } else {
-//                futures.forEach(f -> f.completeExceptionally(ex));
-//            }
-//        });
-//
-//        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
-//    }
 
     public CompletableFuture<ByteBuf> sendConnectedData(ByteBuf data, int connectionId) {
         return sendConnectedData((buffer) -> buffer.writeBytes(data), connectionId);

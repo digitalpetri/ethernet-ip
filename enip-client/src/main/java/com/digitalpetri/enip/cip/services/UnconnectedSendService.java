@@ -1,5 +1,7 @@
 package com.digitalpetri.enip.cip.services;
 
+import java.time.Duration;
+
 import com.digitalpetri.enip.cip.CipResponseException;
 import com.digitalpetri.enip.cip.epath.DataSegment;
 import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
@@ -11,8 +13,6 @@ import com.digitalpetri.enip.cip.epath.PortSegment;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.util.TimeoutCalculator;
 import io.netty.buffer.ByteBuf;
-
-import java.time.Duration;
 
 public class UnconnectedSendService<T> implements CipService<T> {
 
