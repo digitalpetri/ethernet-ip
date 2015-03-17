@@ -13,11 +13,11 @@ public class GetAttributeListService implements CipService<AttributeResponse[]> 
 
     public static final int SERVICE_CODE = 0x03;
 
+    private final PaddedEPath requestPath;
     private final int[] attributeIds;
     private final int[] attributeSizes;
-    private final PaddedEPath requestPath;
 
-    public GetAttributeListService(int[] attributeIds, int[] attributeSizes, PaddedEPath requestPath) {
+    public GetAttributeListService(PaddedEPath requestPath, int[] attributeIds, int[] attributeSizes) {
         this.attributeIds = attributeIds;
         this.attributeSizes = attributeSizes;
         this.requestPath = requestPath;
