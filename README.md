@@ -65,7 +65,7 @@ client.invokeUnconnected(service).whenComplete((as, ex) -> {
         } catch (Throwable t) {
             t.printStackTrace();
         } finally {
-            Arrays.stream(as).forEach(ReferenceCountUtil::release);
+            Arrays.stream(as).forEach(a -> ReferenceCountUtil.release(a.getData()));
         }
     } else {
         ex.printStackTrace();
