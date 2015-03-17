@@ -26,7 +26,8 @@
 
     <scm>
         <url>https://github.com/digitalpetri/ethernet-ip</url>
-        <connection>scm:git:git://github.com/digitalpetri/ethernet-ip</connection>
+        <connection>scm:git:git://github.com/digitalpetri/ethernet-ip.git</connection>
+        <developerConnection>scm:git:git@github.com:digitalpetri/ethernet-ip.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
