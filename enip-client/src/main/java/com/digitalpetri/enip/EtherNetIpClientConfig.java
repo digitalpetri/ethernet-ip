@@ -2,7 +2,9 @@ package com.digitalpetri.enip;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.util.HashedWheelTimer;
 
@@ -16,6 +18,7 @@ public class EtherNetIpClientConfig {
     private final ExecutorService executor;
     private final EventLoopGroup eventLoop;
     private final HashedWheelTimer wheelTimer;
+    private final Consumer<Bootstrap> bootstrapConsumer;
 
     public EtherNetIpClientConfig(String hostname,
                                   int port,
@@ -24,7 +27,8 @@ public class EtherNetIpClientConfig {
                                   Duration timeout,
                                   ExecutorService executor,
                                   EventLoopGroup eventLoop,
-                                  HashedWheelTimer wheelTimer) {
+                                  HashedWheelTimer wheelTimer,
+                                  Consumer<Bootstrap> bootstrapConsumer) {
 
         this.hostname = hostname;
         this.port = port;
@@ -34,6 +38,7 @@ public class EtherNetIpClientConfig {
         this.executor = executor;
         this.eventLoop = eventLoop;
         this.wheelTimer = wheelTimer;
+        this.bootstrapConsumer = bootstrapConsumer;
     }
 
     public String getHostname() {
@@ -68,11 +73,16 @@ public class EtherNetIpClientConfig {
         return wheelTimer;
     }
 
+    public Consumer<Bootstrap> getBootstrapConsumer() {
+        return bootstrapConsumer;
+    }
+
     public static Builder builder(String hostname) {
         return new Builder().setHostname(hostname);
     }
 
     public static class Builder {
+
         private String hostname;
         private int port = 44818;
         private int vendorId = 0;
@@ -81,6 +91,7 @@ public class EtherNetIpClientConfig {
         private ExecutorService executor;
         private EventLoopGroup eventLoop;
         private HashedWheelTimer wheelTimer;
+        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {};
 
         public Builder setHostname(String hostname) {
             this.hostname = hostname;
@@ -122,6 +133,11 @@ public class EtherNetIpClientConfig {
             return this;
         }
 
+        public Builder setBootstrapConsumer(Consumer<Bootstrap> bootstrapConsumer) {
+            this.bootstrapConsumer = bootstrapConsumer;
+            return this;
+        }
+
         public EtherNetIpClientConfig build() {
             if (executor == null) {
                 executor = EtherNetIpShared.sharedExecutorService();
@@ -134,7 +150,7 @@ public class EtherNetIpClientConfig {
             }
             return new EtherNetIpClientConfig(
                     hostname, port, vendorId, serialNumber,
-                    timeout, executor, eventLoop, wheelTimer);
+                    timeout, executor, eventLoop, wheelTimer, bootstrapConsumer);
         }
     }
 

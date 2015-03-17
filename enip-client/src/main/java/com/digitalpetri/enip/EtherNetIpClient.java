@@ -264,8 +264,11 @@ public class EtherNetIpClient {
                         ch.pipeline().addLast(new EnipCodec());
                         ch.pipeline().addLast(new EtherNetIpClientHandler(client));
                     }
-                })
-                .connect(config.getHostname(), config.getPort())
+                });
+
+        config.getBootstrapConsumer().accept(bootstrap);
+
+        bootstrap.connect(config.getHostname(), config.getPort())
                 .addListener((ChannelFuture f) -> {
                     if (f.isSuccess()) {
                         future.complete(f.channel());
@@ -273,6 +276,7 @@ public class EtherNetIpClient {
                         future.completeExceptionally(f.cause());
                     }
                 });
+
 
         return future;
     }
