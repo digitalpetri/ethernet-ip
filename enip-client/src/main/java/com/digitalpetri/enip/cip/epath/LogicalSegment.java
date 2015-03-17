@@ -1,5 +1,6 @@
 package com.digitalpetri.enip.cip.epath;
 
+import com.digitalpetri.enip.cip.structs.ElectronicKey;
 import io.netty.buffer.ByteBuf;
 
 public abstract class LogicalSegment<T> extends EPathSegment {
@@ -72,13 +73,8 @@ public abstract class LogicalSegment<T> extends EPathSegment {
         }
     }
 
-    private static ByteBuf encodeKeyValue(LogicalFormat format, Object value, ByteBuf buffer) {
-        return buffer; // TODO
-    }
-
-
-    public static LogicalSegment<?> decode(ByteBuf buffer, boolean padded) {
-        return null;
+    private static ByteBuf encodeKeyValue(LogicalFormat format, ElectronicKey value, ByteBuf buffer) {
+        return ElectronicKey.encode(value, buffer);
     }
 
     public static final class ClassId extends LogicalSegment<Integer> {
@@ -179,9 +175,9 @@ public abstract class LogicalSegment<T> extends EPathSegment {
 
     }
 
-    public static final class KeySegment extends LogicalSegment<Object> {
+    public static final class KeySegment extends LogicalSegment<ElectronicKey> {
 
-        public KeySegment(Object value, LogicalFormat format) {
+        public KeySegment(ElectronicKey value, LogicalFormat format) {
             super(value, LogicalType.Special, format);
         }
 
