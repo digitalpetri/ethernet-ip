@@ -37,6 +37,7 @@
     <modules>
         <module>enip-client</module>
         <module>enip-codec</module>
+        <module>logix-services</module>
     </modules>
 
     <properties>
