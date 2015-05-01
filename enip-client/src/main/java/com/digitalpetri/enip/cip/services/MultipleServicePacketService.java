@@ -26,11 +26,17 @@ public class MultipleServicePacketService implements CipService<Void> {
     private final List<CipService<?>> services;
     private final List<BiConsumer<?, Throwable>> consumers;
 
+    private final List<CipService<?>> currentServices;
+    private final List<BiConsumer<?, Throwable>> currentConsumers;
+
     public MultipleServicePacketService(List<CipService<?>> services, List<BiConsumer<?, Throwable>> consumers) {
         assert (services.size() == consumers.size());
 
         this.services = synchronizedList(newArrayList(services));
         this.consumers = synchronizedList(newArrayList(consumers));
+
+        this.currentServices = synchronizedList(newArrayList(services));
+        this.currentConsumers = synchronizedList(newArrayList(consumers));
     }
 
     @Override
@@ -54,11 +60,11 @@ public class MultipleServicePacketService implements CipService<Void> {
                 ByteBuf[] serviceData = decode(response.getData());
 
                 for (int i = 0; i < serviceData.length; i++) {
-                    CipService<?> service = services.get(i);
+                    CipService<?> service = currentServices.get(i);
 
                     @SuppressWarnings("unchecked")
                     BiConsumer<Object, Throwable> consumer =
-                            (BiConsumer<Object, Throwable>) consumers.get(i);
+                            (BiConsumer<Object, Throwable>) currentConsumers.get(i);
 
                     try {
                         consumer.accept(service.decodeResponse(serviceData[i]), null);
@@ -71,9 +77,17 @@ public class MultipleServicePacketService implements CipService<Void> {
                     }
                 }
 
-                if (!partials.isEmpty()) {
-                    services.clear();
-                    consumers.clear();
+                if (partials.isEmpty()) {
+                    // Reset to the original state.
+                    currentServices.clear();
+                    currentServices.addAll(services);
+
+                    currentConsumers.clear();
+                    currentConsumers.addAll(consumers);
+                } else {
+                    // Keep sending only services that aren't done yet.
+                    currentServices.clear();
+                    currentConsumers.clear();
 
                     for (Object[] oa : partials) {
                         CipService<?> service = (CipService<?>) oa[0];
@@ -82,8 +96,8 @@ public class MultipleServicePacketService implements CipService<Void> {
                         BiConsumer<Object, Throwable> consumer =
                                 (BiConsumer<Object, Throwable>) oa[1];
 
-                        services.add(service);
-                        consumers.add(consumer);
+                        currentServices.add(service);
+                        currentConsumers.add(consumer);
                     }
 
                     throw PartialResponseException.INSTANCE;
@@ -99,7 +113,7 @@ public class MultipleServicePacketService implements CipService<Void> {
     }
 
     private void encode(ByteBuf buffer) {
-        int serviceCount = services.size();
+        int serviceCount = currentServices.size();
 
         buffer.writeShort(serviceCount);
 
@@ -109,7 +123,7 @@ public class MultipleServicePacketService implements CipService<Void> {
 
         for (int i = 0; i < serviceCount; i++) {
             offsets[i] = buffer.writerIndex() - offsetsStartIndex + 2;
-            services.get(i).encodeRequest(buffer);
+            currentServices.get(i).encodeRequest(buffer);
         }
 
         buffer.markWriterIndex();
