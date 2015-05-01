@@ -12,23 +12,25 @@ import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.synchronizedList;
+
 public class MultipleServicePacketService implements CipService<Void> {
 
     public static final int SERVICE_CODE = 0x0A;
 
     private static final PaddedEPath MESSAGE_ROUTER_PATH = new PaddedEPath(
             new ClassId(0x02),
-            new InstanceId(0x01)
-    );
+            new InstanceId(0x01));
 
     private final List<CipService<?>> services;
     private final List<BiConsumer<?, Throwable>> consumers;
 
     public MultipleServicePacketService(List<CipService<?>> services, List<BiConsumer<?, Throwable>> consumers) {
-        assert(services.size() == consumers.size());
+        assert (services.size() == consumers.size());
 
-        this.services = services;
-        this.consumers = consumers;
+        this.services = synchronizedList(newArrayList(services));
+        this.consumers = synchronizedList(newArrayList(consumers));
     }
 
     @Override
@@ -36,8 +38,7 @@ public class MultipleServicePacketService implements CipService<Void> {
         MessageRouterRequest request = new MessageRouterRequest(
                 SERVICE_CODE,
                 MESSAGE_ROUTER_PATH,
-                this::encode
-        );
+                this::encode);
 
         MessageRouterRequest.encode(request, buffer);
     }
@@ -48,21 +49,44 @@ public class MultipleServicePacketService implements CipService<Void> {
 
         if (response.getGeneralStatus() == 0x00 || response.getGeneralStatus() == 0x1E) {
             try {
+                List<Object[]> partials = newArrayList();
+
                 ByteBuf[] serviceData = decode(response.getData());
 
                 for (int i = 0; i < serviceData.length; i++) {
                     CipService<?> service = services.get(i);
 
                     @SuppressWarnings("unchecked")
-                    BiConsumer<Object, Throwable> consumer = (BiConsumer<Object, Throwable>) consumers.get(i);
+                    BiConsumer<Object, Throwable> consumer =
+                            (BiConsumer<Object, Throwable>) consumers.get(i);
 
                     try {
                         consumer.accept(service.decodeResponse(serviceData[i]), null);
+                    } catch (PartialResponseException prx) {
+                        partials.add(new Object[]{service, consumer});
                     } catch (Throwable t) {
                         consumer.accept(null, t);
                     } finally {
                         ReferenceCountUtil.release(serviceData[i]);
                     }
+                }
+
+                if (!partials.isEmpty()) {
+                    services.clear();
+                    consumers.clear();
+
+                    for (Object[] oa : partials) {
+                        CipService<?> service = (CipService<?>) oa[0];
+
+                        @SuppressWarnings("unchecked")
+                        BiConsumer<Object, Throwable> consumer =
+                                (BiConsumer<Object, Throwable>) oa[1];
+
+                        services.add(service);
+                        consumers.add(consumer);
+                    }
+
+                    throw PartialResponseException.INSTANCE;
                 }
 
                 return null;
