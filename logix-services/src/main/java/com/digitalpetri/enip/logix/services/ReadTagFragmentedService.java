@@ -61,6 +61,10 @@ public class ReadTagFragmentedService implements CipService<ByteBuf> {
         if (status == 0x00 || status == 0x06) {
             ByteBuf data = response.getData();
 
+            if (status == 0x06 && data.readableBytes() == 0) {
+                throw PartialResponseException.INSTANCE;
+            }
+
             boolean structured = data.getShort(data.readerIndex()) == 0x02A0;
             ByteBuf header = structured ? data.readSlice(4) : data.readSlice(2);
             ByteBuf fragment = data.slice().retain();
