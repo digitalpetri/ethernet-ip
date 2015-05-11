@@ -20,6 +20,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -93,12 +94,12 @@ public class EtherNetIpClient {
                         sessionHandle,
                         EnipStatus.EIP_SUCCESS,
                         0L,
-                        command
-                );
+                        command);
 
-                ch.writeAndFlush(packet, ch.voidPromise());
-
-                future.complete(null);
+                ch.writeAndFlush(packet).addListener(f -> {
+                    if (f.isSuccess()) future.complete(null);
+                    else future.completeExceptionally(f.cause());
+                });
             } else {
                 future.completeExceptionally(ex);
             }
@@ -150,7 +151,15 @@ public class EtherNetIpClient {
 
         pendingRequests.put(packet.getSenderContext(), new PendingRequest<>(future, timeout));
 
-        channel.writeAndFlush(packet, channel.voidPromise());
+        channel.writeAndFlush(packet).addListener(f -> {
+            if (!f.isSuccess()) {
+                PendingRequest pending = pendingRequests.remove(packet.getSenderContext());
+                if (pending != null) {
+                    pending.timeout.cancel();
+                    pending.promise.completeExceptionally(f.cause());
+                }
+            }
+        });
     }
 
     private void onChannelRead(EnipPacket packet) {
