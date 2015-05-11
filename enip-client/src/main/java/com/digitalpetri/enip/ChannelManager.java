@@ -71,12 +71,15 @@ public class ChannelManager {
         State currentState = state.get();
 
         if (currentState instanceof Connecting) {
-            ((Connecting) currentState).future.thenAccept(Channel::close);
+            ((Connecting) currentState).future.whenComplete((ch, ex) -> {
+                if (ch != null) ch.close();
+            });
         } else if (currentState instanceof Connected) {
-            ((Connected) currentState).future.thenAccept(ch -> {
+            ((Connected) currentState).future.whenComplete((ch, ex) -> {
                 CompletableFuture<UnRegisterSession> f = new CompletableFuture<>();
                 client.writeCommand(ch, new UnRegisterSession(), f);
-                f.thenAccept(c -> ch.close());
+
+                f.whenComplete((ch2, ex2) -> ch.close());
             });
         }
     }
