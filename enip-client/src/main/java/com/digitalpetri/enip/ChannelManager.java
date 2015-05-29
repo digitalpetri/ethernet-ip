@@ -79,7 +79,7 @@ public class ChannelManager {
                 CompletableFuture<UnRegisterSession> f = new CompletableFuture<>();
                 client.writeCommand(ch, new UnRegisterSession(), f);
 
-                f.whenComplete((ch2, ex2) -> ch.close());
+                f.whenComplete((cmd, ex2) -> ch.close());
             });
         }
     }
