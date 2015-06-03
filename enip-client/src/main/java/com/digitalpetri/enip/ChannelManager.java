@@ -6,6 +6,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.digitalpetri.enip.commands.RegisterSession;
 import com.digitalpetri.enip.commands.UnRegisterSession;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 public class ChannelManager {
 
@@ -49,7 +52,14 @@ public class ChannelManager {
 
         bootstrap.whenComplete((ch, ex) -> {
             if (ch != null) {
-                ch.closeFuture().addListener(f -> state.set(new Idle()));
+                ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
+                    @Override
+                    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+                        state.set(new Idle());
+
+                        super.channelInactive(ctx);
+                    }
+                });
 
                 CompletableFuture<RegisterSession> registerFuture = new CompletableFuture<>();
 

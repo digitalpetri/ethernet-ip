@@ -20,7 +20,6 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -209,12 +208,14 @@ public class EtherNetIpClient {
     }
 
     private void onChannelInactive(ChannelHandlerContext ctx) {
-        logger.debug("onChannelInactive() {} <-> {}", ctx.channel().localAddress(), ctx.channel().remoteAddress());
-        channelManager.disconnect();
+        logger.debug("onChannelInactive() {} <-> {}",
+                ctx.channel().localAddress(), ctx.channel().remoteAddress());
     }
 
     private void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        logger.debug("onExceptionCaught() {} <-> {}", ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
+        logger.debug("onExceptionCaught() {} <-> {}",
+                ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
+
         channelManager.disconnect();
     }
 
@@ -247,11 +248,15 @@ public class EtherNetIpClient {
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception {
             client.onChannelInactive(ctx);
+
+            super.channelInactive(ctx);
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
             client.onExceptionCaught(ctx, cause);
+
+            super.exceptionCaught(ctx, cause);
         }
 
     }
