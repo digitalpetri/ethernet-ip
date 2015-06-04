@@ -255,8 +255,6 @@ public class EtherNetIpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
             client.onExceptionCaught(ctx, cause);
-
-            super.exceptionCaught(ctx, cause);
         }
 
     }
