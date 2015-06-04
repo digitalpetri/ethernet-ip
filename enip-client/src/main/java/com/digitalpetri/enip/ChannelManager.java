@@ -8,9 +8,12 @@ import com.digitalpetri.enip.commands.UnRegisterSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChannelManager {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final AtomicReference<State> state = new AtomicReference<>(new Idle());
 
@@ -52,6 +55,9 @@ public class ChannelManager {
 
         bootstrap.whenComplete((ch, ex) -> {
             if (ch != null) {
+                logger.debug("Channel bootstrap succeeded: localAddress={}, remoteAddress={}",
+                        ch.localAddress(), ch.remoteAddress());
+
                 ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                     @Override
                     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
@@ -70,6 +76,8 @@ public class ChannelManager {
 
                 client.writeCommand(ch, new RegisterSession(), registerFuture);
             } else {
+                logger.debug("Channel bootstrap failed: {}", ex.getMessage(), ex);
+
                 future.completeExceptionally(ex);
             }
         });
