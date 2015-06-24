@@ -28,8 +28,11 @@ import com.digitalpetri.enip.cip.epath.LogicalSegment.ClassId;
 import com.digitalpetri.enip.cip.epath.LogicalSegment.ConnectionPoint;
 import com.digitalpetri.enip.cip.epath.LogicalSegment.InstanceId;
 import com.digitalpetri.enip.cip.services.CipService.PartialResponseException;
+import com.digitalpetri.enip.cip.services.ForwardCloseService;
 import com.digitalpetri.enip.cip.services.ForwardOpenService;
 import com.digitalpetri.enip.cip.services.LargeForwardOpenService;
+import com.digitalpetri.enip.cip.structs.ForwardCloseRequest;
+import com.digitalpetri.enip.cip.structs.ForwardCloseResponse;
 import com.digitalpetri.enip.cip.structs.ForwardOpenRequest;
 import com.digitalpetri.enip.cip.structs.ForwardOpenResponse;
 import com.digitalpetri.enip.cip.structs.LargeForwardOpenRequest;
@@ -132,6 +135,9 @@ public class CipConnectionPool {
     }
 
     public synchronized void remove(CipConnection connection) {
+        connectionFactory.close(connection).thenRun(
+                () -> logger.debug("Connection closed: {}", connection));
+
         queue.remove(connection);
         count.decrementAndGet();
 
@@ -149,7 +155,7 @@ public class CipConnectionPool {
 
         CompletableFuture<CipConnection> open();
 
-        CompletableFuture<Void> close(CipConnection connection);
+        CompletableFuture<ForwardCloseResponse> close(CipConnection connection);
 
     }
 
@@ -293,9 +299,36 @@ public class CipConnectionPool {
         }
 
         @Override
-        public CompletableFuture<Void> close(CipConnection connection) {
-            // TODO Implement ForwardClose
-            return CompletableFuture.completedFuture(null);
+        public CompletableFuture<ForwardCloseResponse> close(CipConnection connection) {
+            CompletableFuture<ForwardCloseResponse> future = new CompletableFuture<>();
+
+            ForwardCloseRequest request = new ForwardCloseRequest(
+                    Duration.ofNanos(connection.getTimeoutNanos()),
+                    connection.getSerialNumber(),
+                    connection.getOriginatorVendorId(),
+                    connection.getOriginatorSerialNumber(),
+                    connectionPath.append(MESSAGE_ROUTER_CP_PATH)
+            );
+
+            ForwardCloseService service = new ForwardCloseService(request);
+
+            client.sendUnconnectedData(service::encodeRequest).whenComplete((b, ex) -> {
+                if (b != null) {
+                    try {
+                        ForwardCloseResponse response = service.decodeResponse(b);
+
+                        future.complete(response);
+                    } catch (CipResponseException | PartialResponseException e) {
+                        future.completeExceptionally(e);
+                    } finally {
+                        ReferenceCountUtil.release(b);
+                    }
+                } else {
+                    future.completeExceptionally(ex);
+                }
+            });
+
+            return future;
         }
 
     }
