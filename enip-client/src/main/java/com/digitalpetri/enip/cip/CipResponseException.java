@@ -2,6 +2,7 @@ package com.digitalpetri.enip.cip;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CipResponseException extends Exception {
@@ -39,6 +40,23 @@ public class CipResponseException extends Exception {
         sb.append(", additional=").append(additional);
 
         return sb.toString();
+    }
+
+    /**
+     * If {@code ex} is a {@link CipResponseException}, or if a {@link CipResponseException} can be found by walking
+     * the exception cause chain, return it.
+     *
+     * @param ex the {@link Throwable} to extract from.
+     * @return a {@link CipResponseException} if one was present in the exception chain.
+     */
+    public static Optional<CipResponseException> extract(Throwable ex) {
+        if (ex instanceof CipResponseException) {
+            return Optional.of((CipResponseException) ex);
+        } else {
+            Throwable cause = ex.getCause();
+            return cause != null ?
+                    extract(cause) : Optional.empty();
+        }
     }
 
 }
