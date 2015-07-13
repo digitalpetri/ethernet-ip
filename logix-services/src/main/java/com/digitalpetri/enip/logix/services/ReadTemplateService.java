@@ -28,12 +28,12 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
 
     private final PaddedEPath requestPath;
     private final TemplateAttributes attributes;
-    private final int instanceId;
+    private final int symbolType;
 
-    public ReadTemplateService(PaddedEPath requestPath, TemplateAttributes attributes, int instanceId) {
+    public ReadTemplateService(PaddedEPath requestPath, TemplateAttributes attributes, int symbolType) {
         this.requestPath = requestPath;
         this.attributes = attributes;
-        this.instanceId = instanceId;
+        this.symbolType = symbolType;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
                         .writerIndex(totalBytesRead)
                         .order(ByteOrder.LITTLE_ENDIAN);
 
-                TemplateInstance instance = decode(composite, instanceId);
+                TemplateInstance instance = decode(composite, symbolType);
 
                 ReferenceCountUtil.release(composite);
 
@@ -87,7 +87,7 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
         buffer.writeShort(bytesToRead);
     }
 
-    private TemplateInstance decode(ByteBuf buffer, int instanceId) {
+    private TemplateInstance decode(ByteBuf buffer, int symbolType) {
         int memberCount = attributes.getMemberCount();
 
         List<Function<String, TemplateMember>> functions =
@@ -95,10 +95,10 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
 
         for (int i = 0; i < memberCount; i++) {
             int infoWord = buffer.readShort();
-            int symbolType = buffer.readUnsignedShort();
+            int memberType = buffer.readUnsignedShort();
             int offset = Ints.saturatedCast(buffer.readUnsignedInt());
 
-            functions.add((name) -> new TemplateMember(name, infoWord, symbolType, offset));
+            functions.add((name) -> new TemplateMember(name, infoWord, memberType, offset));
         }
 
         String templateName = readNullTerminatedString(buffer);
@@ -118,7 +118,7 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
             members.add(member);
         }
 
-        return new TemplateInstance(templateName, instanceId, attributes, members);
+        return new TemplateInstance(templateName, symbolType, attributes, members);
     }
 
     private static final Charset ASCII = Charset.forName("US-ASCII");

@@ -6,17 +6,17 @@ import java.util.List;
 public final class TemplateInstance implements Serializable {
 
     private final String name;
-    private final int instanceId;
+    private final int symbolType;
     private final TemplateAttributes attributes;
     private final List<TemplateMember> members;
 
     public TemplateInstance(String name,
-                            int instanceId,
+                            int symbolType,
                             TemplateAttributes attributes,
                             List<TemplateMember> members) {
 
         this.name = name;
-        this.instanceId = instanceId;
+        this.symbolType = symbolType;
         this.attributes = attributes;
         this.members = members;
     }
@@ -25,8 +25,8 @@ public final class TemplateInstance implements Serializable {
         return name;
     }
 
-    public int getInstanceId() {
-        return instanceId;
+    public int getSymbolType() {
+        return symbolType;
     }
 
     public TemplateAttributes getAttributes() {
@@ -35,6 +35,10 @@ public final class TemplateInstance implements Serializable {
 
     public List<TemplateMember> getMembers() {
         return members;
+    }
+
+    public int getInstanceId() {
+        return symbolType & 0x0FFF;
     }
 
     @Override
