@@ -76,3 +76,9 @@ client.invokeUnconnected(service).whenComplete((as, ex) -> {
 #### Logix Example
 
 [See the logix-services README!](logix-services/README.md)
+
+
+License
+--------
+
+Apache License, Version 2.0
