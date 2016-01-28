@@ -21,7 +21,7 @@ CipConnectionPool pool = new CipConnectionPool(2, client, connectionPath, 500);
 
 // the tag we'll use as an example
 PaddedEPath requestPath = new PaddedEPath(
-        new AnsiDataSegment("My_Int_Tag"));
+        new AnsiDataSegment("My_DInt_Tag"));
 ```
 
 #### Connected ReadTagService
@@ -48,10 +48,6 @@ pool.acquire().whenComplete((connection, ex) -> {
 
 #### Connected WriteTagService
 ```java
-PaddedEPath requestPath = new PaddedEPath(
-        new AnsiDataSegment("My_Int_Tag")
-);
-
 ByteBuf buffer = Unpooled.buffer();
 buffer.writeInt(42);
 
