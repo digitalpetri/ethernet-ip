@@ -48,7 +48,7 @@ pool.acquire().whenComplete((connection, ex) -> {
 
 #### Connected WriteTagService
 ```java
-ByteBuf buffer = Unpooled.buffer();
+ByteBuf buffer = Unpooled.buffer().order(ByteOrder.LITTLE_ENDIAN);
 buffer.writeInt(42);
 
 WriteTagService service = new WriteTagService(
