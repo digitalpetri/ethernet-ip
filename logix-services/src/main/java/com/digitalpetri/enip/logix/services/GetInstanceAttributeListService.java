@@ -1,9 +1,9 @@
 package com.digitalpetri.enip.logix.services;
 
-import javax.annotation.Nullable;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Nullable;
 
 import com.digitalpetri.enip.cip.CipResponseException;
 import com.digitalpetri.enip.cip.epath.DataSegment.AnsiDataSegment;
@@ -62,21 +62,24 @@ public class GetInstanceAttributeListService implements CipService<List<SymbolIn
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
         int status = response.getGeneralStatus();
+        ByteBuf data = response.getData();
 
-        if (status == 0x00 || status == 0x06) {
-            ByteBuf data = response.getData();
-            symbols.addAll(decode(data));
-            ReferenceCountUtil.release(data);
+        try {
+            if (status == 0x00 || status == 0x06) {
+                symbols.addAll(decode(data));
 
-            if (status == 0x00) {
-                return Lists.newArrayList(symbols);
+                if (status == 0x00) {
+                    return Lists.newArrayList(symbols);
+                } else {
+                    instanceId = symbols.get(symbols.size() - 1).getInstanceId() + 1;
+
+                    throw PartialResponseException.INSTANCE;
+                }
             } else {
-                instanceId = symbols.get(symbols.size() - 1).getInstanceId() + 1;
-
-                throw PartialResponseException.INSTANCE;
+                throw new CipResponseException(status, response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(status, response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(data);
         }
     }
 

@@ -43,14 +43,14 @@ public class ForwardOpenService implements CipService<ForwardOpenResponse> {
 
         int generalStatus = mResponse.getGeneralStatus();
 
-        if (generalStatus == 0x00) {
-            try {
+        try {
+            if (generalStatus == 0x00) {
                 return ForwardOpenResponse.decode(mResponse.getData());
-            } finally {
-                ReferenceCountUtil.release(mResponse.getData());
+            } else {
+                throw new CipResponseException(generalStatus, mResponse.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(generalStatus, mResponse.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(mResponse.getData());
         }
     }
 

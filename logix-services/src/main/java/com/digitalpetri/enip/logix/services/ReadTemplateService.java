@@ -5,16 +5,16 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Function;
 
-import com.digitalpetri.enip.logix.structs.TemplateAttributes;
-import com.digitalpetri.enip.logix.structs.TemplateMember;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
 import com.digitalpetri.enip.cip.CipResponseException;
 import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.services.CipService;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
+import com.digitalpetri.enip.logix.structs.TemplateAttributes;
 import com.digitalpetri.enip.logix.structs.TemplateInstance;
+import com.digitalpetri.enip.logix.structs.TemplateMember;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Ints;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.ReferenceCountUtil;
@@ -53,28 +53,32 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
 
         int status = response.getGeneralStatus();
 
-        if (status == 0x00 || status == 0x06) {
-            buffers.add(response.getData());
+        try {
+            if (status == 0x00 || status == 0x06) {
+                buffers.add(response.getData().retain());
 
-            totalBytesRead += response.getData().readableBytes();
+                totalBytesRead += response.getData().readableBytes();
 
-            if (status == 0x00) {
-                ByteBuf composite = PooledByteBufAllocator.DEFAULT
-                        .compositeBuffer(buffers.size())
-                        .addComponents(buffers)
-                        .writerIndex(totalBytesRead)
-                        .order(ByteOrder.LITTLE_ENDIAN);
+                if (status == 0x00) {
+                    ByteBuf composite = PooledByteBufAllocator.DEFAULT
+                            .compositeBuffer(buffers.size())
+                            .addComponents(buffers)
+                            .writerIndex(totalBytesRead)
+                            .order(ByteOrder.LITTLE_ENDIAN);
 
-                TemplateInstance instance = decode(composite, symbolType);
+                    TemplateInstance instance = decode(composite, symbolType);
 
-                ReferenceCountUtil.release(composite);
+                    ReferenceCountUtil.release(composite);
 
-                return instance;
+                    return instance;
+                } else {
+                    throw PartialResponseException.INSTANCE;
+                }
             } else {
-                throw PartialResponseException.INSTANCE;
+                throw new CipResponseException(status, response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(status, response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(response.getData());
         }
     }
 

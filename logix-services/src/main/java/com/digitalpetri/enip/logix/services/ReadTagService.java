@@ -56,14 +56,14 @@ public class ReadTagService implements CipService<ByteBuf> {
 
         int generalStatus = response.getGeneralStatus();
 
-        if (generalStatus == 0x00) {
-            try {
+        try {
+            if (generalStatus == 0x00) {
                 return decode(response);
-            } finally {
-                ReferenceCountUtil.release(response);
+            } else {
+                throw new CipResponseException(generalStatus, response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(generalStatus, response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(response);
         }
     }
 

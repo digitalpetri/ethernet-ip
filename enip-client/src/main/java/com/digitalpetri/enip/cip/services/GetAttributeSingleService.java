@@ -32,14 +32,14 @@ public class GetAttributeSingleService implements CipService<ByteBuf> {
     public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
-        if (response.getGeneralStatus() == 0x00) {
-            try {
+        try {
+            if (response.getGeneralStatus() == 0x00) {
                 return decode(response.getData());
-            } finally {
-                ReferenceCountUtil.release(response.getData());
+            } else {
+                throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(response.getData());
         }
     }
 

@@ -7,6 +7,7 @@ import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.ReferenceCountUtil;
 
 public class SetAttributesAllService implements CipService<Void> {
 
@@ -35,10 +36,14 @@ public class SetAttributesAllService implements CipService<Void> {
     public Void decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
-        if (response.getGeneralStatus() == 0x00) {
-            return null;
-        } else {
-            throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
+        try {
+            if (response.getGeneralStatus() == 0x00) {
+                return null;
+            } else {
+                throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
+            }
+        } finally {
+            ReferenceCountUtil.release(response.getData());
         }
     }
 

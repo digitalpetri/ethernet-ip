@@ -53,8 +53,8 @@ public class MultipleServicePacketService implements CipService<Void> {
     public Void decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
-        if (response.getGeneralStatus() == 0x00 || response.getGeneralStatus() == 0x1E) {
-            try {
+        try {
+            if (response.getGeneralStatus() == 0x00 || response.getGeneralStatus() == 0x1E) {
                 List<Object[]> partials = newArrayList();
 
                 ByteBuf[] serviceData = decode(response.getData());
@@ -104,11 +104,12 @@ public class MultipleServicePacketService implements CipService<Void> {
                 }
 
                 return null;
-            } finally {
-                ReferenceCountUtil.release(response.getData());
+
+            } else {
+                throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(response.getData());
         }
     }
 

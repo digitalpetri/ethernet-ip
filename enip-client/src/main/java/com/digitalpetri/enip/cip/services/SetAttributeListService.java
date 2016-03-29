@@ -44,14 +44,14 @@ public class SetAttributeListService implements CipService<AttributeResponse[]> 
     public AttributeResponse[] decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
-        if (response.getGeneralStatus() == 0x00) {
-            try {
+        try {
+            if (response.getGeneralStatus() == 0x00) {
                 return decode(buffer);
-            } finally {
-                ReferenceCountUtil.release(buffer);
+            } else {
+                throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(buffer);
         }
     }
 

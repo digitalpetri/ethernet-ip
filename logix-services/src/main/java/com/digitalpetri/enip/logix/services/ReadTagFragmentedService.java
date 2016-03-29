@@ -57,41 +57,43 @@ public class ReadTagFragmentedService implements CipService<ByteBuf> {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
         int status = response.getGeneralStatus();
+        ByteBuf data = response.getData();
 
-        if (status == 0x00 || status == 0x06) {
-            ByteBuf data = response.getData();
+        try {
+            if (status == 0x00 || status == 0x06) {
+                if (status == 0x06 && data.readableBytes() == 0) {
+                    throw PartialResponseException.INSTANCE;
+                }
 
-            if (status == 0x06 && data.readableBytes() == 0) {
-                throw PartialResponseException.INSTANCE;
-            }
+                boolean structured = data.getShort(data.readerIndex()) == 0x02A0;
+                ByteBuf header = structured ? data.readSlice(4) : data.readSlice(2);
+                ByteBuf fragment = data.slice().retain();
 
-            boolean structured = data.getShort(data.readerIndex()) == 0x02A0;
-            ByteBuf header = structured ? data.readSlice(4) : data.readSlice(2);
-            ByteBuf fragment = data.slice().retain();
+                buffers.add(fragment);
+                offset += fragment.readableBytes();
 
-            buffers.add(fragment);
-            offset += fragment.readableBytes();
-            ReferenceCountUtil.safeRelease(data);
+                if (status == 0x00) {
+                    synchronized (buffers) {
+                        ByteBuf composite = Unpooled.compositeBuffer()
+                                .addComponent(header.retain())
+                                .addComponents(buffers)
+                                .writerIndex(header.readableBytes() + offset)
+                                .order(ByteOrder.LITTLE_ENDIAN);
 
-            if (status == 0x00) {
-                synchronized (buffers) {
-                    ByteBuf composite = Unpooled.compositeBuffer()
-                            .addComponent(header.retain())
-                            .addComponents(buffers)
-                            .writerIndex(header.readableBytes() + offset)
-                            .order(ByteOrder.LITTLE_ENDIAN);
+                        // Clean up so this service can be re-used...
+                        buffers.clear();
+                        offset = 0;
 
-                    // Clean up so this service can be re-used...
-                    buffers.clear();
-                    offset = 0;
-
-                    return composite;
+                        return composite;
+                    }
+                } else {
+                    throw PartialResponseException.INSTANCE;
                 }
             } else {
-                throw PartialResponseException.INSTANCE;
+                throw new CipResponseException(status, response.getAdditionalStatus());
             }
-        } else {
-            throw new CipResponseException(status, response.getAdditionalStatus());
+        } finally {
+            ReferenceCountUtil.release(data);
         }
     }
 
