@@ -14,7 +14,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec</artifactId>
-            <version>4.0.23.Final</version>
+            <version>4.0.36.Final</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
