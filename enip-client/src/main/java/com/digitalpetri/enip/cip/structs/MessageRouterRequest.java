@@ -1,9 +1,9 @@
 package com.digitalpetri.enip.cip.structs;
 
+import java.util.function.Consumer;
+
 import com.digitalpetri.enip.cip.epath.EPath;
 import io.netty.buffer.ByteBuf;
-
-import java.util.function.Consumer;
 
 public class MessageRouterRequest {
 

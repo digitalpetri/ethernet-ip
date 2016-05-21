@@ -1,11 +1,11 @@
 package com.digitalpetri.enip;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.HashedWheelTimer;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class EtherNetIpShared {
 

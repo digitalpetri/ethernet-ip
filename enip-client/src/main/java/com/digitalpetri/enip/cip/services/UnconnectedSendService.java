@@ -19,8 +19,8 @@ public class UnconnectedSendService<T> implements CipService<T> {
     public static final int SERVICE_CODE = 0x52;
 
     private static final PaddedEPath CONNECTION_MANAGER_PATH = new PaddedEPath(
-            new ClassId(0x06),
-            new InstanceId(0x01)
+        new ClassId(0x06),
+        new InstanceId(0x01)
     );
 
     private final CipService<T> service;
@@ -39,9 +39,9 @@ public class UnconnectedSendService<T> implements CipService<T> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                CONNECTION_MANAGER_PATH,
-                this::encode
+            SERVICE_CODE,
+            CONNECTION_MANAGER_PATH,
+            this::encode
         );
 
         MessageRouterRequest.encode(request, buffer);

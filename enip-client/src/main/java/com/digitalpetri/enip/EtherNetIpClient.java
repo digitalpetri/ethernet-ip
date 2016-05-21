@@ -89,11 +89,11 @@ public class EtherNetIpClient {
         channelManager.getChannel().whenComplete((ch, ex) -> {
             if (ch != null) {
                 EnipPacket packet = new EnipPacket(
-                        command.getCommandCode(),
-                        sessionHandle,
-                        EnipStatus.EIP_SUCCESS,
-                        0L,
-                        command);
+                    command.getCommandCode(),
+                    sessionHandle,
+                    EnipStatus.EIP_SUCCESS,
+                    0L,
+                    command);
 
                 ch.writeAndFlush(packet).addListener(f -> {
                     if (f.isSuccess()) future.complete(null);
@@ -131,11 +131,11 @@ public class EtherNetIpClient {
                                                     CompletableFuture<T> future) {
 
         EnipPacket packet = new EnipPacket(
-                command.getCommandCode(),
-                sessionHandle,
-                EnipStatus.EIP_SUCCESS,
-                senderContext.getAndIncrement(),
-                command
+            command.getCommandCode(),
+            sessionHandle,
+            EnipStatus.EIP_SUCCESS,
+            senderContext.getAndIncrement(),
+            command
         );
 
         Timeout timeout = config.getWheelTimer().newTimeout(tt -> {
@@ -143,7 +143,7 @@ public class EtherNetIpClient {
             PendingRequest<?> p = pendingRequests.remove(packet.getSenderContext());
             if (p != null) {
                 String message = String.format("senderContext=%s timed out waiting %sms for response",
-                        packet.getSenderContext(), config.getTimeout().toMillis());
+                    packet.getSenderContext(), config.getTimeout().toMillis());
                 p.promise.completeExceptionally(new Exception(message));
             }
         }, config.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
@@ -209,12 +209,12 @@ public class EtherNetIpClient {
 
     private void onChannelInactive(ChannelHandlerContext ctx) {
         logger.debug("onChannelInactive() {} <-> {}",
-                ctx.channel().localAddress(), ctx.channel().remoteAddress());
+            ctx.channel().localAddress(), ctx.channel().remoteAddress());
     }
 
     private void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         logger.debug("onExceptionCaught() {} <-> {}",
-                ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
+            ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
 
         channelManager.disconnect();
     }
@@ -266,28 +266,28 @@ public class EtherNetIpClient {
         Bootstrap bootstrap = new Bootstrap();
 
         bootstrap.group(config.getEventLoop())
-                .channel(NioSocketChannel.class)
-                .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) config.getTimeout().toMillis())
-                .option(ChannelOption.TCP_NODELAY, true)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new EnipCodec());
-                        ch.pipeline().addLast(new EtherNetIpClientHandler(client));
-                    }
-                });
+            .channel(NioSocketChannel.class)
+            .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) config.getTimeout().toMillis())
+            .option(ChannelOption.TCP_NODELAY, true)
+            .handler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast(new EnipCodec());
+                    ch.pipeline().addLast(new EtherNetIpClientHandler(client));
+                }
+            });
 
         config.getBootstrapConsumer().accept(bootstrap);
 
         bootstrap.connect(config.getHostname(), config.getPort())
-                .addListener((ChannelFuture f) -> {
-                    if (f.isSuccess()) {
-                        future.complete(f.channel());
-                    } else {
-                        future.completeExceptionally(f.cause());
-                    }
-                });
+            .addListener((ChannelFuture f) -> {
+                if (f.isSuccess()) {
+                    future.complete(f.channel());
+                } else {
+                    future.completeExceptionally(f.cause());
+                }
+            });
 
 
         return future;

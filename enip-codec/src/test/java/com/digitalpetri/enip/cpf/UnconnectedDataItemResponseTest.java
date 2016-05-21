@@ -28,8 +28,8 @@ public class UnconnectedDataItemResponseTest extends SerializationTest<Unconnect
     @DataProvider
     private static Object[][] getData() {
         return new Object[][]{
-                {Unpooled.EMPTY_BUFFER},
-                {Unpooled.buffer().writeByte(1).writeByte(2)}
+            {Unpooled.EMPTY_BUFFER},
+            {Unpooled.buffer().writeByte(1).writeByte(2)}
         };
     }
 

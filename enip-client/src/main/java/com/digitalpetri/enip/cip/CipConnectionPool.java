@@ -136,7 +136,7 @@ public class CipConnectionPool {
 
     public synchronized void remove(CipConnection connection) {
         connectionFactory.close(connection).thenRun(
-                () -> logger.debug("Connection closed: {}", connection));
+            () -> logger.debug("Connection closed: {}", connection));
 
         queue.remove(connection);
         count.decrementAndGet();
@@ -165,9 +165,9 @@ public class CipConnectionPool {
         private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
 
         private static final PaddedEPath MESSAGE_ROUTER_CP_PATH = new PaddedEPath(
-                new ClassId(0x02),
-                new InstanceId(0x01),
-                new ConnectionPoint(0x01));
+            new ClassId(0x02),
+            new InstanceId(0x01),
+            new ConnectionPoint(0x01));
 
         private static final AtomicInteger T2O_CONNECTION_ID = new AtomicInteger(0);
 
@@ -184,7 +184,7 @@ public class CipConnectionPool {
         @Override
         public CompletableFuture<CipConnection> open() {
             return connectionSize <= 500 ?
-                    forwardOpen() : largeForwardOpen();
+                forwardOpen() : largeForwardOpen();
         }
 
         private CompletableFuture<CipConnection> forwardOpen() {
@@ -193,19 +193,19 @@ public class CipConnectionPool {
             NetworkConnectionParameters parameters = getNetworkConnectionParameters();
 
             ForwardOpenRequest request = new ForwardOpenRequest(
-                    DEFAULT_TIMEOUT,
-                    0,
-                    T2O_CONNECTION_ID.incrementAndGet(),
-                    new Random().nextInt(),
-                    client.getConfig().getVendorId(),
-                    client.getConfig().getSerialNumber(),
-                    1, // 0 = x4, 1 = x8, 2 = x16, 3 = x32, 4 = x128, 5 = x256, 6 = x512
-                    connectionPath.append(MESSAGE_ROUTER_CP_PATH),
-                    DEFAULT_RPI,
-                    parameters,
-                    DEFAULT_RPI,
-                    parameters,
-                    0xA3);
+                DEFAULT_TIMEOUT,
+                0,
+                T2O_CONNECTION_ID.incrementAndGet(),
+                new Random().nextInt(),
+                client.getConfig().getVendorId(),
+                client.getConfig().getSerialNumber(),
+                1, // 0 = x4, 1 = x8, 2 = x16, 3 = x32, 4 = x128, 5 = x256, 6 = x512
+                connectionPath.append(MESSAGE_ROUTER_CP_PATH),
+                DEFAULT_RPI,
+                parameters,
+                DEFAULT_RPI,
+                parameters,
+                0xA3);
 
             ForwardOpenService service = new ForwardOpenService(request);
 
@@ -215,12 +215,12 @@ public class CipConnectionPool {
                         ForwardOpenResponse response = service.decodeResponse(b);
 
                         CipConnection connection = new CipConnection(
-                                DEFAULT_TIMEOUT.toNanos(),
-                                response.getO2tConnectionId(),
-                                response.getT2oConnectionId(),
-                                response.getConnectionSerialNumber(),
-                                response.getOriginatorVendorId(),
-                                response.getOriginatorSerialNumber());
+                            DEFAULT_TIMEOUT.toNanos(),
+                            response.getO2tConnectionId(),
+                            response.getT2oConnectionId(),
+                            response.getConnectionSerialNumber(),
+                            response.getOriginatorVendorId(),
+                            response.getOriginatorSerialNumber());
 
                         ReferenceCountUtil.release(response.getApplicationReply());
 
@@ -240,11 +240,11 @@ public class CipConnectionPool {
 
         protected NetworkConnectionParameters getNetworkConnectionParameters() {
             return new NetworkConnectionParameters(
-                    connectionSize,
-                    NetworkConnectionParameters.SizeType.Variable,
-                    NetworkConnectionParameters.Priority.Low,
-                    NetworkConnectionParameters.ConnectionType.PointToPoint,
-                    false);
+                connectionSize,
+                NetworkConnectionParameters.SizeType.Variable,
+                NetworkConnectionParameters.Priority.Low,
+                NetworkConnectionParameters.ConnectionType.PointToPoint,
+                false);
         }
 
         private CompletableFuture<CipConnection> largeForwardOpen() {
@@ -253,19 +253,19 @@ public class CipConnectionPool {
             NetworkConnectionParameters parameters = getNetworkConnectionParameters();
 
             LargeForwardOpenRequest request = new LargeForwardOpenRequest(
-                    DEFAULT_TIMEOUT,                                // timeout
-                    0,                                              // o2tConnectionId
-                    T2O_CONNECTION_ID.incrementAndGet(),            // t2oConnectionId
-                    new Random().nextInt(),                         // connectionSerialNumber
-                    client.getConfig().getVendorId(),               // vendorId
-                    client.getConfig().getSerialNumber(),           // vendorSerialNumber
-                    1,                                              // connectionTimeoutMultiplier
-                    connectionPath.append(MESSAGE_ROUTER_CP_PATH),  // connectionPath
-                    DEFAULT_RPI,                                    // o2tRpi
-                    parameters,                                     // o2tParameters
-                    DEFAULT_RPI,                                    // t2oRpi
-                    parameters,                                     // t2oParameters
-                    0xA3);                                          // transportClassAndTrigger
+                DEFAULT_TIMEOUT,                                // timeout
+                0,                                              // o2tConnectionId
+                T2O_CONNECTION_ID.incrementAndGet(),            // t2oConnectionId
+                new Random().nextInt(),                         // connectionSerialNumber
+                client.getConfig().getVendorId(),               // vendorId
+                client.getConfig().getSerialNumber(),           // vendorSerialNumber
+                1,                                              // connectionTimeoutMultiplier
+                connectionPath.append(MESSAGE_ROUTER_CP_PATH),  // connectionPath
+                DEFAULT_RPI,                                    // o2tRpi
+                parameters,                                     // o2tParameters
+                DEFAULT_RPI,                                    // t2oRpi
+                parameters,                                     // t2oParameters
+                0xA3);                                          // transportClassAndTrigger
 
             LargeForwardOpenService service = new LargeForwardOpenService(request);
 
@@ -275,12 +275,12 @@ public class CipConnectionPool {
                         LargeForwardOpenResponse response = service.decodeResponse(b);
 
                         CipConnection connection = new CipConnection(
-                                DEFAULT_TIMEOUT.toNanos(),
-                                response.getO2tConnectionId(),
-                                response.getT2oConnectionId(),
-                                response.getConnectionSerialNumber(),
-                                response.getOriginatorVendorId(),
-                                response.getOriginatorSerialNumber());
+                            DEFAULT_TIMEOUT.toNanos(),
+                            response.getO2tConnectionId(),
+                            response.getT2oConnectionId(),
+                            response.getConnectionSerialNumber(),
+                            response.getOriginatorVendorId(),
+                            response.getOriginatorSerialNumber());
 
                         ReferenceCountUtil.release(response.getApplicationReply());
 
@@ -303,11 +303,11 @@ public class CipConnectionPool {
             CompletableFuture<ForwardCloseResponse> future = new CompletableFuture<>();
 
             ForwardCloseRequest request = new ForwardCloseRequest(
-                    Duration.ofNanos(connection.getTimeoutNanos()),
-                    connection.getSerialNumber(),
-                    connection.getOriginatorVendorId(),
-                    connection.getOriginatorSerialNumber(),
-                    connectionPath.append(MESSAGE_ROUTER_CP_PATH)
+                Duration.ofNanos(connection.getTimeoutNanos()),
+                connection.getSerialNumber(),
+                connection.getOriginatorVendorId(),
+                connection.getOriginatorSerialNumber(),
+                connectionPath.append(MESSAGE_ROUTER_CP_PATH)
             );
 
             ForwardCloseService service = new ForwardCloseService(request);
@@ -394,10 +394,10 @@ public class CipConnectionPool {
         @Override
         public String toString() {
             return "CipConnection{" +
-                    "o2tConnectionId=" + o2tConnectionId +
-                    ", t2oConnectionId=" + t2oConnectionId +
-                    ", serialNumber=" + serialNumber +
-                    '}';
+                "o2tConnectionId=" + o2tConnectionId +
+                ", t2oConnectionId=" + t2oConnectionId +
+                ", serialNumber=" + serialNumber +
+                '}';
         }
 
     }

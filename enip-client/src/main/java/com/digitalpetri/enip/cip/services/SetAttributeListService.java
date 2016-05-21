@@ -32,9 +32,9 @@ public class SetAttributeListService implements CipService<AttributeResponse[]> 
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                this::encode
+            SERVICE_CODE,
+            requestPath,
+            this::encode
         );
 
         MessageRouterRequest.encode(request, buffer);
@@ -74,8 +74,8 @@ public class SetAttributeListService implements CipService<AttributeResponse[]> 
             int status = buffer.readShort();
 
             ByteBuf data = (status == 0x00) ?
-                    attributeDataDecoder.apply(id) :
-                    Unpooled.EMPTY_BUFFER;
+                attributeDataDecoder.apply(id) :
+                Unpooled.EMPTY_BUFFER;
 
             responses[i] = new AttributeResponse(id, status, data);
         }

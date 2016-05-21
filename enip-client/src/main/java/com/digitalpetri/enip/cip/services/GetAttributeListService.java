@@ -26,9 +26,9 @@ public class GetAttributeListService implements CipService<AttributeResponse[]> 
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                this::encode
+            SERVICE_CODE,
+            requestPath,
+            this::encode
         );
 
         MessageRouterRequest.encode(request, buffer);
@@ -66,8 +66,8 @@ public class GetAttributeListService implements CipService<AttributeResponse[]> 
             int id = buffer.readUnsignedShort();
             int status = buffer.readUnsignedShort();
             ByteBuf data = status == 0x00 ?
-                    buffer.readSlice(attributeSizes[i]).copy() :
-                    Unpooled.EMPTY_BUFFER;
+                buffer.readSlice(attributeSizes[i]).copy() :
+                Unpooled.EMPTY_BUFFER;
 
             attributeResponses[i] = new AttributeResponse(id, status, data);
         }

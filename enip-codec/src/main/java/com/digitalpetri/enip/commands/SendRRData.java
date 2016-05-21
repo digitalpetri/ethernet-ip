@@ -44,8 +44,8 @@ public final class SendRRData extends Command {
         SendRRData that = (SendRRData) o;
 
         return interfaceHandle == that.interfaceHandle &&
-                timeout == that.timeout &&
-                packet.equals(that.packet);
+            timeout == that.timeout &&
+            packet.equals(that.packet);
     }
 
     @Override
@@ -67,9 +67,9 @@ public final class SendRRData extends Command {
 
     public static SendRRData decode(ByteBuf buffer) {
         return new SendRRData(
-                buffer.readUnsignedInt(),
-                buffer.readUnsignedShort(),
-                CpfPacket.decode(buffer)
+            buffer.readUnsignedInt(),
+            buffer.readUnsignedShort(),
+            CpfPacket.decode(buffer)
         );
     }
 

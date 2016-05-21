@@ -72,9 +72,9 @@ public final class EnipPacket {
         EnipPacket that = (EnipPacket) o;
 
         return senderContext == that.senderContext &&
-                sessionHandle == that.sessionHandle &&
-                !(command != null ? !command.equals(that.command) : that.command != null) &&
-                commandCode == that.commandCode && status == that.status;
+            sessionHandle == that.sessionHandle &&
+            !(command != null ? !command.equals(that.command) : that.command != null) &&
+            commandCode == that.commandCode && status == that.status;
     }
 
     @Override
@@ -124,7 +124,7 @@ public final class EnipPacket {
         buffer.skipBytes(4); // options
 
         Command command = (status == EnipStatus.EIP_SUCCESS) ?
-                decodeCommand(commandCode, buffer) : null;
+            decodeCommand(commandCode, buffer) : null;
 
         return new EnipPacket(commandCode, sessionHandle, status, senderContext, command);
     }

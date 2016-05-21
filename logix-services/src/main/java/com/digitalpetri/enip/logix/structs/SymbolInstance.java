@@ -60,11 +60,11 @@ public final class SymbolInstance {
     @Override
     public String toString() {
         return "SymbolInstance{" +
-                "program=" + program +
-                ", name='" + name + '\'' +
-                ", instanceId=" + instanceId +
-                ", type=" + type +
-                '}';
+            "program=" + program +
+            ", name='" + name + '\'' +
+            ", instanceId=" + instanceId +
+            ", type=" + type +
+            '}';
     }
 
 }

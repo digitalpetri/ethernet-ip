@@ -27,9 +27,9 @@ public class ConnectedDataItemResponseTest extends SerializationTest<ConnectedDa
 
     @DataProvider
     private static Object[][] getData() {
-        return new Object[][] {
-                {Unpooled.EMPTY_BUFFER},
-                {Unpooled.buffer().writeByte(1).writeByte(2)}
+        return new Object[][]{
+            {Unpooled.EMPTY_BUFFER},
+            {Unpooled.buffer().writeByte(1).writeByte(2)}
         };
     }
 

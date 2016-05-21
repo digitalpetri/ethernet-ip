@@ -1,13 +1,13 @@
 package com.digitalpetri.enip;
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public abstract class SerializationTest<T> {
 

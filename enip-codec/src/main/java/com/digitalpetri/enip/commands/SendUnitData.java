@@ -44,8 +44,8 @@ public final class SendUnitData extends Command {
         SendUnitData that = (SendUnitData) o;
 
         return interfaceHandle == that.interfaceHandle &&
-                timeout == that.timeout &&
-                packet.equals(that.packet);
+            timeout == that.timeout &&
+            packet.equals(that.packet);
     }
 
     @Override
@@ -67,9 +67,9 @@ public final class SendUnitData extends Command {
 
     public static SendUnitData decode(ByteBuf buffer) {
         return new SendUnitData(
-                buffer.readUnsignedInt(),
-                buffer.readUnsignedShort(),
-                CpfPacket.decode(buffer)
+            buffer.readUnsignedInt(),
+            buffer.readUnsignedShort(),
+            CpfPacket.decode(buffer)
         );
     }
 

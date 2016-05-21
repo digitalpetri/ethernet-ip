@@ -29,8 +29,8 @@ public class RegisterSessionTest extends SerializationTest<RegisterSession> {
     @DataProvider
     private static Object[][] getParameters() {
         return new Object[][]{
-                {RegisterSession.DEFAULT_PROTOCOL_VERSION, RegisterSession.DEFAULT_OPTION_FLAGS},
-                {RegisterSession.DEFAULT_PROTOCOL_VERSION + 1, RegisterSession.DEFAULT_OPTION_FLAGS + 1}
+            {RegisterSession.DEFAULT_PROTOCOL_VERSION, RegisterSession.DEFAULT_OPTION_FLAGS},
+            {RegisterSession.DEFAULT_PROTOCOL_VERSION + 1, RegisterSession.DEFAULT_OPTION_FLAGS + 1}
         };
     }
 

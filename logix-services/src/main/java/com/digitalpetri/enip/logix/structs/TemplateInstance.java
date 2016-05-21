@@ -44,10 +44,10 @@ public final class TemplateInstance implements Serializable {
     @Override
     public String toString() {
         return "TemplateInstance{" +
-                "name='" + name + '\'' +
-                ", attributes=" + attributes +
-                ", members=" + members +
-                '}';
+            "name='" + name + '\'' +
+            ", attributes=" + attributes +
+            ", members=" + members +
+            '}';
     }
 
 }

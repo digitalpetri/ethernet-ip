@@ -1,10 +1,10 @@
 package com.digitalpetri.enip.cip.structs;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public final class ForwardOpenResponse {
 
@@ -82,26 +82,26 @@ public final class ForwardOpenResponse {
         int originatorVendorId = buffer.readUnsignedShort();
         long originatorSerialNumber = buffer.readUnsignedInt();
         long o2tActualPacketInterval = TimeUnit.MICROSECONDS
-                .convert(buffer.readUnsignedInt(), TimeUnit.MILLISECONDS);
+            .convert(buffer.readUnsignedInt(), TimeUnit.MILLISECONDS);
         long t2oActualPacketInterval = TimeUnit.MICROSECONDS
-                .convert(buffer.readUnsignedInt(), TimeUnit.MILLISECONDS);
+            .convert(buffer.readUnsignedInt(), TimeUnit.MILLISECONDS);
         int applicationReplySize = buffer.readUnsignedByte();
         buffer.skipBytes(1); // reserved
 
         ByteBuf applicationReply = applicationReplySize > 0 ?
-                buffer.readSlice(applicationReplySize).copy() :
-                Unpooled.EMPTY_BUFFER;
+            buffer.readSlice(applicationReplySize).copy() :
+            Unpooled.EMPTY_BUFFER;
 
         return new ForwardOpenResponse(
-                o2tConnectionId,
-                t2oConnectionId,
-                connectionSerialNumber,
-                originatorVendorId,
-                originatorSerialNumber,
-                Duration.ofMillis(o2tActualPacketInterval),
-                Duration.ofMillis(t2oActualPacketInterval),
-                applicationReplySize,
-                applicationReply
+            o2tConnectionId,
+            t2oConnectionId,
+            connectionSerialNumber,
+            originatorVendorId,
+            originatorSerialNumber,
+            Duration.ofMillis(o2tActualPacketInterval),
+            Duration.ofMillis(t2oActualPacketInterval),
+            applicationReplySize,
+            applicationReply
         );
     }
 

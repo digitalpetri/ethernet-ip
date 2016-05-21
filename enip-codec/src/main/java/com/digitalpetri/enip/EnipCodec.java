@@ -24,7 +24,7 @@ public class EnipCodec extends ByteToMessageCodec<EnipPacket> {
         int startIndex = buffer.readerIndex();
 
         while (buffer.readableBytes() >= HEADER_SIZE &&
-                buffer.readableBytes() >= HEADER_SIZE + getLength(buffer, startIndex)) {
+            buffer.readableBytes() >= HEADER_SIZE + getLength(buffer, startIndex)) {
 
             out.add(EnipPacket.decode(buffer));
 

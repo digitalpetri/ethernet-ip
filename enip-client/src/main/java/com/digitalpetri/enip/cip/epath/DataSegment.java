@@ -1,8 +1,8 @@
 package com.digitalpetri.enip.cip.epath;
 
-import io.netty.buffer.ByteBuf;
-
 import java.nio.charset.Charset;
+
+import io.netty.buffer.ByteBuf;
 
 public abstract class DataSegment<T> extends EPathSegment {
 
@@ -29,7 +29,7 @@ public abstract class DataSegment<T> extends EPathSegment {
         @Override
         protected ByteBuf encode(ByteBuf buffer) {
             String data = this.data.length() <= 255 ?
-                    this.data : this.data.substring(0, 255);
+                this.data : this.data.substring(0, 255);
 
             buffer.writeByte(SEGMENT_TYPE | SUBTYPE);
             buffer.writeByte(data.length());

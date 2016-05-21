@@ -22,9 +22,9 @@ public class ListInterfacesTest extends SerializationTest<ListInterfaces> {
         ListInterfaces.InterfaceInformation ii2 = new ListInterfaces.InterfaceInformation(2, new byte[]{4, 3, 2, 1});
 
         return new Object[][]{
-                {new ListInterfaces.InterfaceInformation[0]},
-                {new ListInterfaces.InterfaceInformation[]{ii1}},
-                {new ListInterfaces.InterfaceInformation[]{ii1, ii2}}
+            {new ListInterfaces.InterfaceInformation[0]},
+            {new ListInterfaces.InterfaceInformation[]{ii1}},
+            {new ListInterfaces.InterfaceInformation[]{ii1, ii2}}
         };
     }
 }

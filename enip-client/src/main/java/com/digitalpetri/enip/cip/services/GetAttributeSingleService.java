@@ -20,9 +20,9 @@ public class GetAttributeSingleService implements CipService<ByteBuf> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                this::encode
+            SERVICE_CODE,
+            requestPath,
+            this::encode
         );
 
         MessageRouterRequest.encode(request, buffer);

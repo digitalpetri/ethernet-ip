@@ -42,9 +42,9 @@ public class ReadTagService implements CipService<ByteBuf> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                dataEncoder
+            SERVICE_CODE,
+            requestPath,
+            dataEncoder
         );
 
         MessageRouterRequest.encode(request, buffer);

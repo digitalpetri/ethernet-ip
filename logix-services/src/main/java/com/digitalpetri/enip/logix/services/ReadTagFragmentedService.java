@@ -39,9 +39,9 @@ public class ReadTagFragmentedService implements CipService<ByteBuf> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                dataEncoder
+            SERVICE_CODE,
+            requestPath,
+            dataEncoder
         );
 
         MessageRouterRequest.encode(request, buffer);
@@ -75,10 +75,10 @@ public class ReadTagFragmentedService implements CipService<ByteBuf> {
                 if (status == 0x00) {
                     synchronized (buffers) {
                         ByteBuf composite = Unpooled.compositeBuffer()
-                                .addComponent(header.retain())
-                                .addComponents(buffers)
-                                .writerIndex(header.readableBytes() + offset)
-                                .order(ByteOrder.LITTLE_ENDIAN);
+                            .addComponent(header.retain())
+                            .addComponents(buffers)
+                            .writerIndex(header.readableBytes() + offset)
+                            .order(ByteOrder.LITTLE_ENDIAN);
 
                         // Clean up so this service can be re-used...
                         buffers.clear();

@@ -59,8 +59,8 @@ public final class ListIdentity extends Command {
                     return new ListIdentity((CipIdentityItem) items[0]);
                 } else {
                     throw new DecoderException(
-                            String.format("expected CipIdentityItem; received %s instead",
-                                    items[0].getClass().getSimpleName()));
+                        String.format("expected CipIdentityItem; received %s instead",
+                            items[0].getClass().getSimpleName()));
                 }
             } else {
                 return new ListIdentity();

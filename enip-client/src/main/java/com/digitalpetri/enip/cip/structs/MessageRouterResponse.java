@@ -53,7 +53,7 @@ public class MessageRouterResponse {
         }
 
         ByteBuf data = buffer.isReadable() ?
-                buffer.readSlice(buffer.readableBytes()).retain() : Unpooled.EMPTY_BUFFER;
+            buffer.readSlice(buffer.readableBytes()).retain() : Unpooled.EMPTY_BUFFER;
 
         return new MessageRouterResponse(serviceCode, generalStatus, additionalStatus, data);
     }

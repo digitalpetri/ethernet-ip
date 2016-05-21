@@ -94,9 +94,9 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
         CompletableFuture<T> future = new CompletableFuture<>();
 
         UnconnectedSendService<T> uss = new UnconnectedSendService<T>(
-                service,
-                connectionPath,
-                getConfig().getTimeout()
+            service,
+            connectionPath,
+            getConfig().getTimeout()
         );
 
         return invokeUnconnected(uss, future, 0, maxRetries);
@@ -162,7 +162,7 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
             CompletableFuture<ByteBuf> f = pending.remove(sequenceNumber);
             if (f != null) {
                 String message = String.format("sequenceNumber=%s timed out waiting %sms for response",
-                        sequenceNumber, getConfig().getTimeout().toMillis());
+                    sequenceNumber, getConfig().getTimeout().toMillis());
                 f.completeExceptionally(new Exception(message));
             }
         }, getConfig().getTimeout().toMillis(), TimeUnit.MILLISECONDS);
@@ -193,8 +193,8 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
                 CpfItem[] items = command.getPacket().getItems();
 
                 if (items.length == 2 &&
-                        items[0].getTypeId() == NullAddressItem.TYPE_ID &&
-                        items[1].getTypeId() == UnconnectedDataItemResponse.TYPE_ID) {
+                    items[0].getTypeId() == NullAddressItem.TYPE_ID &&
+                    items[1].getTypeId() == UnconnectedDataItemResponse.TYPE_ID) {
 
                     ByteBuf data = ((UnconnectedDataItemResponse) items[1]).getData();
 
@@ -257,8 +257,8 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
         @Override
         public boolean itemsMatch(CpfItem[] items) {
             return items.length == 2 &&
-                    items[0].getTypeId() == ConnectedAddressItem.TYPE_ID &&
-                    items[1].getTypeId() == ConnectedDataItemResponse.TYPE_ID;
+                items[0].getTypeId() == ConnectedAddressItem.TYPE_ID &&
+                items[1].getTypeId() == ConnectedDataItemResponse.TYPE_ID;
         }
 
     }

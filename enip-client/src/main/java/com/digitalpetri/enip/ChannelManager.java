@@ -56,7 +56,7 @@ public class ChannelManager {
         bootstrap.whenComplete((ch, ex) -> {
             if (ch != null) {
                 logger.debug("Channel bootstrap succeeded: localAddress={}, remoteAddress={}",
-                        ch.localAddress(), ch.remoteAddress());
+                    ch.localAddress(), ch.remoteAddress());
 
                 ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                     @Override

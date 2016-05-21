@@ -55,8 +55,8 @@ public final class RegisterSession extends Command {
 
     public static RegisterSession decode(ByteBuf buffer) {
         return new RegisterSession(
-                buffer.readUnsignedShort(),
-                buffer.readUnsignedShort()
+            buffer.readUnsignedShort(),
+            buffer.readUnsignedShort()
         );
     }
 

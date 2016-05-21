@@ -35,11 +35,11 @@ public final class TemplateMember implements Serializable {
     @Override
     public String toString() {
         return "TemplateMember{" +
-                "name='" + name + '\'' +
-                ", infoWord=" + infoWord +
-                ", symbolType=" + symbolType +
-                ", offset=" + offset +
-                '}';
+            "name='" + name + '\'' +
+            ", infoWord=" + infoWord +
+            ", symbolType=" + symbolType +
+            ", offset=" + offset +
+            '}';
     }
 
 }

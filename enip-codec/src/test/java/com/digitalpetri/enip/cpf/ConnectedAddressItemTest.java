@@ -20,9 +20,9 @@ public class ConnectedAddressItemTest extends SerializationTest<ConnectedAddress
     @DataProvider
     private static Object[][] getConnectionId() {
         return new Object[][]{
-                {0},
-                {1},
-                {Integer.MAX_VALUE}
+            {0},
+            {1},
+            {Integer.MAX_VALUE}
         };
     }
 

@@ -21,12 +21,12 @@ public class ListIdentityTest extends SerializationTest<ListIdentity> {
     @DataProvider
     private static Object[][] getIdentityItem() {
         CipIdentityItem identityItem = new CipIdentityItem(
-                0, new SockAddr(1, 2, new byte[4], 0), 1, 2, 3,
-                (short) 4, (short) 5, (short) 6, 1234L, "test", (short) 0);
+            0, new SockAddr(1, 2, new byte[4], 0), 1, 2, 3,
+            (short) 4, (short) 5, (short) 6, 1234L, "test", (short) 0);
 
         return new Object[][]{
-                {null},
-                {identityItem}
+            {null},
+            {identityItem}
         };
     }
 

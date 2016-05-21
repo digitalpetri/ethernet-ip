@@ -32,8 +32,8 @@ public class CipResponseException extends Exception {
         CipStatusCodes.getName(generalStatus).ifPresent(name -> sb.append(" [").append(name).append("] "));
 
         List<String> as = Arrays.stream(additionalStatus)
-                .mapToObj(a -> String.format("0x%04X", a))
-                .collect(Collectors.toList());
+            .mapToObj(a -> String.format("0x%04X", a))
+            .collect(Collectors.toList());
 
         String additional = "[" + String.join(",", as) + "]";
 
@@ -55,7 +55,7 @@ public class CipResponseException extends Exception {
         } else {
             Throwable cause = ex.getCause();
             return cause != null ?
-                    extract(cause) : Optional.empty();
+                extract(cause) : Optional.empty();
         }
     }
 

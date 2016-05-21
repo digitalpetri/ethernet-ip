@@ -91,7 +91,8 @@ public class EtherNetIpClientConfig {
         private ExecutorService executor;
         private EventLoopGroup eventLoop;
         private HashedWheelTimer wheelTimer;
-        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {};
+        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {
+        };
 
         public Builder setHostname(String hostname) {
             this.hostname = hostname;
@@ -149,8 +150,8 @@ public class EtherNetIpClientConfig {
                 wheelTimer = EtherNetIpShared.sharedWheelTimer();
             }
             return new EtherNetIpClientConfig(
-                    hostname, port, vendorId, serialNumber,
-                    timeout, executor, eventLoop, wheelTimer, bootstrapConsumer);
+                hostname, port, vendorId, serialNumber,
+                timeout, executor, eventLoop, wheelTimer, bootstrapConsumer);
         }
     }
 

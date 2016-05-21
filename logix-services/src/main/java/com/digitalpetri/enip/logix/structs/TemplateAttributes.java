@@ -35,11 +35,11 @@ public final class TemplateAttributes implements Serializable {
     @Override
     public String toString() {
         return "TemplateAttributes{" +
-                "handle=" + handle +
-                ", memberCount=" + memberCount +
-                ", objectDefinitionSize=" + objectDefinitionSize +
-                ", structureSize=" + structureSize +
-                '}';
+            "handle=" + handle +
+            ", memberCount=" + memberCount +
+            ", objectDefinitionSize=" + objectDefinitionSize +
+            ", structureSize=" + structureSize +
+            '}';
     }
 
 }

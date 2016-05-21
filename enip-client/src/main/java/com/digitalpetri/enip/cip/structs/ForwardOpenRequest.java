@@ -1,11 +1,11 @@
 package com.digitalpetri.enip.cip.structs;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 import com.digitalpetri.enip.cip.epath.EPath;
 import com.digitalpetri.enip.util.TimeoutCalculator;
 import io.netty.buffer.ByteBuf;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public final class ForwardOpenRequest {
 

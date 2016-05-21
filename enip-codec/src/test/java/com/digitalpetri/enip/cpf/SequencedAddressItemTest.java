@@ -19,10 +19,10 @@ public class SequencedAddressItemTest extends SerializationTest<SequencedAddress
     @DataProvider
     private static Object[][] getParameters() {
         return new Object[][]{
-                {0L, 0L},
-                {(long) Short.MAX_VALUE, (long) Short.MAX_VALUE},
-                {(long) Integer.MAX_VALUE, (long) Integer.MAX_VALUE},
-                {(long) Integer.MAX_VALUE + 1, (long) Integer.MAX_VALUE + 1}
+            {0L, 0L},
+            {(long) Short.MAX_VALUE, (long) Short.MAX_VALUE},
+            {(long) Integer.MAX_VALUE, (long) Integer.MAX_VALUE},
+            {(long) Integer.MAX_VALUE + 1, (long) Integer.MAX_VALUE + 1}
         };
     }
 

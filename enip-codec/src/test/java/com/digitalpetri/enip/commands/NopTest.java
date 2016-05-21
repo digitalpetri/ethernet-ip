@@ -18,9 +18,9 @@ public class NopTest extends SerializationTest<Nop> {
 
     @DataProvider
     private static Object[][] getData() {
-        return new Object[][] {
-                {new byte[0]},
-                {new byte[] {1, 2, 3, 4}}
+        return new Object[][]{
+            {new byte[0]},
+            {new byte[]{1, 2, 3, 4}}
         };
     }
 

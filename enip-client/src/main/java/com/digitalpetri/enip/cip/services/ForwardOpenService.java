@@ -16,8 +16,8 @@ public class ForwardOpenService implements CipService<ForwardOpenResponse> {
     public static final int SERVICE_CODE = 0x54;
 
     private static final PaddedEPath CONNECTION_MANAGER_PATH = new PaddedEPath(
-            new ClassId(0x06),
-            new InstanceId(0x01)
+        new ClassId(0x06),
+        new InstanceId(0x01)
     );
 
     private final ForwardOpenRequest request;
@@ -29,9 +29,9 @@ public class ForwardOpenService implements CipService<ForwardOpenResponse> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest mrr = new MessageRouterRequest(
-                SERVICE_CODE,
-                CONNECTION_MANAGER_PATH,
-                this::encode
+            SERVICE_CODE,
+            CONNECTION_MANAGER_PATH,
+            this::encode
         );
 
         MessageRouterRequest.encode(mrr, buffer);

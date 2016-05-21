@@ -43,9 +43,9 @@ public final class SockAddr {
         SockAddr sockAddr = (SockAddr) o;
 
         return sinFamily == sockAddr.sinFamily &&
-                sinPort == sockAddr.sinPort &&
-                sinZero == sockAddr.sinZero &&
-                Arrays.equals(sinAddr, sockAddr.sinAddr);
+            sinPort == sockAddr.sinPort &&
+            sinZero == sockAddr.sinZero &&
+            Arrays.equals(sinAddr, sockAddr.sinAddr);
     }
 
     @Override

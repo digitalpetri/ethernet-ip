@@ -24,9 +24,9 @@ public class SetAttributesAllService implements CipService<Void> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                attributeEncoder
+            SERVICE_CODE,
+            requestPath,
+            attributeEncoder
         );
 
         MessageRouterRequest.encode(request, buffer);

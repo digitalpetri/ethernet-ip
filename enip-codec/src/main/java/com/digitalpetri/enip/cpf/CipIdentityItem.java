@@ -113,16 +113,16 @@ public final class CipIdentityItem extends CpfItem {
         CipIdentityItem that = (CipIdentityItem) o;
 
         return deviceType == that.deviceType &&
-                productCode == that.productCode &&
-                protocolVersion == that.protocolVersion &&
-                revisionMajor == that.revisionMajor &&
-                revisionMinor == that.revisionMinor &&
-                serialNumber == that.serialNumber &&
-                state == that.state &&
-                status == that.status &&
-                vendorId == that.vendorId &&
-                productName.equals(that.productName) &&
-                socketAddress.equals(that.socketAddress);
+            productCode == that.productCode &&
+            protocolVersion == that.protocolVersion &&
+            revisionMajor == that.revisionMajor &&
+            revisionMinor == that.revisionMinor &&
+            serialNumber == that.serialNumber &&
+            state == that.state &&
+            status == that.status &&
+            vendorId == that.vendorId &&
+            productName.equals(that.productName) &&
+            socketAddress.equals(that.socketAddress);
     }
 
     @Override
@@ -179,17 +179,17 @@ public final class CipIdentityItem extends CpfItem {
         assert (typeId == TYPE_ID);
 
         return new CipIdentityItem(
-                buffer.readUnsignedShort(),
-                SockAddr.decode(buffer),
-                buffer.readUnsignedShort(),
-                buffer.readUnsignedShort(),
-                buffer.readUnsignedShort(),
-                buffer.readUnsignedByte(),
-                buffer.readUnsignedByte(),
-                buffer.readShort(),
-                buffer.readUnsignedInt(),
-                readString(buffer),
-                buffer.readUnsignedByte()
+            buffer.readUnsignedShort(),
+            SockAddr.decode(buffer),
+            buffer.readUnsignedShort(),
+            buffer.readUnsignedShort(),
+            buffer.readUnsignedShort(),
+            buffer.readUnsignedByte(),
+            buffer.readUnsignedByte(),
+            buffer.readShort(),
+            buffer.readUnsignedInt(),
+            readString(buffer),
+            buffer.readUnsignedByte()
         );
     }
 

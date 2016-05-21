@@ -20,8 +20,8 @@ public class MultipleServicePacketService implements CipService<Void> {
     public static final int SERVICE_CODE = 0x0A;
 
     private static final PaddedEPath MESSAGE_ROUTER_PATH = new PaddedEPath(
-            new ClassId(0x02),
-            new InstanceId(0x01));
+        new ClassId(0x02),
+        new InstanceId(0x01));
 
     private final List<CipService<?>> services;
     private final List<BiConsumer<?, Throwable>> consumers;
@@ -42,9 +42,9 @@ public class MultipleServicePacketService implements CipService<Void> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                MESSAGE_ROUTER_PATH,
-                this::encode);
+            SERVICE_CODE,
+            MESSAGE_ROUTER_PATH,
+            this::encode);
 
         MessageRouterRequest.encode(request, buffer);
     }
@@ -64,7 +64,7 @@ public class MultipleServicePacketService implements CipService<Void> {
 
                     @SuppressWarnings("unchecked")
                     BiConsumer<Object, Throwable> consumer =
-                            (BiConsumer<Object, Throwable>) currentConsumers.get(i);
+                        (BiConsumer<Object, Throwable>) currentConsumers.get(i);
 
                     try {
                         consumer.accept(service.decodeResponse(serviceData[i]), null);
@@ -94,7 +94,7 @@ public class MultipleServicePacketService implements CipService<Void> {
 
                         @SuppressWarnings("unchecked")
                         BiConsumer<Object, Throwable> consumer =
-                                (BiConsumer<Object, Throwable>) oa[1];
+                            (BiConsumer<Object, Throwable>) oa[1];
 
                         currentServices.add(service);
                         currentConsumers.add(consumer);
@@ -149,8 +149,8 @@ public class MultipleServicePacketService implements CipService<Void> {
             int offset = offsets[i];
 
             int length = (i + 1 < serviceCount) ?
-                    offsets[i + 1] - offset :
-                    buffer.readableBytes();
+                offsets[i + 1] - offset :
+                buffer.readableBytes();
 
             serviceData[i] = buffer.slice(dataStartIndex + offsets[i], length).retain();
 

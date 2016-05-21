@@ -3,7 +3,7 @@ package com.digitalpetri.enip.cpf;
 import com.digitalpetri.enip.SerializationTest;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 public class SockAddrItemO2tTest extends SerializationTest<SockAddrItemO2t> {
 

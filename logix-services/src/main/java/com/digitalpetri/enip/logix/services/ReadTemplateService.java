@@ -39,9 +39,9 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
     @Override
     public void encodeRequest(ByteBuf buffer) {
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                this::encode
+            SERVICE_CODE,
+            requestPath,
+            this::encode
         );
 
         MessageRouterRequest.encode(request, buffer);
@@ -61,10 +61,10 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
 
                 if (status == 0x00) {
                     ByteBuf composite = PooledByteBufAllocator.DEFAULT
-                            .compositeBuffer(buffers.size())
-                            .addComponents(buffers)
-                            .writerIndex(totalBytesRead)
-                            .order(ByteOrder.LITTLE_ENDIAN);
+                        .compositeBuffer(buffers.size())
+                        .addComponents(buffers)
+                        .writerIndex(totalBytesRead)
+                        .order(ByteOrder.LITTLE_ENDIAN);
 
                     TemplateInstance instance = decode(composite, symbolType);
 
@@ -95,7 +95,7 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
         int memberCount = attributes.getMemberCount();
 
         List<Function<String, TemplateMember>> functions =
-                Lists.newArrayListWithCapacity(memberCount);
+            Lists.newArrayListWithCapacity(memberCount);
 
         for (int i = 0; i < memberCount; i++) {
             int infoWord = buffer.readShort();

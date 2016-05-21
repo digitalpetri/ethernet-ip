@@ -38,20 +38,20 @@ public class GetInstanceAttributeListService implements CipService<List<SymbolIn
     @Override
     public void encodeRequest(ByteBuf buffer) {
         PaddedEPath requestPath = Optional.ofNullable(program)
-                .map(p ->
-                        new PaddedEPath(
-                                new AnsiDataSegment(p),
-                                new ClassId(0x6B),
-                                new InstanceId(instanceId)))
-                .orElse(
-                        new PaddedEPath(
-                                new ClassId(0x6B),
-                                new InstanceId(instanceId)));
+            .map(p ->
+                new PaddedEPath(
+                    new AnsiDataSegment(p),
+                    new ClassId(0x6B),
+                    new InstanceId(instanceId)))
+            .orElse(
+                new PaddedEPath(
+                    new ClassId(0x6B),
+                    new InstanceId(instanceId)));
 
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                this::encode
+            SERVICE_CODE,
+            requestPath,
+            this::encode
         );
 
         MessageRouterRequest.encode(request, buffer);
