@@ -63,7 +63,7 @@ public class ReadTagService implements CipService<ByteBuf> {
                 throw new CipResponseException(generalStatus, response.getAdditionalStatus());
             }
         } finally {
-            ReferenceCountUtil.release(response);
+            ReferenceCountUtil.release(response.getData());
         }
     }
 
@@ -72,7 +72,7 @@ public class ReadTagService implements CipService<ByteBuf> {
     }
 
     private ByteBuf decode(MessageRouterResponse response) {
-        return response.getData();
+        return response.getData().retain();
     }
 
 }
