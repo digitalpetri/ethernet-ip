@@ -85,8 +85,8 @@ public class GetInstanceAttributeListService implements CipService<List<SymbolIn
 
     private void encode(ByteBuf buffer) {
         buffer.writeShort(3); // 3 attributes:
-        buffer.writeShort(1); // instanceId
-        buffer.writeShort(2); // name
+        buffer.writeShort(1); // symbol name
+        buffer.writeShort(2); // symbol type
         buffer.writeShort(8); // dimensions
     }
 
@@ -96,13 +96,18 @@ public class GetInstanceAttributeListService implements CipService<List<SymbolIn
         List<SymbolInstance> l = Lists.newArrayList();
 
         while (buffer.isReadable()) {
+            // reply data includes instanceId + requested attributes
             int instanceId = buffer.readInt();
-            int nameLength = buffer.readUnsignedShort();
 
+            // attribute 1 - symbol name
+            int nameLength = buffer.readUnsignedShort();
             String name = buffer.toString(buffer.readerIndex(), nameLength, ASCII);
             buffer.skipBytes(nameLength);
 
+            // attribute 2 - symbol type
             int type = buffer.readUnsignedShort();
+
+            // attribute 8 - dimensions
             int d1Size = buffer.readInt();
             int d2Size = buffer.readInt();
             int d3Size = buffer.readInt();
