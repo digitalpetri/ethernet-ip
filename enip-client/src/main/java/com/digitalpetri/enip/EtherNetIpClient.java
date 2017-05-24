@@ -163,13 +163,16 @@ public class EtherNetIpClient {
 
     private void onChannelRead(EnipPacket packet) {
         CommandCode commandCode = packet.getCommandCode();
+        EnipStatus status = packet.getStatus();
 
         if (commandCode == CommandCode.SendUnitData) {
-            onUnitDataReceived((SendUnitData) packet.getCommand());
+            if (status == EnipStatus.EIP_SUCCESS) {
+                onUnitDataReceived((SendUnitData) packet.getCommand());
+            } else {
+                logger.warn("Received SendUnitData command with status: {}", status);
+            }
         } else {
             if (commandCode == CommandCode.RegisterSession) {
-                EnipStatus status = packet.getStatus();
-
                 if (status == EnipStatus.EIP_SUCCESS) {
                     sessionHandle = packet.getSessionHandle();
                 } else {
@@ -181,8 +184,6 @@ public class EtherNetIpClient {
 
             if (pending != null) {
                 pending.timeout.cancel();
-
-                EnipStatus status = packet.getStatus();
 
                 if (status == EnipStatus.EIP_SUCCESS) {
                     pending.promise.complete(packet.getCommand());
