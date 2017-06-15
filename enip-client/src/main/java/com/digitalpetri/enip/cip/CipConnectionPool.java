@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.epath.LogicalSegment.ClassId;
-import com.digitalpetri.enip.cip.epath.LogicalSegment.ConnectionPoint;
 import com.digitalpetri.enip.cip.epath.LogicalSegment.InstanceId;
 import com.digitalpetri.enip.cip.services.CipService.PartialResponseException;
 import com.digitalpetri.enip.cip.services.ForwardCloseService;
@@ -166,8 +165,8 @@ public class CipConnectionPool {
 
         private static final PaddedEPath MESSAGE_ROUTER_CP_PATH = new PaddedEPath(
             new ClassId(0x02),
-            new InstanceId(0x01),
-            new ConnectionPoint(0x01));
+            new InstanceId(0x01)
+        );
 
         private static final AtomicInteger T2O_CONNECTION_ID = new AtomicInteger(0);
 
