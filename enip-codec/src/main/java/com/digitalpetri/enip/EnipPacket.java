@@ -6,6 +6,7 @@ import com.digitalpetri.enip.commands.Command;
 import com.digitalpetri.enip.commands.CommandCode;
 import com.digitalpetri.enip.commands.ListIdentity;
 import com.digitalpetri.enip.commands.ListInterfaces;
+import com.digitalpetri.enip.commands.ListServices;
 import com.digitalpetri.enip.commands.Nop;
 import com.digitalpetri.enip.commands.RegisterSession;
 import com.digitalpetri.enip.commands.SendRRData;
@@ -137,6 +138,9 @@ public final class EnipPacket {
             case ListInterfaces:
                 return ListInterfaces.encode((ListInterfaces) command, buffer);
 
+            case ListServices:
+                return ListServices.encode((ListServices) command, buffer);
+
             case Nop:
                 return Nop.encode((Nop) command, buffer);
 
@@ -164,6 +168,9 @@ public final class EnipPacket {
 
             case ListInterfaces:
                 return ListInterfaces.decode(buffer);
+
+            case ListServices:
+                return ListServices.decode(buffer);
 
             case Nop:
                 return Nop.decode(buffer);
