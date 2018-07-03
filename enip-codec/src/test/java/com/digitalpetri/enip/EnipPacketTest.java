@@ -1,6 +1,14 @@
 package com.digitalpetri.enip;
 
-import com.digitalpetri.enip.commands.*;
+import com.digitalpetri.enip.commands.Command;
+import com.digitalpetri.enip.commands.ListIdentity;
+import com.digitalpetri.enip.commands.ListInterfaces;
+import com.digitalpetri.enip.commands.ListServices;
+import com.digitalpetri.enip.commands.Nop;
+import com.digitalpetri.enip.commands.RegisterSession;
+import com.digitalpetri.enip.commands.SendRRData;
+import com.digitalpetri.enip.commands.SendUnitData;
+import com.digitalpetri.enip.commands.UnRegisterSession;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

@@ -2,7 +2,16 @@ package com.digitalpetri.enip;
 
 import javax.annotation.Nullable;
 
-import com.digitalpetri.enip.commands.*;
+import com.digitalpetri.enip.commands.Command;
+import com.digitalpetri.enip.commands.CommandCode;
+import com.digitalpetri.enip.commands.ListIdentity;
+import com.digitalpetri.enip.commands.ListInterfaces;
+import com.digitalpetri.enip.commands.ListServices;
+import com.digitalpetri.enip.commands.Nop;
+import com.digitalpetri.enip.commands.RegisterSession;
+import com.digitalpetri.enip.commands.SendRRData;
+import com.digitalpetri.enip.commands.SendUnitData;
+import com.digitalpetri.enip.commands.UnRegisterSession;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
