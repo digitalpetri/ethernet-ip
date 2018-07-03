@@ -2,15 +2,7 @@ package com.digitalpetri.enip;
 
 import javax.annotation.Nullable;
 
-import com.digitalpetri.enip.commands.Command;
-import com.digitalpetri.enip.commands.CommandCode;
-import com.digitalpetri.enip.commands.ListIdentity;
-import com.digitalpetri.enip.commands.ListInterfaces;
-import com.digitalpetri.enip.commands.Nop;
-import com.digitalpetri.enip.commands.RegisterSession;
-import com.digitalpetri.enip.commands.SendRRData;
-import com.digitalpetri.enip.commands.SendUnitData;
-import com.digitalpetri.enip.commands.UnRegisterSession;
+import com.digitalpetri.enip.commands.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
@@ -137,6 +129,9 @@ public final class EnipPacket {
             case ListInterfaces:
                 return ListInterfaces.encode((ListInterfaces) command, buffer);
 
+            case ListServices:
+                return ListServices.encode((ListServices) command, buffer);
+
             case Nop:
                 return Nop.encode((Nop) command, buffer);
 
@@ -164,6 +159,9 @@ public final class EnipPacket {
 
             case ListInterfaces:
                 return ListInterfaces.decode(buffer);
+
+            case ListServices:
+                return ListServices.decode(buffer);
 
             case Nop:
                 return Nop.decode(buffer);
