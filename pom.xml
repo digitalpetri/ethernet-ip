@@ -35,8 +35,10 @@
     </scm>
 
     <modules>
+        <module>cip-client</module>
+        <module>cip-core</module>
         <module>enip-client</module>
-        <module>enip-codec</module>
+        <module>enip-core</module>
         <module>logix-services</module>
     </modules>
 
