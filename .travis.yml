@@ -17,14 +17,17 @@
 
 language: java
 
-env:
-   - MAVEN_OPTS="-Xms512m -Xmx512m"
+sudo: false
 
-matrix:
-   fast_finish: true
+branches:
+  only:
+    - master
 
-install: false
+cache:
+  directories:
+    - $HOME/.m2
 
-script:
-    - jdk_switcher use oraclejdk8
-    - mvn clean package
+jdk:
+  - oraclejdk8
+
+script: mvn clean install
