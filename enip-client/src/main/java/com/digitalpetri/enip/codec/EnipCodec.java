@@ -1,8 +1,9 @@
-package com.digitalpetri.enip;
+package com.digitalpetri.enip.codec;
 
 import java.nio.ByteOrder;
 import java.util.List;
 
+import com.digitalpetri.enip.EnipPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;

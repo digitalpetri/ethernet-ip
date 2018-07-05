@@ -1,8 +1,6 @@
 package com.digitalpetri.enip.cpf;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.DecoderException;
-import io.netty.handler.codec.EncoderException;
 
 public abstract class CpfItem {
 
@@ -43,7 +41,7 @@ public abstract class CpfItem {
                 return UnconnectedDataItemRequest.encode((UnconnectedDataItemRequest) item, buffer);
 
             default:
-                throw new EncoderException(String.format("unhandled item type: 0x%02X", item.getTypeId()));
+                throw new RuntimeException(String.format("unhandled item type: 0x%02X", item.getTypeId()));
         }
     }
 
@@ -76,7 +74,7 @@ public abstract class CpfItem {
                 return UnconnectedDataItemResponse.decode(buffer);
 
             default:
-                throw new DecoderException(String.format("unhandled item type: 0x%02X", typeId));
+                throw new RuntimeException(String.format("unhandled item type: 0x%02X", typeId));
         }
     }
 

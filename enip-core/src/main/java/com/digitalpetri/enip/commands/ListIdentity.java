@@ -6,7 +6,6 @@ import com.digitalpetri.enip.cpf.CipIdentityItem;
 import com.digitalpetri.enip.cpf.CpfItem;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.DecoderException;
 
 public final class ListIdentity extends Command {
 
@@ -58,7 +57,7 @@ public final class ListIdentity extends Command {
                 if (items[0] instanceof CipIdentityItem) {
                     return new ListIdentity((CipIdentityItem) items[0]);
                 } else {
-                    throw new DecoderException(
+                    throw new RuntimeException(
                         String.format("expected CipIdentityItem; received %s instead",
                             items[0].getClass().getSimpleName()));
                 }
