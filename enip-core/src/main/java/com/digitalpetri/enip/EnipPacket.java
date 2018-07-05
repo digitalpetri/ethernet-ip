@@ -13,8 +13,6 @@ import com.digitalpetri.enip.commands.SendRRData;
 import com.digitalpetri.enip.commands.SendUnitData;
 import com.digitalpetri.enip.commands.UnRegisterSession;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.DecoderException;
-import io.netty.handler.codec.EncoderException;
 
 /**
  * All encapsulation messages, sent via TCP or sent to UDP port 0xAF12, shall be composed of a fixed-length header of
@@ -157,7 +155,7 @@ public final class EnipPacket {
                 return UnRegisterSession.encode((UnRegisterSession) command, buffer);
 
             default:
-                throw new EncoderException(String.format("unhandled command: %s", command.getCommandCode()));
+                throw new RuntimeException(String.format("unhandled command: %s", command.getCommandCode()));
         }
     }
 
@@ -188,7 +186,7 @@ public final class EnipPacket {
                 return UnRegisterSession.decode(buffer);
 
             default:
-                throw new DecoderException(String.format("unhandled command: %s", commandCode));
+                throw new RuntimeException(String.format("unhandled command: %s", commandCode));
         }
     }
 

@@ -1,7 +1,6 @@
 package com.digitalpetri.enip;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.DecoderException;
 
 public enum EnipStatus {
 
@@ -48,7 +47,7 @@ public enum EnipStatus {
             case 0x69:
                 return UNSUPPORTED_PROTOCOL_VERSION;
             default:
-                throw new DecoderException(String.format("unrecognized status: 0x%02X", status));
+                throw new RuntimeException(String.format("unrecognized status: 0x%02X", status));
         }
     }
 

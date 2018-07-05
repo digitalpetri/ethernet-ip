@@ -1,7 +1,6 @@
 package com.digitalpetri.enip.commands;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.DecoderException;
 
 public enum CommandCode {
 
@@ -51,7 +50,7 @@ public enum CommandCode {
             case 0x70:
                 return SendUnitData;
             default:
-                throw new DecoderException(String.format("unrecognized command code: 0x%02X", code));
+                throw new RuntimeException(String.format("unrecognized command code: 0x%02X", code));
         }
     }
 
