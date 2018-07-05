@@ -1,5 +1,6 @@
 package com.digitalpetri.enip.cip.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -12,7 +13,6 @@ import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.synchronizedList;
 
 public class MultipleServicePacketService implements CipService<Void> {
@@ -32,11 +32,11 @@ public class MultipleServicePacketService implements CipService<Void> {
     public MultipleServicePacketService(List<CipService<?>> services, List<BiConsumer<?, Throwable>> consumers) {
         assert (services.size() == consumers.size());
 
-        this.services = synchronizedList(newArrayList(services));
-        this.consumers = synchronizedList(newArrayList(consumers));
+        this.services = synchronizedList(new ArrayList<>(services));
+        this.consumers = synchronizedList(new ArrayList<>(consumers));
 
-        this.currentServices = synchronizedList(newArrayList(services));
-        this.currentConsumers = synchronizedList(newArrayList(consumers));
+        this.currentServices = synchronizedList(new ArrayList<>(services));
+        this.currentConsumers = synchronizedList(new ArrayList<>(consumers));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class MultipleServicePacketService implements CipService<Void> {
 
         try {
             if (response.getGeneralStatus() == 0x00 || response.getGeneralStatus() == 0x1E) {
-                List<Object[]> partials = newArrayList();
+                List<Object[]> partials = new ArrayList<>();
 
                 ByteBuf[] serviceData = decode(response.getData());
 
