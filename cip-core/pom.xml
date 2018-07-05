@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-codec</artifactId>
+            <artifactId>netty-buffer</artifactId>
             <version>4.0.36.Final</version>
         </dependency>
         <dependency>
