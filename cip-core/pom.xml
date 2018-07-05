@@ -16,12 +16,6 @@
             <artifactId>netty-codec</artifactId>
             <version>4.0.36.Final</version>
         </dependency>
-        <!-- Required only for the ImmutableMap in CipStatusCodes -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
