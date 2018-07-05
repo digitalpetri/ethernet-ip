@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.digitalpetri.enip.codec.EnipCodec;
 import com.digitalpetri.enip.commands.Command;
 import com.digitalpetri.enip.commands.CommandCode;
 import com.digitalpetri.enip.commands.ListIdentity;
