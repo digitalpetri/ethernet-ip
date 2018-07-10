@@ -117,15 +117,17 @@ abstract class AbstractState implements ChannelFsm.State {
     static void sendKeepAliveAsync(ChannelFsm fsm) {
         LOGGER.debug("Sending keep alive via ListIdentity");
 
-        fsm.getClient().getExecutor().submit(() -> sendKeepAlive(fsm));
+        CompletableFuture<Channel> channelFuture = fsm.context().getChannelFuture();
+
+        fsm.getClient().getExecutor().submit(() -> sendKeepAlive(fsm, channelFuture));
     }
 
-    private static void sendKeepAlive(ChannelFsm fsm) {
+    private static void sendKeepAlive(ChannelFsm fsm, CompletableFuture<Channel> channelFuture) {
         fsm.getClient().listIdentity().whenComplete((li, ex) -> {
             if (ex != null) {
-                LOGGER.debug("Keep alive failed; closing channel");
+                LOGGER.debug("Keep alive failed; closing channel: {}", ex.getMessage());
 
-                fsm.getChannel().thenApply(Channel::close);
+                channelFuture.thenApply(Channel::close);
             }
         });
     }
