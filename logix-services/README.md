@@ -17,6 +17,8 @@ PaddedEPath connectionPath = new PaddedEPath(
 
 CipClient client = new CipClient(config, connectionPath);
 
+client.connect().get();
+
 CipConnectionPool pool = new CipConnectionPool(2, client, connectionPath, 500);
 
 // the tag we'll use as an example

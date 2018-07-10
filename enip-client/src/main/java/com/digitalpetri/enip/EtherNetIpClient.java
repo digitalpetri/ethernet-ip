@@ -16,6 +16,7 @@ import com.digitalpetri.enip.commands.SendUnitData;
 import com.digitalpetri.enip.cpf.ConnectedDataItemResponse;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
+import com.digitalpetri.enip.fsm.ChannelFsm;
 import com.google.common.collect.Maps;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -32,6 +33,8 @@ import io.netty.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.digitalpetri.enip.util.FutureUtils.complete;
+
 public class EtherNetIpClient {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -43,8 +46,7 @@ public class EtherNetIpClient {
 
     private volatile long sessionHandle;
 
-    private final ChannelManager channelManager;
-
+    private final ChannelFsm channelFsm;
     private final EtherNetIpClientConfig config;
 
     public EtherNetIpClient(EtherNetIpClientConfig config) {
@@ -52,28 +54,25 @@ public class EtherNetIpClient {
 
         executor = config.getExecutor();
 
-        channelManager = new ChannelManager(this);
+        channelFsm = new ChannelFsm(this);
     }
 
     public CompletableFuture<EtherNetIpClient> connect() {
-        CompletableFuture<EtherNetIpClient> future = new CompletableFuture<>();
-
-        channelManager.getChannel().whenComplete((ch, ex) -> {
-            if (ch != null) future.complete(EtherNetIpClient.this);
-            else future.completeExceptionally(ex);
-        });
-
-        return future;
+        return complete(new CompletableFuture<EtherNetIpClient>()).with(
+            channelFsm.connect()
+                .thenApply(c -> EtherNetIpClient.this)
+        );
     }
 
     public CompletableFuture<EtherNetIpClient> disconnect() {
-        channelManager.disconnect();
-
-        return CompletableFuture.completedFuture(this);
+        return complete(new CompletableFuture<EtherNetIpClient>()).with(
+            channelFsm.disconnect()
+                .thenApply(c -> EtherNetIpClient.this)
+        );
     }
 
     public String getState() {
-        return channelManager.getState();
+        return channelFsm.getState();
     }
 
     public CompletableFuture<ListIdentity> listIdentity() {
@@ -87,7 +86,7 @@ public class EtherNetIpClient {
     public CompletableFuture<Void> sendUnitData(SendUnitData command) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        channelManager.getChannel().whenComplete((ch, ex) -> {
+        channelFsm.getChannel().whenComplete((ch, ex) -> {
             if (ch != null) {
                 EnipPacket packet = new EnipPacket(
                     command.getCommandCode(),
@@ -116,10 +115,10 @@ public class EtherNetIpClient {
         return executor;
     }
 
-    protected <T extends Command> CompletableFuture<T> sendCommand(Command command) {
+    public <T extends Command> CompletableFuture<T> sendCommand(Command command) {
         CompletableFuture<T> future = new CompletableFuture<>();
 
-        channelManager.getChannel().whenComplete((ch, ex) -> {
+        channelFsm.getChannel().whenComplete((ch, ex) -> {
             if (ch != null) writeCommand(ch, command, future);
             else future.completeExceptionally(ex);
         });
@@ -127,9 +126,9 @@ public class EtherNetIpClient {
         return future;
     }
 
-    protected <T extends Command> void writeCommand(Channel channel,
-                                                    Command command,
-                                                    CompletableFuture<T> future) {
+    public <T extends Command> void writeCommand(Channel channel,
+                                                 Command command,
+                                                 CompletableFuture<T> future) {
 
         EnipPacket packet = new EnipPacket(
             command.getCommandCode(),
@@ -218,7 +217,7 @@ public class EtherNetIpClient {
         logger.debug("onExceptionCaught() {} <-> {}",
             ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
 
-        channelManager.disconnect();
+        ctx.channel().close();
     }
 
     /**
@@ -227,8 +226,7 @@ public class EtherNetIpClient {
      *
      * @param command the {@link com.digitalpetri.enip.commands.SendUnitData} command received.
      */
-    protected void onUnitDataReceived(SendUnitData command) {
-    }
+    protected void onUnitDataReceived(SendUnitData command) {}
 
     private static final class EtherNetIpClientHandler extends SimpleChannelInboundHandler<EnipPacket> {
 
@@ -243,7 +241,7 @@ public class EtherNetIpClient {
         }
 
         @Override
-        protected void channelRead0(ChannelHandlerContext channelHandlerContext, EnipPacket packet) throws Exception {
+        protected void channelRead0(ChannelHandlerContext channelHandlerContext, EnipPacket packet) {
             executor.execute(() -> client.onChannelRead(packet));
         }
 
@@ -257,6 +255,8 @@ public class EtherNetIpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
             client.onExceptionCaught(ctx, cause);
+
+            super.exceptionCaught(ctx, cause);
         }
 
     }
@@ -274,7 +274,7 @@ public class EtherNetIpClient {
             .option(ChannelOption.TCP_NODELAY, true)
             .handler(new ChannelInitializer<SocketChannel>() {
                 @Override
-                protected void initChannel(SocketChannel ch) throws Exception {
+                protected void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(new EnipCodec());
                     ch.pipeline().addLast(new EtherNetIpClientHandler(client));
                 }
