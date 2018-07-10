@@ -7,7 +7,6 @@ public class ConnectSuccess implements ChannelFsm.Event {
 
     private final Channel channel;
 
-
     public ConnectSuccess(Channel channel) {
         this.channel = channel;
     }

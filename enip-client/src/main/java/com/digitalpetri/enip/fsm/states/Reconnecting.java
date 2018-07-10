@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import com.digitalpetri.enip.fsm.ChannelFsm;
 import com.digitalpetri.enip.fsm.events.ConnectFailure;
 import com.digitalpetri.enip.fsm.events.ConnectSuccess;
+import com.digitalpetri.enip.fsm.events.Disconnect;
 
 public class Reconnecting extends AbstractState {
 
@@ -24,6 +25,10 @@ public class Reconnecting extends AbstractState {
 
                 return new Reconnecting();
             }
+        } else if (event instanceof Disconnect) {
+            disconnectAsync(fsm, fsm.context().getChannelFuture());
+
+            return new Disconnecting();
         } else {
             return this;
         }

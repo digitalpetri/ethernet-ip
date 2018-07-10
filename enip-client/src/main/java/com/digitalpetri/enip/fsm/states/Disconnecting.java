@@ -5,12 +5,13 @@ import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 
 import com.digitalpetri.enip.fsm.ChannelFsm;
+import com.digitalpetri.enip.fsm.events.Connect;
 import com.digitalpetri.enip.fsm.events.Disconnect;
 import com.digitalpetri.enip.fsm.events.DisconnectSuccess;
 
 import static com.digitalpetri.enip.util.FutureUtils.complete;
 
-public class Disconnecting implements ChannelFsm.State {
+public class Disconnecting extends AbstractState {
 
     private final Queue<ChannelFsm.Event> eventQueue = new ArrayDeque<>();
 
@@ -33,7 +34,7 @@ public class Disconnecting implements ChannelFsm.State {
                 ((Disconnect) event).getDisconnectFuture();
 
             complete(future).with(fsm.context().getDisconnectFuture());
-        } else {
+        } else if (event instanceof Connect) {
             eventQueue.add(event);
         }
     }
