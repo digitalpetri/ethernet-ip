@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.digitalpetri.enip.fsm.ChannelFsm;
 import com.digitalpetri.enip.fsm.events.Connect;
+import com.digitalpetri.enip.fsm.events.ConnectFailure;
 import com.digitalpetri.enip.fsm.events.Disconnect;
 import com.digitalpetri.enip.fsm.events.DisconnectSuccess;
 import com.digitalpetri.enip.fsm.events.GetChannel;
@@ -49,7 +50,12 @@ public class NotConnected extends AbstractState {
         ChannelFsm.State prev,
         ChannelFsm.Event event) {
 
-        if (event instanceof DisconnectSuccess) {
+        if (event instanceof ConnectFailure) {
+            Throwable failure = ((ConnectFailure) event).getFailure();
+
+            fsm.context().getChannelFuture()
+                .completeExceptionally(failure);
+        } else if (event instanceof DisconnectSuccess) {
             CompletableFuture<Void> future =
                 fsm.context().getDisconnectFuture();
 
