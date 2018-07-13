@@ -1,26 +1,25 @@
 package com.digitalpetri.enip.fsm.states;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 
 import com.digitalpetri.enip.fsm.ChannelFsm;
 import com.digitalpetri.enip.fsm.events.Connect;
 import com.digitalpetri.enip.fsm.events.Disconnect;
 import com.digitalpetri.enip.fsm.events.DisconnectSuccess;
+import com.digitalpetri.enip.fsm.events.GetChannel;
+import io.netty.channel.Channel;
 
 import static com.digitalpetri.enip.util.FutureUtils.complete;
 
 public class Disconnecting extends AbstractState {
 
-    private final Queue<ChannelFsm.Event> eventQueue = new ArrayDeque<>();
-
     @Override
     public ChannelFsm.State evaluate(ChannelFsm fsm, ChannelFsm.Event event) {
-        if (event instanceof DisconnectSuccess) {
-            fsm.getClient().getExecutor().submit(
-                () -> eventQueue.forEach(fsm::fireEvent));
+        if (event instanceof Connect) {
+            connectAsync(fsm);
 
+            return new Connecting();
+        } else if (event instanceof DisconnectSuccess) {
             return new NotConnected();
         } else {
             return this;
@@ -29,13 +28,16 @@ public class Disconnecting extends AbstractState {
 
     @Override
     public void onInternalTransition(ChannelFsm fsm, ChannelFsm.Event event) {
-        if (event instanceof Disconnect) {
+        if (event instanceof GetChannel) {
+            CompletableFuture<Channel> future =
+                ((GetChannel) event).getChannelFuture();
+
+            complete(future).with(fsm.context().getChannelFuture());
+        } else if (event instanceof Disconnect) {
             CompletableFuture<Void> future =
                 ((Disconnect) event).getDisconnectFuture();
 
             complete(future).with(fsm.context().getDisconnectFuture());
-        } else if (event instanceof Connect) {
-            eventQueue.add(event);
         }
     }
 
