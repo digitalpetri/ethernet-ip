@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="3314.6" height="846.52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Generated at Thu Jul 12 19:49:30 2018 by:
+  Graph::Easy v0.76
+  Graph::Easy::As_svg v0.27
+-->
+
+<title>Untitled graph</title>
+<defs>
+ <!-- open arrow -->
+ <g id="ah" stroke-linecap="round" stroke-width="1">
+  <line x1="-8" y1="-4" x2="1" y2="0" />
+  <line x1="1" y1="0" x2="-8" y2="4" />
+ </g>
+
+ <!-- class definitions -->
+ <style type="text/css"><![CDATA[
+ .edge {
+  font-size: 13px;
+  stroke: black;
+  text-align: center;
+ }
+ .graph {
+  font-size: 16px;
+  text-align: center;
+ }
+ .node {
+  font-size: 16px;
+  text-align: center;
+ }
+ ]]></style>
+</defs>
+
+<!-- graph background with border (mainly for printing) -->
+<rect x="0.5" y="0.5" width="3312.6" height="844.52" fill="white" stroke="white" />
+
+<g id="10" class="edge">
+ <!-- from Connecting to Connecting -->
+ <!-- selfloop, northwards -->
+ <path d="M1400.81 146.28L1400.81 133.48L759.53 133.48L759.53 146.28" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(759.53 146.28)rotate(90)"/>
+ <text x="1080" y="111.4" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="middle">Connect</text>
+</g>
+
+<g id="11" class="edge">
+ <!-- from Connecting to Connecting -->
+ <!-- selfloop, northwards -->
+ <path d="M1649 146.28L1649 133.48L1426.41 133.48L1426.41 146.28" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(1426.41 146.28)rotate(90)"/>
+ <text x="1537" y="111.4" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="middle">GetChannel</text>
+</g>
+
+<g id="13" class="edge">
+ <!-- from Connecting to Disconnecting -->
+ <!-- south/east corner -->
+ <g stroke="#000000">
+  <line x1="1674.6" y1="109.94" x2="1674.6" y2="146.28" />
+  <line x1="1674.1" y1="110.44" x2="1687.4" y2="110.44" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1687.4" y1="110.44" x2="1936.56" y2="110.44" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="1936.56" y1="110.44" x2="1971.16" y2="110.44" />
+  <line x1="1953.86" y1="68.2" x2="1953.86" y2="146.28" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1971.16" y1="110.44" x2="2961.37" y2="110.44" stroke="#000000" />
+ <text x="1996.76" y="105" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">Disconnect</text>
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="2974.17" y1="109.94" x2="2974.17" y2="143.23" />
+  <line x1="2961.37" y1="110.44" x2="2974.67" y2="110.44" />
+ </g>
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2974.17 144.23)rotate(90)"/>
+</g>
+
+<g id="15" class="edge">
+ <!-- from Connecting to Connected -->
+ <!-- horizontal -->
+ <line x1="1705.26" y1="191.72" x2="1847.1" y2="191.72" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="1848.1" y="191.72"/>
+ <text x="1707" y="186" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ConnectSuccess</text>
+</g>
+
+<g id="16" class="edge">
+ <!-- from Connecting to NotConnected -->
+ <!-- horizontal -->
+ <line x1="473.32" y1="269.8" x2="716.24" y2="269.8" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(472.32 269.8)rotate(180)"/>
+ <text x="472" y="264" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ConnectFailure (persistent=false)</text>
+</g>
+
+<g id="17" class="edge">
+ <!-- from Connecting to Idle -->
+ <!-- vertical -->
+ <line x1="1080.17" y1="555.88" x2="1080.17" y2="624.51" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(1080.17 625.51)rotate(90)"/>
+ <text x="1086.4" y="591" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">ConnectFailure (persistent=true, lazy=true)</text>
+</g>
+
+<g id="18" class="edge">
+ <!-- from Connecting to Reconnecting -->
+ <!-- horizontal -->
+ <line x1="1705.26" y1="429.16" x2="1865.96" y2="429.16" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="1865.96" y1="429.16" x2="1901.56" y2="429.16" />
+  <line x1="1883.76" y1="393.32" x2="1883.76" y2="471.4" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1901.56" y1="429.16" x2="1971.16" y2="429.16" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1971.16" y1="429.16" x2="2308.04" y2="429.16" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="2309.04" y="429.16"/>
+ <text x="1991" y="424" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ConnectFailure (persistent=true, lazy=false)</text>
+</g>
+
+<g id="19" class="edge">
+ <!-- from Reconnecting to Reconnecting -->
+ <!-- selfloop, westwards -->
+ <path d="M2340.18 484.2L2327.38 484.2L2327.38 536.68L2340.18 536.68" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="2340.18" y="536.68"/>
+ <text x="2320" y="510" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="end">Connect</text>
+</g>
+
+<g id="2" class="edge">
+ <!-- from NotConnected to Connecting -->
+ <!-- horizontal -->
+ <line x1="472.32" y1="191.72" x2="715.24" y2="191.72" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="716.24" y="191.72"/>
+ <text x="462" y="186" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">Connect</text>
+</g>
+
+<g id="20" class="edge">
+ <!-- from Reconnecting to Reconnecting -->
+ <!-- selfloop, eastwards -->
+ <path d="M2715.99 243.56L2728.79 243.56L2728.79 296.04L2715.99 296.04" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2715.99 296.04)rotate(180)"/>
+ <text x="2735" y="269" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">GetChannel</text>
+</g>
+
+<g id="21" class="edge">
+ <!-- from Reconnecting to Disconnecting -->
+ <!-- horizontal -->
+ <line x1="2734.77" y1="191.72" x2="2935.19" y2="191.72" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="2936.19" y="191.72"/>
+ <text x="2730" y="186" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">Disconnect</text>
+</g>
+
+<g id="22" class="edge">
+ <!-- from Reconnecting to Connected -->
+ <!-- horizontal -->
+ <line x1="2009.7" y1="269.8" x2="2309.04" y2="269.8" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2008.7 269.8)rotate(180)"/>
+ <text x="2001" y="264" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ConnectSuccess</text>
+</g>
+
+<g id="23" class="edge">
+ <!-- from Reconnecting to Idle -->
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="2835.48" y1="509.94" x2="2835.48" y2="549.48" />
+  <line x1="2734.77" y1="510.44" x2="2835.98" y2="510.44" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="2835.48" y1="633.96" x2="2835.48" y2="724.84" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="2835.48" y1="724.84" x2="2835.48" y2="757.98" />
+  <line x1="2709.59" y1="757.48" x2="2835.98" y2="757.48" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="2683.99" y1="757.48" x2="2709.59" y2="757.48" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="2538.07" y1="757.48" x2="2683.99" y2="757.48" />
+  <line x1="2611.03" y1="724.84" x2="2611.03" y2="790.12" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1661.8" y1="757.48" x2="2538.07" y2="757.48" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1439.43" y1="757.48" x2="1661.8" y2="757.48" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(1438.43 757.48)rotate(180)"/>
+ <text x="1444" y="752" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ConnectFailure (lazy=true)</text>
+</g>
+
+<g id="24" class="edge">
+ <!-- from Reconnecting to Reconnecting -->
+ <!-- selfloop, eastwards -->
+ <path d="M2715.99 321.64L2728.79 321.64L2728.79 374.12L2715.99 374.12" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2715.99 374.12)rotate(180)"/>
+ <text x="2735" y="347" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">ConnectFailure (lazy=false)</text>
+</g>
+
+<g id="25" class="edge">
+ <!-- from Connected to Connected -->
+ <!-- selfloop, westwards -->
+ <path d="M1859.56 243.56L1846.76 243.56L1846.76 296.04L1859.56 296.04" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="1859.56" y="296.04"/>
+ <text x="1840" y="269" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="end">Connect</text>
+</g>
+
+<g id="26" class="edge">
+ <!-- from Connected to Connected -->
+ <!-- selfloop, westwards -->
+ <path d="M1859.56 321.64L1846.76 321.64L1846.76 374.12L1859.56 374.12" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="1859.56" y="374.12"/>
+ <text x="1840" y="347" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="end">GetChannel</text>
+</g>
+
+<g id="27" class="edge">
+ <!-- from Connected to Disconnecting -->
+ <!-- south/east corner -->
+ <g stroke="#000000">
+  <line x1="1953.86" y1="54.9" x2="1953.86" y2="68.2" />
+  <line x1="1953.36" y1="55.4" x2="1971.16" y2="55.4" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1971.16" y1="55.4" x2="2986.97" y2="55.4" stroke="#000000" />
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="3079.51" y1="54.9" x2="3079.51" y2="68.2" />
+  <line x1="2986.97" y1="55.4" x2="3080.01" y2="55.4" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="3079.51" y1="68.2" x2="3079.51" y2="143.23" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(3079.51 144.23)rotate(90)"/>
+ <text x="3085.4" y="110" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">Disconnect</text>
+</g>
+
+<g id="28" class="edge">
+ <!-- from Connected to Connected -->
+ <!-- selfloop, eastwards -->
+ <path d="M1977.56 321.64L1990.36 321.64L1990.36 374.12L1977.56 374.12" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(1977.56 374.12)rotate(180)"/>
+ <text x="1996" y="347" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">ChannelIdle</text>
+</g>
+
+<g id="29" class="edge">
+ <!-- from Connected to Idle -->
+ <!-- vertical -->
+ <line x1="1883.76" y1="471.4" x2="1883.76" y2="549.48" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="1883.76" y1="633.96" x2="1883.76" y2="667.1" />
+  <line x1="1865.96" y1="666.6" x2="1884.26" y2="666.6" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1661.8" y1="666.6" x2="1865.96" y2="666.6" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1439.43" y1="666.6" x2="1661.8" y2="666.6" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(1438.43 666.6)rotate(180)"/>
+ <text x="1444" y="661" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ChannelInactive</text>
+</g>
+
+<g id="3" class="edge">
+ <!-- from NotConnected to NotConnected -->
+ <!-- selfloop, southwards -->
+ <path d="M429.03 393.32L429.03 406.12L160.74 406.12L160.74 393.32" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(160.74 393.32)rotate(-90)"/>
+ <text x="294" y="417.6" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="middle">GetChannel</text>
+</g>
+
+<g id="30" class="edge">
+ <!-- from Connected to Reconnecting -->
+ <!-- horizontal -->
+ <line x1="2008.7" y1="191.72" x2="2308.04" y2="191.72" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="2309.04" y="191.72"/>
+ <text x="1991" y="186" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">ChannelInactive</text>
+</g>
+
+<g id="31" class="edge">
+ <!-- from Disconnecting to Connecting -->
+ <!-- vertical -->
+ <line x1="2974.17" y1="393.32" x2="2974.17" y2="471.4" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="2974.17" y1="471.4" x2="2974.17" y2="549.48" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="2974.17" y1="549.48" x2="2974.17" y2="592.22" />
+  <line x1="2961.37" y1="591.72" x2="2974.67" y2="591.72" />
+ </g>
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="2709.59" y1="591.72" x2="2961.37" y2="591.72" />
+  <line x1="2835.48" y1="549.48" x2="2835.48" y2="633.96" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- horizontal -->
+ <line x1="2683.99" y1="591.72" x2="2709.59" y2="591.72" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="2538.07" y1="591.72" x2="2683.99" y2="591.72" />
+  <line x1="2611.03" y1="558.93" x2="2611.03" y2="633.96" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2611.03 557.93)rotate(-90)"/>
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="2346.58" y1="591.72" x2="2538.07" y2="591.72" />
+  <line x1="2442.33" y1="558.93" x2="2442.33" y2="633.96" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2442.33 557.93)rotate(-90)"/>
+
+ <!-- horizontal -->
+ <line x1="1901.56" y1="591.72" x2="2346.58" y2="591.72" stroke="#000000" />
+
+ <!-- crossing -->
+ <g stroke="#000000">
+  <line x1="1865.96" y1="591.72" x2="1901.56" y2="591.72" />
+  <line x1="1883.76" y1="549.48" x2="1883.76" y2="633.96" stroke="#000000" stroke-dasharray="1 0"/>
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1687.4" y1="591.72" x2="1865.96" y2="591.72" stroke="#000000" />
+ <text x="1713" y="586" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none">Connect</text>
+
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="1674.6" y1="558.93" x2="1674.6" y2="592.22" />
+  <line x1="1674.1" y1="591.72" x2="1687.4" y2="591.72" />
+ </g>
+ <use stroke="#000000" xlink:href="#ah" transform="translate(1674.6 557.93)rotate(-90)"/>
+</g>
+
+<g id="32" class="edge">
+ <!-- from Disconnecting to Disconnecting -->
+ <!-- selfloop, southwards -->
+ <path d="M3159.26 393.32L3159.26 406.12L2999.77 406.12L2999.77 393.32" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(2999.77 393.32)rotate(-90)"/>
+ <text x="3079" y="417.6" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="middle">GetChannel</text>
+</g>
+
+<g id="33" class="edge">
+ <!-- from Disconnecting to Disconnecting -->
+ <!-- selfloop, southwards -->
+ <path d="M3283.8 393.32L3283.8 406.12L3184.86 406.12L3184.86 393.32" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(3184.86 393.32)rotate(-90)"/>
+ <text x="3234" y="417.6" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="middle">Disconnect</text>
+</g>
+
+<g id="34" class="edge">
+ <!-- from Disconnecting to NotConnected -->
+ <!-- vertical -->
+ <line x1="3234.33" y1="68.2" x2="3234.33" y2="146.28" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="3234.33" y1="42.6" x2="3234.33" y2="68.2" stroke="#000000" />
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="3234.33" y1="29.3" x2="3234.33" y2="42.6" />
+  <line x1="3172.06" y1="29.8" x2="3234.83" y2="29.8" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="441.83" y1="29.8" x2="3172.06" y2="29.8" stroke="#000000" />
+
+ <!-- south/east corner -->
+ <g stroke="#000000">
+  <line x1="294.89" y1="29.3" x2="294.89" y2="42.6" />
+  <line x1="294.39" y1="29.8" x2="441.83" y2="29.8" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="294.89" y1="42.6" x2="294.89" y2="68.2" stroke="#000000" />
+
+ <!-- vertical -->
+ <line x1="294.89" y1="68.2" x2="294.89" y2="143.23" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" transform="translate(294.89 144.23)rotate(90)"/>
+ <text x="300.4" y="110" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">DisconnectSuccess</text>
+</g>
+
+<g id="4" class="edge">
+ <!-- from NotConnected to NotConnected -->
+ <!-- selfloop, westwards -->
+ <path d="M141.54 165.48L128.74 165.48L128.74 217.96L141.54 217.96" fill="none" stroke="#000000" />
+ <use stroke="#000000" xlink:href="#ah" x="141.54" y="217.96"/>
+ <text x="122" y="191" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="end">Disconnect</text>
+</g>
+
+<g id="7" class="edge">
+ <!-- from Idle to Reconnecting -->
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="1080.17" y1="796.52" x2="1080.17" y2="809.82" />
+  <line x1="1079.67" y1="809.32" x2="1413.61" y2="809.32" />
+ </g>
+
+ <!-- horizontal -->
+ <line x1="1413.61" y1="809.32" x2="2538.07" y2="809.32" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="2611.03" y1="790.12" x2="2611.03" y2="809.82" />
+  <line x1="2538.07" y1="809.32" x2="2611.53" y2="809.32" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="2611.03" y1="633.96" x2="2611.03" y2="724.84" stroke="#000000" />
+ <text x="2617.4" y="679" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">Connect</text>
+</g>
+
+<g id="8" class="edge">
+ <!-- from Idle to Reconnecting -->
+ <!-- horizontal -->
+ <line x1="1438.43" y1="712.04" x2="1661.8" y2="712.04" stroke="#000000" />
+
+ <!-- horizontal -->
+ <line x1="1661.8" y1="712.04" x2="2346.58" y2="712.04" stroke="#000000" />
+
+ <!-- north/west corner -->
+ <g stroke="#000000">
+  <line x1="2442.33" y1="699.24" x2="2442.33" y2="712.54" />
+  <line x1="2346.58" y1="712.04" x2="2442.83" y2="712.04" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="2442.33" y1="633.96" x2="2442.33" y2="699.24" stroke="#000000" />
+ <text x="2448.4" y="666" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">GetChannel</text>
+</g>
+
+<g id="9" class="edge">
+ <!-- from Idle to NotConnected -->
+ <!-- north/east corner -->
+ <g stroke="#000000">
+  <line x1="594.28" y1="633.96" x2="594.28" y2="667.1" />
+  <line x1="593.78" y1="666.6" x2="716.24" y2="666.6" />
+ </g>
+
+ <!-- vertical -->
+ <line x1="594.28" y1="386.92" x2="594.28" y2="633.96" stroke="#000000" />
+ <text x="600.4" y="510" style="font-family:sans-serif;font-size:12.8px" fill="#000000" stroke="none" text-anchor="start">Disconnect</text>
+
+ <!-- south/west corner -->
+ <g stroke="#000000">
+  <line x1="594.28" y1="347.38" x2="594.28" y2="386.92" />
+  <line x1="473.32" y1="347.88" x2="594.78" y2="347.88" />
+ </g>
+ <use stroke="#000000" xlink:href="#ah" transform="translate(472.32 347.88)rotate(180)"/>
+</g>
+
+<g id="0" class="node">
+ <!-- NotConnected, rect -->
+ <rect fill="#ffffff" height="233.24" stroke="#000000" width="292.89" x="148.444" y="153.18" />
+ <text x="294" y="275" style="font-family:serif" fill="#000000" text-anchor="middle">NotConnected</text>
+</g>
+
+<g id="1" class="node">
+ <!-- Connecting, rect -->
+ <rect fill="#ffffff" height="395.8" stroke="#000000" width="939.67" x="747.228" y="153.18" />
+ <text x="1217" y="357" style="font-family:serif" fill="#000000" text-anchor="middle">Connecting</text>
+</g>
+
+<g id="5" class="node">
+ <!-- Idle, rect -->
+ <rect fill="#ffffff" height="155.16" stroke="#000000" width="665.88" x="747.228" y="634.46" />
+ <text x="1080" y="718" style="font-family:serif" fill="#000000" text-anchor="middle">Idle</text>
+</g>
+
+<g id="6" class="node">
+ <!-- Reconnecting, rect -->
+ <rect fill="#ffffff" height="395.8" stroke="#000000" width="362.01" x="2347.084" y="153.18" />
+ <text x="2528" y="357" style="font-family:serif" fill="#000000" text-anchor="middle">Reconnecting</text>
+</g>
+
+<g id="12" class="node">
+ <!-- Disconnecting, rect -->
+ <rect fill="#ffffff" height="233.24" stroke="#000000" width="334.23" x="2961.868"
+   y="153.18" />
+ <text x="3128" y="275" style="font-family:serif" fill="#000000" text-anchor="middle">Disconnecting</text>
+</g>
+
+<g id="14" class="node">
+ <!-- Connected, rect -->
+ <rect fill="#ffffff" height="233.24" stroke="#000000" width="104.2" x="1866.46" y="153.18" />
+ <text x="1918" y="275" style="font-family:serif" fill="#000000" text-anchor="middle">Connected</text>
+</g>
+
+</svg>

@@ -1,0 +1,40 @@
+# NotConnected
+[ NotConnected ] -- Connect --> [ Connecting ]
+[ NotConnected ] -- GetChannel --> [ NotConnected ]
+[ NotConnected ] -- Disconnect --> [ NotConnected ]
+
+# Idle
+[ Idle ] -- Connect --> [ Reconnecting ]
+[ Idle ] -- GetChannel --> [ Reconnecting ]
+[ Idle ] -- Disconnect --> [ NotConnected ]
+
+# Connecting
+[ Connecting ] -- Connect --> [ Connecting ]
+[ Connecting ] -- GetChannel --> [ Connecting ]
+[ Connecting ] -- Disconnect --> [ Disconnecting ]
+[ Connecting ] -- ConnectSuccess --> [ Connected ]
+[ Connecting ] -- ConnectFailure (persistent=false) --> [ NotConnected ]
+[ Connecting ] -- ConnectFailure (persistent=true, lazy=true) --> [ Idle ]
+[ Connecting ] -- ConnectFailure (persistent=true, lazy=false) --> [ Reconnecting ]
+
+# Reconnecting
+[ Reconnecting ] -- Connect --> [ Reconnecting ]
+[ Reconnecting ] -- GetChannel --> [ Reconnecting ]
+[ Reconnecting ] -- Disconnect --> [ Disconnecting ]
+[ Reconnecting ] -- ConnectSuccess --> [ Connected ]
+[ Reconnecting ] -- ConnectFailure (lazy=true) --> [ Idle ]
+[ Reconnecting ] -- ConnectFailure (lazy=false) --> [ Reconnecting ]
+
+# Connected
+[ Connected ] -- Connect --> [ Connected ]
+[ Connected ] -- GetChannel --> [ Connected ]
+[ Connected ] -- Disconnect --> [ Disconnecting ]
+[ Connected ] -- ChannelIdle --> [ Connected ]
+[ Connected ] -- ChannelInactive --> [ Idle ]
+[ Connected ] -- ChannelInactive --> [ Reconnecting ]
+
+# Disconnecting
+[ Disconnecting ] -- Connect --> [ Connecting ]
+[ Disconnecting ] -- GetChannel --> [ Disconnecting ]
+[ Disconnecting ] -- Disconnect --> [ Disconnecting ]
+[ Disconnecting ] -- DisconnectSuccess --> [ NotConnected ]
