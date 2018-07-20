@@ -40,6 +40,7 @@
         <module>enip-client</module>
         <module>enip-core</module>
         <module>logix-services</module>
+        <module>pccc-core</module>
     </modules>
 
     <properties>
