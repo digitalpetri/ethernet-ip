@@ -32,11 +32,13 @@ public class ChannelFsm extends DefaultAttributeMap implements Fsm<ChannelFsm.Ev
 
     private final EtherNetIpClient client;
 
-    public ChannelFsm(EtherNetIpClient client) {
+    ChannelFsm(EtherNetIpClient client, State initialState) {
         this.client = client;
 
         this.lazy = client.getConfig().isLazy();
         this.persistent = client.getConfig().isPersistent();
+
+        state.set(initialState);
     }
 
     public CompletableFuture<Channel> connect() {
@@ -139,6 +141,10 @@ public class ChannelFsm extends DefaultAttributeMap implements Fsm<ChannelFsm.Ev
                 readWriteLock.writeLock().unlock();
             }
         }
+    }
+
+    public static ChannelFsm newChannelFsm(EtherNetIpClient client) {
+        return new ChannelFsm(client, new NotConnected());
     }
 
     public interface Event {}

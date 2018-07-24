@@ -54,7 +54,7 @@ public class EtherNetIpClient {
 
         executor = config.getExecutor();
 
-        channelFsm = new ChannelFsm(this);
+        channelFsm = ChannelFsm.newChannelFsm(this);
     }
 
     public CompletableFuture<EtherNetIpClient> connect() {
