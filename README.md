@@ -1,4 +1,7 @@
 # EtherNet/IP Client
+[![Build status](https://travis-ci.org/digitalpetri/ethernet-ip.svg?branch=master)](https://travis-ci.org/digitalpetri/ethernet-ip)
+[![Maven Central](https://img.shields.io/maven-central/v/com.digitalpetri.enip/enip.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.digitalpetri.enip%22%20AND%20a%3A%22enip%22)
+
 Asynchronous, non-blocking, EtherNet/IP client implementation for Java
 
 # Maven
