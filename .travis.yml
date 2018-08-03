@@ -1,24 +1,7 @@
-#                                                                                                                                                                                                  
-# Licensed to the Apache Software Foundation (ASF) under one or more                                                                                                                               
-# contributor license agreements.  See the NOTICE file distributed with                                                                                                                            
-# this work for additional information regarding copyright ownership.                                                                                                                              
-# The ASF licenses this file to You under the Apache License, Version 2.0                                                                                                                          
-# (the "License"); you may not use this file except in compliance with                                                                                                                             
-# the License.  You may obtain a copy of the License at                                                                                                                                            
-#                                                                                                                                                                                                  
-#    http://www.apache.org/licenses/LICENSE-2.0                                                                                                                                                    
-#                                                                                                                                                                                                  
-# Unless required by applicable law or agreed to in writing, software                                                                                                                              
-# distributed under the License is distributed on an "AS IS" BASIS,                                                                                                                                
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                                                                                                         
-# See the License for the specific language governing permissions and                                                                                                                              
-# limitations under the License.                                                                                                                                                                   
-#
-
 env:
   global:
-    - secure: "Hb8CmD/FfS42wjHairXSkBJcjMZP13HrAXnM0vGc6h07JwKtjccdlHCEl6MMljNfM+0RLGbCw3CFEBrC8fpjwHfUjV+LvC+FuC4SxmdPUTzYXQE5/+mIhDlNwhIilw93RZ5oxQR8VH8EeBY5LJYt6Kx2CyfaBHk3iEntmWRhPA2iWYd1UVgcGAGXxW3hTfwLgp928biy1DcfrJB9cWAgNwfHZqgEIC28lOyrOTAPH49W6KhEyhWtOSjv56xIUiD+N2ZgwxJt+s0mk1V4Hf6qLAYXMfJBW/JkC2sj4QzViUbwV2WIwHrR+RtUk6LjlNQbGrGzIyyVCwfHSl0snD9H1Izn2BCRXo1PBCF+eXwu4rTf4q8yhJBEwQhMDPc6C0UyN6hNLfwsM7GNzlM2/EPxt6+HaF2Tv2aSRF3O86VhPcNLhDaQ/sMDcMkOtm/9cVthchNGUvqM1KwncwgJnVcYlexyPMUp6qnIIoCRRF7BDoEwJ9SUZTFoso4A26RpWaTa79FkIdFBnDkXo8ByLU/W/jB8IBaHcyNp2E+i71D1VOLSMvqfGY8mnMKtMOvRzp5pvFNCWsI6BP7dYACTHL+nUTzYCxwb572xRmQWUCmi83vNLs1yfNiiUeFFGETymGeZMo9Nypro3a8Uh2JSJuh3xfjBQoteFzEs/kbjajvJoYY="
-    - secure: "fQZoQIUT8tMk9hw8y6KICaa0SgewpVyXzM4g5gLOY58so1mPxyZpnFsea7SUwaOszD7UdDZ7Adc24puzcPayRQckAxPwaFUAN6AqoomvOUlLQWeqCHyllpWK/GRPk+vkA+CdiXJbD7lAFBWGiXj17sL0KHDiMurVLiNugWwNy0J9koKDoatgPuQGy2Xzp9GGnY82K8r5UWqDFGoaQ2Jhgrox6b5dt/sIEbnfEZwaf5ytudTrJ2h+Ju+PxlYtBYafdZvPH8NgCfXG02f3B2vX0HnQ/0Tr8V9BIC2V68HprTDHP6lkELa3vvoDNszoD0aMQelcmlfHGldvBjG59YslJaycOeC0RTHE1Ac1PfIPO0d3b8k2eSG7tvx7k2d9UtumZodhV7cA+YHzoOmJNJvMwR3ecWtc2A4GUd6Tzjr7CIWrArs46tBkOptUE6D/z9nkzDeo0RGPcOAEQ//Xozx9z+ldvLavtk/o5TqXDJgqvMQ7jqOzuGUIz+NekK4UlZ5MpHrFfSmMU5HebkKWOa3Trb1EH436cg33/NTWPOu0OhD5d2JFWUMX0WiK6auBDMwkWmuwazwzYC7xQyiZQc/uftTXuhYj1j1oYasnTUTIKkZoKffBlsUyQdUXwHMu2Xlh3A+PZorVqgm7wtpCu03OaW4jabKhFPsnPcssg91lwdU="
+  - secure: V7DAlRyGMI6Ix9zYshM3aaKG/mMcCCru5YJt8/0b4bftYKIsD+jm/1bWMaAjZlz3zsO+jc4/rv9VlDVfvVNpX8X1Ldp15imI6Xl4OYlpA8Sir1BYYsRwZ7JO9DtwL2mC5vhoeXWUNDZkFKt444ulwqyS6wJ+n0MxvtY0kBmA6SX8FIWo5tQ8cR50YOCpe4eBF2rk1/vrxppWzSjqY9GzV8ZmyOhNkxnGfpMcpolqiixJ04Ur06831zl2zLsH4IlTpnBD7gCklnRWUsvdvlXKiHVbY4ZDrr7tNPGRkr21hrC5cTyvE+W7BzS+En3RICufxvd1z7uRvbaLhKeOvI7yfY6WXl7eRaEuT8zKox90OG1uH3JH+92cAJ2uGVyKRT2P26rhX2DyjMBXbXRpLQGtRUgXTXJzgrjuSMR1qj861eWX1ntufxtoXIA5r3tTBVPTEKGeGUz6Qm88YSzN5Jgiors8k9iN1X+m8AQmpfGcLq7uk+MQwPlwaQ5xsXfJE63+0zMZbuPeBSEN5RIIKrXH+07YMDvuyUjyDDQ3FXKjLb/rMAhSc7gOSfazC6FDnMZyDCjFmrT+5xFUiY+S3Yy9ioG7EP/HcqeIyVlvf9cl4rJ2CtC4x3oy1OylCYcJC+6E0A0XzYMqp235dKpZG2Z0h4zoALhmcDy2XXhfahqWpQ8=
+  - secure: W1dFhXXlCV0mzGvfPGcss8XFGsi1Ci29XURY+wHKca1c+7d8DG9Af8JbgccHBjtlz1pd5vIJtyIscx1BFcv+YNcrtcj4s5gK/pbMoiX2Z0dt/rqqFgVRZG5wuFVivq2xNKRfjeNHgUeS423rlneITHWZ6pAtNz2CZcn0mpRsgye3stP5ryEHNFMlwallLSU6y73Her8/cjofC6gogzriGv5rwhfQcp/jty3MolWkoIsIGp+KlHn/lPfALuVrEn2mg5tv4jRQQeJnIqOVNQACumEkC0LFgk/rtNEyR6wbZXVHmMNr9wgDl2OEtH78d2k57emi9lOh7pZVY68k7imhchkJEq5djaI2mGn1wdoHnPqQ78jLXftrNNUuhy9TYRscodOkZytVGQasQPvFWSMFHQrhmDvlNPEptpnc/pcatolGznN3V5w/SNS26urbL98vyJHNA8bfiTbMZKFoZraWYJ4BDEuQbV3gMe6Dy+8QF8p6NdsE8S8myb7cDj8d+4/W12y/z2m+b91SlJLqsHqP+lFfitC8lh7rFwPnqzHFxjXwdQ+bTUkXPsiJ/hMzUVA2hxk0c+Q9MPSJsVYUVnYNuromnYE0gKOt21YwS3QVKvU7F4/MD5+iybi2AGZipJJ8EWuQ6/S1pQYGkRMPxvJaOFvoPRTHCut6Vgum7GrecV8=
 
 language: java
 
@@ -26,15 +9,17 @@ sudo: false
 
 branches:
   only:
-    - master
+  - master
 
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 script:
-  - mvn clean install
-  - mvn deploy --settings .travis/maven-settings.xml
+- mvn clean install
+
+after_success:
+- "[[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && mvn deploy -DskipTests --settings .travis/maven-settings.xml"
