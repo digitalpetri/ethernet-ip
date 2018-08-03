@@ -13,7 +13,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                                                                                                         
 # See the License for the specific language governing permissions and                                                                                                                              
 # limitations under the License.                                                                                                                                                                   
-#                                                                                                                                                                                                  
+#
+
+env:
+  global:
+    - secure: "Hb8CmD/FfS42wjHairXSkBJcjMZP13HrAXnM0vGc6h07JwKtjccdlHCEl6MMljNfM+0RLGbCw3CFEBrC8fpjwHfUjV+LvC+FuC4SxmdPUTzYXQE5/+mIhDlNwhIilw93RZ5oxQR8VH8EeBY5LJYt6Kx2CyfaBHk3iEntmWRhPA2iWYd1UVgcGAGXxW3hTfwLgp928biy1DcfrJB9cWAgNwfHZqgEIC28lOyrOTAPH49W6KhEyhWtOSjv56xIUiD+N2ZgwxJt+s0mk1V4Hf6qLAYXMfJBW/JkC2sj4QzViUbwV2WIwHrR+RtUk6LjlNQbGrGzIyyVCwfHSl0snD9H1Izn2BCRXo1PBCF+eXwu4rTf4q8yhJBEwQhMDPc6C0UyN6hNLfwsM7GNzlM2/EPxt6+HaF2Tv2aSRF3O86VhPcNLhDaQ/sMDcMkOtm/9cVthchNGUvqM1KwncwgJnVcYlexyPMUp6qnIIoCRRF7BDoEwJ9SUZTFoso4A26RpWaTa79FkIdFBnDkXo8ByLU/W/jB8IBaHcyNp2E+i71D1VOLSMvqfGY8mnMKtMOvRzp5pvFNCWsI6BP7dYACTHL+nUTzYCxwb572xRmQWUCmi83vNLs1yfNiiUeFFGETymGeZMo9Nypro3a8Uh2JSJuh3xfjBQoteFzEs/kbjajvJoYY="
+    - secure: "CqNeVnjE/RcdMJreMnuGBfMWtY2On+JTU7e6F8EkL5Rtn76P3/9wk8JOgRCvbB+vK+CnmL7TIn/AYcR+Pr2gLSdn7ngRRGo1+lbyULobyZ2Hxh+a1iJM6Ci2kFT0N5NJuqoizsOLTwb2H51ghiY8c1KrO6JnO4VTqNgoxb9yGkOhK/zoeWnYVnJTUVwakq5XjJ6wQPRITxV/56TlQRnJLdMG3v5Y0McidFIFE5cGvR7vQVXmHaMWld2MlGxDLhMRc1OkdAxZJozwNHA1j3OgAHEjhLcxlI/JHdVHm35Veyna+nVzKKMTL3ZvzZswG7NfEA5B00IUVVwYr221cPUn3u6DZpimiUfq5MWiqtuOA7YjDU3F4yI9Y2Fr3/9zG5RWRdEVtm/UBSCvzE1JfyeHy2kEWrZ0FXqH79whOM6ZJLg6FkIUoYzzTJlCJ39brxEMgu6m+iQPOvAyMLVxuDiVmItneUtX5dj+m9/4W3M7vjFipM44LD85kDFhwO/vx2ujvB0VnHUjqkZ/FPkiPY6WGDOzfoM0zijo3lR4U50HWQJ5Km0uCVs4bE35hgMNM3TmswSCsGZa4lfGDKuRslsD3ZE9S1urEvBclhBVIt2CA5q91gkHEL8GJpxhmBK4LVLCJSwNRcHmReTjTJSEuWLPjj4AajgrYgOg4qQ2a1yXbyk="
 
 language: java
 
@@ -30,4 +35,6 @@ cache:
 jdk:
   - oraclejdk8
 
-script: mvn clean install
+script:
+  - mvn clean install
+  - mvn deploy --settings .travis/maven-settings.xml
