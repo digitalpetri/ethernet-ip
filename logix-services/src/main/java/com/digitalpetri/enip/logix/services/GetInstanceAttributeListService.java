@@ -18,6 +18,11 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 
+/**
+ * @see GetSymbolInstanceAttributeListService
+ * @deprecated use {@link GetSymbolInstanceAttributeListService} instead.
+ */
+@Deprecated
 public class GetInstanceAttributeListService implements CipService<List<SymbolInstance>> {
 
     public static final int SERVICE_CODE = 0x55;
