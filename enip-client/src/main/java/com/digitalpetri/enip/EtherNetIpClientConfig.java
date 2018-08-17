@@ -15,26 +15,36 @@ public class EtherNetIpClientConfig {
     private final int vendorId;
     private final int serialNumber;
     private final Duration timeout;
+    private final Duration maxIdle;
+    private final boolean lazy;
+    private final boolean persistent;
     private final ExecutorService executor;
     private final EventLoopGroup eventLoop;
     private final HashedWheelTimer wheelTimer;
     private final Consumer<Bootstrap> bootstrapConsumer;
 
-    public EtherNetIpClientConfig(String hostname,
-                                  int port,
-                                  int vendorId,
-                                  int serialNumber,
-                                  Duration timeout,
-                                  ExecutorService executor,
-                                  EventLoopGroup eventLoop,
-                                  HashedWheelTimer wheelTimer,
-                                  Consumer<Bootstrap> bootstrapConsumer) {
+    public EtherNetIpClientConfig(
+        String hostname,
+        int port,
+        int vendorId,
+        int serialNumber,
+        Duration timeout,
+        Duration maxIdle,
+        boolean lazy,
+        boolean persistent,
+        ExecutorService executor,
+        EventLoopGroup eventLoop,
+        HashedWheelTimer wheelTimer,
+        Consumer<Bootstrap> bootstrapConsumer) {
 
         this.hostname = hostname;
         this.port = port;
         this.vendorId = vendorId;
         this.serialNumber = serialNumber;
         this.timeout = timeout;
+        this.maxIdle = maxIdle;
+        this.lazy = lazy;
+        this.persistent = persistent;
         this.executor = executor;
         this.eventLoop = eventLoop;
         this.wheelTimer = wheelTimer;
@@ -59,6 +69,33 @@ public class EtherNetIpClientConfig {
 
     public Duration getTimeout() {
         return timeout;
+    }
+
+    /**
+     * @return the max amount of time that can elapse without reading any data from the remote before a keep alive
+     * ListIdentity request is sent. If this ListIdentity request fails for any reason the channel is closed.
+     */
+    public Duration getMaxIdle() {
+        return maxIdle;
+    }
+
+    /**
+     * @return {@code true} if the channel state machine is lazy in its reconnection attempts, i.e. after a break in the
+     * connection occurs it moves to the Idle state, reconnecting on demand the next time the connect() or getChannel()
+     * is called. If {@code false} the state machine eagerly attempts to reconnect and move back into Connected state.
+     */
+    public boolean isLazy() {
+        return lazy;
+    }
+
+    /**
+     * @return {@code true} if the channel state machine is persistent in its connection attempts, i.e. after a
+     * single call to connect() it strives to stay in a Connected state (respecting laziness) regardless of the result
+     * of the initial connect(). If {@code false}, the state machine won't attempt to remain connected until it has
+     * successfully moved into the Connected state.
+     */
+    public boolean isPersistent() {
+        return persistent;
     }
 
     public ExecutorService getExecutor() {
@@ -88,11 +125,13 @@ public class EtherNetIpClientConfig {
         private int vendorId = 0;
         private int serialNumber = 0;
         private Duration timeout = Duration.ofSeconds(5);
+        private Duration maxIdle = Duration.ofSeconds(15);
+        private boolean lazy = true;
+        private boolean persistent = true;
         private ExecutorService executor;
         private EventLoopGroup eventLoop;
         private HashedWheelTimer wheelTimer;
-        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {
-        };
+        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {};
 
         public Builder setHostname(String hostname) {
             this.hostname = hostname;
@@ -116,6 +155,30 @@ public class EtherNetIpClientConfig {
 
         public Builder setTimeout(Duration timeout) {
             this.timeout = timeout;
+            return this;
+        }
+
+        /**
+         * @see EtherNetIpClientConfig#getMaxIdle()
+         */
+        public Builder setMaxIdle(Duration maxIdle) {
+            this.maxIdle = maxIdle;
+            return this;
+        }
+
+        /**
+         * @see EtherNetIpClientConfig#isLazy()
+         */
+        public Builder setLazy(boolean lazy) {
+            this.lazy = lazy;
+            return this;
+        }
+
+        /**
+         * @see EtherNetIpClientConfig#isPersistent()
+         */
+        public Builder setPersistent(boolean persistent) {
+            this.persistent = persistent;
             return this;
         }
 
@@ -149,9 +212,21 @@ public class EtherNetIpClientConfig {
             if (wheelTimer == null) {
                 wheelTimer = EtherNetIpShared.sharedWheelTimer();
             }
+
             return new EtherNetIpClientConfig(
-                hostname, port, vendorId, serialNumber,
-                timeout, executor, eventLoop, wheelTimer, bootstrapConsumer);
+                hostname,
+                port,
+                vendorId,
+                serialNumber,
+                timeout,
+                maxIdle,
+                lazy,
+                persistent,
+                executor,
+                eventLoop,
+                wheelTimer,
+                bootstrapConsumer
+            );
         }
     }
 
