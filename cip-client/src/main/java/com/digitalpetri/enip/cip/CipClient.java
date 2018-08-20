@@ -91,20 +91,30 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
 
     @Override
     public <T> CompletableFuture<T> invokeUnconnected(CipService<T> service, int maxRetries) {
-        CompletableFuture<T> future = new CompletableFuture<>();
-
         UnconnectedSendService<T> uss = new UnconnectedSendService<T>(
             service,
             connectionPath,
             getConfig().getTimeout()
         );
 
-        return invokeUnconnected(uss, future, 0, maxRetries);
+        return invoke(uss, maxRetries);
     }
 
-    private <T> CompletableFuture<T> invokeUnconnected(CipService<T> service,
-                                                       CompletableFuture<T> future,
-                                                       int count, int max) {
+    @Override
+    public <T> CompletableFuture<T> invoke(CipService<T> service) {
+        return invoke(service, 0);
+    }
+
+    @Override
+    public <T> CompletableFuture<T> invoke(CipService<T> service, int maxRetries) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+
+        return invoke(service, future, 0, maxRetries);
+    }
+
+    private <T> CompletableFuture<T> invoke(CipService<T> service,
+                                            CompletableFuture<T> future,
+                                            int count, int maxRetries) {
 
         sendUnconnectedData(service::encodeRequest).whenComplete((buffer, ex) -> {
             if (buffer != null) {
@@ -113,14 +123,15 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
 
                     future.complete(response);
                 } catch (CipService.PartialResponseException e) {
-                    invokeUnconnected(service, future, count, max);
+                    invoke(service, future, count, maxRetries);
                 } catch (CipResponseException e) {
                     if (e.getGeneralStatus() == 0x01) {
                         boolean requestTimedOut = Arrays.stream(e.getAdditionalStatus()).anyMatch(i -> i == 0x0204);
 
-                        if (requestTimedOut && count < max) {
-                            logger.debug("Unconnected request timed out; retrying, count={}, max={}", count, max);
-                            invokeUnconnected(service, future, count + 1, max);
+                        if (requestTimedOut && count < maxRetries) {
+                            logger.debug("Unconnected request timed out; " +
+                                "retrying, count={}, max={}", count, maxRetries);
+                            invoke(service, future, count + 1, maxRetries);
                         } else {
                             future.completeExceptionally(e);
                         }
