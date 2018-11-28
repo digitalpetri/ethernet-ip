@@ -69,12 +69,14 @@ public class EtherNetIpClient {
         ChannelFsmProxy channelFsmProxy = new ChannelFsmProxy(this, logger);
 
         ChannelFsmFactory factory = new ChannelFsmFactory(
+            LoggerFactory.getLogger(logger.getName() + ".ChannelFsm"),
             config.isLazy(),
             config.isPersistent(),
             Ints.saturatedCast(config.getMaxIdle().getSeconds()),
             channelFsmProxy,
             channelFsmProxy,
             channelFsmProxy,
+            config.getExecutor(),
             Scheduler.fromScheduledExecutor(config.getScheduledExecutor())
         );
 
