@@ -66,10 +66,10 @@ public class EtherNetIpClient {
 
         executor = config.getExecutor();
 
-        ChannelFsmProxy channelFsmProxy = new ChannelFsmProxy(this, logger);
+        ChannelFsmProxy channelFsmProxy = new ChannelFsmProxy();
 
         ChannelFsmFactory factory = new ChannelFsmFactory(
-            LoggerFactory.getLogger(logger.getName() + ".ChannelFsm"),
+            LoggerFactory.getLogger("com.digitalpetri.enip.ChannelFsm"),
             config.isLazy(),
             config.isPersistent(),
             Ints.saturatedCast(config.getMaxIdle().getSeconds()),
@@ -254,22 +254,14 @@ public class EtherNetIpClient {
      */
     protected void onUnitDataReceived(SendUnitData command) {}
 
-    private static final class ChannelFsmProxy implements ConnectProxy, DisconnectProxy, KeepAliveProxy {
-
-        private final EtherNetIpClient client;
-        private final Logger logger;
-
-        ChannelFsmProxy(EtherNetIpClient client, Logger logger) {
-            this.client = client;
-            this.logger = logger;
-        }
+    private final class ChannelFsmProxy implements ConnectProxy, DisconnectProxy, KeepAliveProxy {
 
         @Override
         public CompletableFuture<Channel> connect(FsmContext<State, Event> ctx) {
-            return bootstrap(client).thenCompose(channel -> {
+            return bootstrap(EtherNetIpClient.this).thenCompose(channel -> {
                 CompletableFuture<RegisterSession> future = new CompletableFuture<>();
 
-                client.writeCommand(channel, new RegisterSession(), future);
+                writeCommand(channel, new RegisterSession(), future);
 
                 return future.thenApply(rs -> channel);
             });
@@ -278,14 +270,14 @@ public class EtherNetIpClient {
         @Override
         public CompletableFuture<Void> disconnect(FsmContext<State, Event> ctx, Channel channel) {
             CompletableFuture<UnRegisterSession> future = new CompletableFuture<>();
-            client.writeCommand(channel, new UnRegisterSession(), future);
+            writeCommand(channel, new UnRegisterSession(), future);
 
             return future.whenComplete((cmd, ex2) -> channel.close()).thenApply(urs -> null);
         }
 
         @Override
         public void keepAlive(FsmContext<State, Event> ctx, Channel channel) {
-            client.listIdentity().whenComplete((li, ex) -> {
+            listIdentity().whenComplete((li, ex) -> {
                 if (ex != null) {
                     logger.debug("Keep alive failed; closing channel: {}", ex.getMessage());
 
