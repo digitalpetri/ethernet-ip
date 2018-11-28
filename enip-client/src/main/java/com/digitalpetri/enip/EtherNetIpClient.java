@@ -12,12 +12,24 @@ import com.digitalpetri.enip.codec.EnipCodec;
 import com.digitalpetri.enip.commands.Command;
 import com.digitalpetri.enip.commands.CommandCode;
 import com.digitalpetri.enip.commands.ListIdentity;
+import com.digitalpetri.enip.commands.RegisterSession;
 import com.digitalpetri.enip.commands.SendRRData;
 import com.digitalpetri.enip.commands.SendUnitData;
+import com.digitalpetri.enip.commands.UnRegisterSession;
 import com.digitalpetri.enip.cpf.ConnectedDataItemResponse;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
-import com.digitalpetri.enip.fsm.ChannelFsm;
+import com.digitalpetri.netty.fsm.ChannelFsm;
+import com.digitalpetri.netty.fsm.ChannelFsmFactory;
+import com.digitalpetri.netty.fsm.ConnectProxy;
+import com.digitalpetri.netty.fsm.DisconnectProxy;
+import com.digitalpetri.netty.fsm.Event;
+import com.digitalpetri.netty.fsm.KeepAliveProxy;
+import com.digitalpetri.netty.fsm.Scheduler;
+import com.digitalpetri.netty.fsm.State;
+import com.digitalpetri.strictmachine.FsmContext;
+import com.google.common.collect.Maps;
+import com.google.common.primitives.Ints;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -54,7 +66,19 @@ public class EtherNetIpClient {
 
         executor = config.getExecutor();
 
-        channelFsm = ChannelFsm.newChannelFsm(this);
+        ChannelFsmProxy channelFsmProxy = new ChannelFsmProxy(this, logger);
+
+        ChannelFsmFactory factory = new ChannelFsmFactory(
+            config.isLazy(),
+            config.isPersistent(),
+            Ints.saturatedCast(config.getMaxIdle().getSeconds()),
+            channelFsmProxy,
+            channelFsmProxy,
+            channelFsmProxy,
+            Scheduler.fromScheduledExecutor(config.getScheduledExecutor())
+        );
+
+        channelFsm = factory.newChannelFsm();
     }
 
     public CompletableFuture<EtherNetIpClient> connect() {
@@ -227,6 +251,48 @@ public class EtherNetIpClient {
      * @param command the {@link com.digitalpetri.enip.commands.SendUnitData} command received.
      */
     protected void onUnitDataReceived(SendUnitData command) {}
+
+    private static final class ChannelFsmProxy implements ConnectProxy, DisconnectProxy, KeepAliveProxy {
+
+        private final EtherNetIpClient client;
+        private final Logger logger;
+
+        ChannelFsmProxy(EtherNetIpClient client, Logger logger) {
+            this.client = client;
+            this.logger = logger;
+        }
+
+        @Override
+        public CompletableFuture<Channel> connect(FsmContext<State, Event> ctx) {
+            return bootstrap(client).thenCompose(channel -> {
+                CompletableFuture<RegisterSession> future = new CompletableFuture<>();
+
+                client.writeCommand(channel, new RegisterSession(), future);
+
+                return future.thenApply(rs -> channel);
+            });
+        }
+
+        @Override
+        public CompletableFuture<Void> disconnect(FsmContext<State, Event> ctx, Channel channel) {
+            CompletableFuture<UnRegisterSession> future = new CompletableFuture<>();
+            client.writeCommand(channel, new UnRegisterSession(), future);
+
+            return future.whenComplete((cmd, ex2) -> channel.close()).thenApply(urs -> null);
+        }
+
+        @Override
+        public void keepAlive(FsmContext<State, Event> ctx, Channel channel) {
+            client.listIdentity().whenComplete((li, ex) -> {
+                if (ex != null) {
+                    logger.debug("Keep alive failed; closing channel: {}", ex.getMessage());
+
+                    channel.close();
+                }
+            });
+        }
+
+    }
 
     private static final class EtherNetIpClientHandler extends SimpleChannelInboundHandler<EnipPacket> {
 

@@ -2,6 +2,7 @@ package com.digitalpetri.enip;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
 import io.netty.bootstrap.Bootstrap;
@@ -19,6 +20,7 @@ public class EtherNetIpClientConfig {
     private final boolean lazy;
     private final boolean persistent;
     private final ExecutorService executor;
+    private final ScheduledExecutorService scheduledExecutor;
     private final EventLoopGroup eventLoop;
     private final HashedWheelTimer wheelTimer;
     private final Consumer<Bootstrap> bootstrapConsumer;
@@ -33,6 +35,7 @@ public class EtherNetIpClientConfig {
         boolean lazy,
         boolean persistent,
         ExecutorService executor,
+        ScheduledExecutorService scheduledExecutor,
         EventLoopGroup eventLoop,
         HashedWheelTimer wheelTimer,
         Consumer<Bootstrap> bootstrapConsumer) {
@@ -46,6 +49,7 @@ public class EtherNetIpClientConfig {
         this.lazy = lazy;
         this.persistent = persistent;
         this.executor = executor;
+        this.scheduledExecutor = scheduledExecutor;
         this.eventLoop = eventLoop;
         this.wheelTimer = wheelTimer;
         this.bootstrapConsumer = bootstrapConsumer;
@@ -102,6 +106,10 @@ public class EtherNetIpClientConfig {
         return executor;
     }
 
+    public ScheduledExecutorService getScheduledExecutor() {
+        return scheduledExecutor;
+    }
+
     public EventLoopGroup getEventLoop() {
         return eventLoop;
     }
@@ -129,9 +137,11 @@ public class EtherNetIpClientConfig {
         private boolean lazy = true;
         private boolean persistent = true;
         private ExecutorService executor;
+        private ScheduledExecutorService scheduledExecutor;
         private EventLoopGroup eventLoop;
         private HashedWheelTimer wheelTimer;
-        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {};
+        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {
+        };
 
         public Builder setHostname(String hostname) {
             this.hostname = hostname;
@@ -187,6 +197,11 @@ public class EtherNetIpClientConfig {
             return this;
         }
 
+        public Builder setScheduledExecutor(ScheduledExecutorService scheduledExecutor) {
+            this.scheduledExecutor = scheduledExecutor;
+            return this;
+        }
+
         public Builder setEventLoop(EventLoopGroup eventLoop) {
             this.eventLoop = eventLoop;
             return this;
@@ -206,6 +221,9 @@ public class EtherNetIpClientConfig {
             if (executor == null) {
                 executor = EtherNetIpShared.sharedExecutorService();
             }
+            if (scheduledExecutor == null) {
+                scheduledExecutor = EtherNetIpShared.sharedScheduledExecutor();
+            }
             if (eventLoop == null) {
                 eventLoop = EtherNetIpShared.sharedEventLoop();
             }
@@ -223,6 +241,7 @@ public class EtherNetIpClientConfig {
                 lazy,
                 persistent,
                 executor,
+                scheduledExecutor,
                 eventLoop,
                 wheelTimer,
                 bootstrapConsumer
