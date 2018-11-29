@@ -140,8 +140,7 @@ public class EtherNetIpClientConfig {
         private ScheduledExecutorService scheduledExecutor;
         private EventLoopGroup eventLoop;
         private HashedWheelTimer wheelTimer;
-        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {
-        };
+        private Consumer<Bootstrap> bootstrapConsumer = (b) -> {};
 
         public Builder setHostname(String hostname) {
             this.hostname = hostname;
