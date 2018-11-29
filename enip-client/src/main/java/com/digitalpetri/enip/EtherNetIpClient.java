@@ -340,7 +340,7 @@ public class EtherNetIpClient {
 
     }
 
-    public static CompletableFuture<Channel> bootstrap(EtherNetIpClient client) {
+    private static CompletableFuture<Channel> bootstrap(EtherNetIpClient client) {
         CompletableFuture<Channel> future = new CompletableFuture<>();
         EtherNetIpClientConfig config = client.getConfig();
 
