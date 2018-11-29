@@ -17,6 +17,7 @@ public class EtherNetIpClientConfig {
     private final int serialNumber;
     private final Duration timeout;
     private final Duration maxIdle;
+    private final int maxReconnectDelaySeconds;
     private final boolean lazy;
     private final boolean persistent;
     private final ExecutorService executor;
@@ -32,6 +33,7 @@ public class EtherNetIpClientConfig {
         int serialNumber,
         Duration timeout,
         Duration maxIdle,
+        int maxReconnectDelaySeconds,
         boolean lazy,
         boolean persistent,
         ExecutorService executor,
@@ -46,6 +48,7 @@ public class EtherNetIpClientConfig {
         this.serialNumber = serialNumber;
         this.timeout = timeout;
         this.maxIdle = maxIdle;
+        this.maxReconnectDelaySeconds = maxReconnectDelaySeconds;
         this.lazy = lazy;
         this.persistent = persistent;
         this.executor = executor;
@@ -81,6 +84,20 @@ public class EtherNetIpClientConfig {
      */
     public Duration getMaxIdle() {
         return maxIdle;
+    }
+
+    /**
+     * Get the maximum amount of time to delay between reconnect attempts, in seconds.
+     * <p>
+     * Delays between reconnect attempts are exponentially backed off starting from 1 until {@code maxReconnectDelay}
+     * is reached.
+     * <p>
+     * Must be a power of 2 or else it will be rounded up to the nearest.
+     *
+     * @return the maximum amount of time to delay, in seconds, between reconnect attempts.
+     */
+    public int getMaxReconnectDelaySeconds() {
+        return maxReconnectDelaySeconds;
     }
 
     /**
@@ -134,6 +151,7 @@ public class EtherNetIpClientConfig {
         private int serialNumber = 0;
         private Duration timeout = Duration.ofSeconds(5);
         private Duration maxIdle = Duration.ofSeconds(15);
+        private int maxReconnectDelaySeconds = 16;
         private boolean lazy = true;
         private boolean persistent = true;
         private ExecutorService executor;
@@ -172,6 +190,14 @@ public class EtherNetIpClientConfig {
          */
         public Builder setMaxIdle(Duration maxIdle) {
             this.maxIdle = maxIdle;
+            return this;
+        }
+
+        /**
+         * @see EtherNetIpClientConfig#getMaxReconnectDelaySeconds()
+         */
+        public Builder setMaxReconnectDelaySeconds(int maxReconnectDelaySeconds) {
+            this.maxReconnectDelaySeconds = maxReconnectDelaySeconds;
             return this;
         }
 
@@ -237,6 +263,7 @@ public class EtherNetIpClientConfig {
                 serialNumber,
                 timeout,
                 maxIdle,
+                maxReconnectDelaySeconds,
                 lazy,
                 persistent,
                 executor,

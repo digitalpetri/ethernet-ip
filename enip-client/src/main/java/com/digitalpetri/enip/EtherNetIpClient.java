@@ -73,6 +73,7 @@ public class EtherNetIpClient {
             .setLazy(config.isLazy())
             .setPersistent(config.isPersistent())
             .setMaxIdleSeconds(Ints.saturatedCast(config.getMaxIdle().getSeconds()))
+            .setMaxReconnectDelaySeconds(config.getMaxReconnectDelaySeconds())
             .setConnectProxy(channelFsmProxy)
             .setDisconnectProxy(channelFsmProxy)
             .setKeepAliveProxy(channelFsmProxy)
@@ -295,14 +296,14 @@ public class EtherNetIpClient {
         }
 
         @Override
-        public void keepAlive(FsmContext<State, Event> ctx, Channel channel) {
-            listIdentity().whenComplete((li, ex) -> {
-                if (ex != null) {
-                    logger.debug("Keep alive failed; closing channel: {}", ex.getMessage());
-
-                    channel.close();
-                }
-            });
+        public CompletableFuture<Void> keepAlive(FsmContext<State, Event> ctx, Channel channel) {
+            return listIdentity()
+                .whenComplete((li, ex) -> {
+                    if (ex != null) {
+                        logger.debug("Keep alive failed: {}", ex.getMessage(), ex);
+                    }
+                })
+                .thenApply(li -> null);
         }
 
     }
