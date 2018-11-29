@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 
-public class GenericGetInstanceAttributeListService<T> implements CipService<List<T>> {
+public class GetInstanceAttributeListService<T> implements CipService<List<T>> {
 
     public static final int SERVICE_CODE = 0x55;
 
@@ -32,7 +32,7 @@ public class GenericGetInstanceAttributeListService<T> implements CipService<Lis
     private final int[] attributes;
     private final AttributesDecoder<T> attributesDecoder;
 
-    public GenericGetInstanceAttributeListService(
+    public GetInstanceAttributeListService(
         @Nullable String program,
         int classId,
         @Nonnull int[] attributes,
