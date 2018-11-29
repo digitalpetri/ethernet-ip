@@ -20,12 +20,12 @@ import com.digitalpetri.enip.cpf.ConnectedDataItemResponse;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
 import com.digitalpetri.netty.fsm.ChannelFsm;
+import com.digitalpetri.netty.fsm.ChannelFsmConfig;
 import com.digitalpetri.netty.fsm.ChannelFsmFactory;
 import com.digitalpetri.netty.fsm.ConnectProxy;
 import com.digitalpetri.netty.fsm.DisconnectProxy;
 import com.digitalpetri.netty.fsm.Event;
 import com.digitalpetri.netty.fsm.KeepAliveProxy;
-import com.digitalpetri.netty.fsm.Scheduler;
 import com.digitalpetri.netty.fsm.State;
 import com.digitalpetri.strictmachine.FsmContext;
 import com.google.common.collect.Maps;
@@ -69,17 +69,19 @@ public class EtherNetIpClient {
 
         ChannelFsmProxy channelFsmProxy = new ChannelFsmProxy();
 
-        ChannelFsmFactory factory = new ChannelFsmFactory(
-            LoggerFactory.getLogger("com.digitalpetri.enip.ChannelFsm"),
-            config.isLazy(),
-            config.isPersistent(),
-            Ints.saturatedCast(config.getMaxIdle().getSeconds()),
-            channelFsmProxy,
-            channelFsmProxy,
-            channelFsmProxy,
-            config.getExecutor(),
-            Scheduler.fromScheduledExecutor(config.getScheduledExecutor())
-        );
+        ChannelFsmConfig fsmConfig = ChannelFsmConfig.newBuilder()
+            .setLazy(config.isLazy())
+            .setPersistent(config.isPersistent())
+            .setMaxIdleSeconds(Ints.saturatedCast(config.getMaxIdle().getSeconds()))
+            .setConnectProxy(channelFsmProxy)
+            .setDisconnectProxy(channelFsmProxy)
+            .setKeepAliveProxy(channelFsmProxy)
+            .setExecutor(config.getExecutor())
+            .setSchedule(config.getScheduledExecutor())
+            .setLoggerName("com.digitalpetri.enip.ChannelFsm")
+            .build();
+
+        ChannelFsmFactory factory = new ChannelFsmFactory(fsmConfig);
 
         channelFsm = factory.newChannelFsm();
     }
