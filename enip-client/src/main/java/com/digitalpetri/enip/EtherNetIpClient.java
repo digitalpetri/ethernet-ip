@@ -102,7 +102,7 @@ public class EtherNetIpClient {
     }
 
     public String getState() {
-        return channelFsm.getState();
+        return channelFsm.getState().toString();
     }
 
     public CompletableFuture<ListIdentity> listIdentity() {
