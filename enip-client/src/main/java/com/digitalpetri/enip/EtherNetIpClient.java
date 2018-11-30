@@ -78,7 +78,7 @@ public class EtherNetIpClient {
             .setDisconnectProxy(channelFsmProxy)
             .setKeepAliveProxy(channelFsmProxy)
             .setExecutor(config.getExecutor())
-            .setSchedule(config.getScheduledExecutor())
+            .setScheduler(config.getScheduledExecutor())
             .setLoggerName("com.digitalpetri.enip.ChannelFsm")
             .build();
 
