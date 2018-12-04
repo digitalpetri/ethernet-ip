@@ -19,6 +19,7 @@ import com.digitalpetri.enip.commands.UnRegisterSession;
 import com.digitalpetri.enip.cpf.ConnectedDataItemResponse;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
+import com.digitalpetri.enip.util.IntUtil;
 import com.digitalpetri.netty.fsm.ChannelActions;
 import com.digitalpetri.netty.fsm.ChannelFsm;
 import com.digitalpetri.netty.fsm.ChannelFsmConfig;
@@ -26,8 +27,6 @@ import com.digitalpetri.netty.fsm.ChannelFsmFactory;
 import com.digitalpetri.netty.fsm.Event;
 import com.digitalpetri.netty.fsm.State;
 import com.digitalpetri.strictmachine.FsmContext;
-import com.google.common.collect.Maps;
-import com.google.common.primitives.Ints;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -68,7 +67,7 @@ public class EtherNetIpClient {
         ChannelFsmConfig fsmConfig = ChannelFsmConfig.newBuilder()
             .setLazy(config.isLazy())
             .setPersistent(config.isPersistent())
-            .setMaxIdleSeconds(Ints.saturatedCast(config.getMaxIdle().getSeconds()))
+            .setMaxIdleSeconds(IntUtil.saturatedCast(config.getMaxIdle().getSeconds()))
             .setMaxReconnectDelaySeconds(config.getMaxReconnectDelaySeconds())
             .setChannelActions(new EnipChannelActions())
             .setExecutor(config.getExecutor())
