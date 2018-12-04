@@ -14,7 +14,6 @@ import com.digitalpetri.enip.cip.epath.LogicalSegment;
 import com.digitalpetri.enip.cip.services.CipService;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
-import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 
@@ -98,7 +97,7 @@ public class GetInstanceAttributeListService<T> implements CipService<List<T>> {
     }
 
     private List<T> decode(ByteBuf buffer) {
-        List<T> list = Lists.newArrayList();
+        List<T> list = new ArrayList<>();
 
         while (buffer.isReadable()) {
             // reply data includes instanceId + requested attributes

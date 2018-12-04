@@ -1,6 +1,7 @@
 package com.digitalpetri.enip.logix.services;
 
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -10,7 +11,6 @@ import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.services.CipService;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
-import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
@@ -21,7 +21,7 @@ public class ReadTagFragmentedService implements CipService<ByteBuf> {
 
     private final Consumer<ByteBuf> dataEncoder = this::encode;
 
-    private final List<ByteBuf> buffers = Collections.synchronizedList(Lists.newArrayList());
+    private final List<ByteBuf> buffers = Collections.synchronizedList(new ArrayList<>());
     private volatile int offset = 0;
 
     private final PaddedEPath requestPath;

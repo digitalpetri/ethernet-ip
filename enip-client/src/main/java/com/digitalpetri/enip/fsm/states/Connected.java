@@ -7,7 +7,7 @@ import com.digitalpetri.enip.fsm.events.ChannelIdle;
 import com.digitalpetri.enip.fsm.events.ChannelInactive;
 import com.digitalpetri.enip.fsm.events.ConnectSuccess;
 import com.digitalpetri.enip.fsm.events.Disconnect;
-import com.google.common.primitives.Ints;
+import com.digitalpetri.enip.util.IntUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -57,7 +57,7 @@ public class Connected extends AbstractState {
         if (event instanceof ConnectSuccess) {
             Channel channel = ((ConnectSuccess) event).getChannel();
 
-            int maxIdle = Ints.saturatedCast(fsm.getClient().getConfig().getMaxIdle().getSeconds());
+            int maxIdle = IntUtil.saturatedCast(fsm.getClient().getConfig().getMaxIdle().getSeconds());
 
             if (maxIdle > 0) {
                 channel.pipeline().addLast(new IdleStateHandler(maxIdle, 0, 0));

@@ -3,6 +3,7 @@ package com.digitalpetri.enip;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -17,7 +18,6 @@ import com.digitalpetri.enip.cpf.ConnectedDataItemResponse;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
 import com.digitalpetri.enip.fsm.ChannelFsm;
-import com.google.common.collect.Maps;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -41,7 +41,7 @@ public class EtherNetIpClient {
 
     private final ExecutorService executor;
 
-    private final Map<Long, PendingRequest<? extends Command>> pendingRequests = Maps.newConcurrentMap();
+    private final Map<Long, PendingRequest<? extends Command>> pendingRequests = new ConcurrentHashMap<>();
     private final AtomicLong senderContext = new AtomicLong(0L);
 
     private volatile long sessionHandle;
