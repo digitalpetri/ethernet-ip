@@ -75,9 +75,7 @@ public class EtherNetIpClient {
             .setLoggerName("com.digitalpetri.enip.ChannelFsm")
             .build();
 
-        ChannelFsmFactory factory = new ChannelFsmFactory(fsmConfig);
-
-        channelFsm = factory.newChannelFsm();
+        channelFsm = ChannelFsmFactory.newChannelFsm(fsmConfig);
     }
 
     public CompletableFuture<EtherNetIpClient> connect() {
