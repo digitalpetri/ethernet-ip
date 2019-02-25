@@ -5,6 +5,7 @@ import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.ReferenceCountUtil;
 
 public class GetAttributesAllService implements CipService<ByteBuf> {
 
@@ -29,12 +30,14 @@ public class GetAttributesAllService implements CipService<ByteBuf> {
     }
 
     @Override
-    public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
+    public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
         if (response.getGeneralStatus() == 0x00) {
             return response.getData();
         } else {
+            ReferenceCountUtil.release(response.getData());
+
             throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
         }
     }
