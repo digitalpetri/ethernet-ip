@@ -29,12 +29,14 @@ public class GetAttributesAllService implements CipService<ByteBuf> {
     }
 
     @Override
-    public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
+    public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
         if (response.getGeneralStatus() == 0x00) {
             return response.getData();
         } else {
+            response.getData().release();
+
             throw new CipResponseException(response.getGeneralStatus(), response.getAdditionalStatus());
         }
     }
