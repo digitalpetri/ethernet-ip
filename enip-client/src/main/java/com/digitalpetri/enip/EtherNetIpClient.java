@@ -268,7 +268,7 @@ public class EtherNetIpClient {
 
             // When the remote receives UnRegisterSession it's likely to just close the connection, which will
             // result in an "IOException: Connection reset by peer" that isn't caught anywhere.
-            channel.pipeline().addLast(new ChannelInboundHandlerAdapter() {
+            channel.pipeline().addFirst(new ChannelInboundHandlerAdapter() {
                 @Override
                 public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
                     disconnectFuture.complete(null);
