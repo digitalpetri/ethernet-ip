@@ -2,6 +2,7 @@ package com.digitalpetri.enip;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -12,6 +13,7 @@ public class EtherNetIpShared {
     private static EventLoopGroup SHARED_EVENT_LOOP;
     private static HashedWheelTimer SHARED_WHEEL_TIMER;
     private static ExecutorService SHARED_EXECUTOR;
+    private static ScheduledExecutorService SHARED_SCHEDULED_EXECUTOR;
 
     /**
      * @return a shared {@link io.netty.channel.EventLoopGroup}.
@@ -44,6 +46,16 @@ public class EtherNetIpShared {
     }
 
     /**
+     * @return a shared {@link ScheduledExecutorService}.
+     */
+    public static synchronized ScheduledExecutorService sharedScheduledExecutor() {
+        if (SHARED_SCHEDULED_EXECUTOR == null) {
+            SHARED_SCHEDULED_EXECUTOR = Executors.newSingleThreadScheduledExecutor();
+        }
+        return SHARED_SCHEDULED_EXECUTOR;
+    }
+
+    /**
      * Release/shutdown/cleanup any shared resources that were created.
      */
     public static synchronized void releaseSharedResources() {
@@ -58,6 +70,10 @@ public class EtherNetIpShared {
         if (SHARED_EXECUTOR != null) {
             SHARED_EXECUTOR.shutdown();
             SHARED_EXECUTOR = null;
+        }
+        if (SHARED_SCHEDULED_EXECUTOR != null) {
+            SHARED_SCHEDULED_EXECUTOR.shutdown();
+            SHARED_SCHEDULED_EXECUTOR = null;
         }
     }
 

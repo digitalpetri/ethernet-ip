@@ -2,7 +2,9 @@ package com.digitalpetri.enip.logix.services;
 
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import com.digitalpetri.enip.cip.CipResponseException;
@@ -13,8 +15,7 @@ import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import com.digitalpetri.enip.logix.structs.TemplateAttributes;
 import com.digitalpetri.enip.logix.structs.TemplateInstance;
 import com.digitalpetri.enip.logix.structs.TemplateMember;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
+import com.digitalpetri.enip.util.IntUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.ReferenceCountUtil;
@@ -23,7 +24,7 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
 
     public static final int SERVICE_CODE = 0x4C;
 
-    private final List<ByteBuf> buffers = Lists.newCopyOnWriteArrayList();
+    private final List<ByteBuf> buffers = new CopyOnWriteArrayList<>();
     private volatile int totalBytesRead = 0;
 
     private final PaddedEPath requestPath;
@@ -94,13 +95,12 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
     private TemplateInstance decode(ByteBuf buffer, int symbolType) {
         int memberCount = attributes.getMemberCount();
 
-        List<Function<String, TemplateMember>> functions =
-            Lists.newArrayListWithCapacity(memberCount);
+        List<Function<String, TemplateMember>> functions = new ArrayList<>(memberCount);
 
         for (int i = 0; i < memberCount; i++) {
             int infoWord = buffer.readShort();
             int memberType = buffer.readUnsignedShort();
-            int offset = Ints.saturatedCast(buffer.readUnsignedInt());
+            int offset = IntUtil.saturatedCast(buffer.readUnsignedInt());
 
             functions.add((name) -> new TemplateMember(name, infoWord, memberType, offset));
         }
@@ -111,7 +111,7 @@ public class ReadTemplateService implements CipService<TemplateInstance> {
             templateName = templateName.substring(0, templateName.indexOf(";n"));
         }
 
-        List<TemplateMember> members = Lists.newArrayListWithCapacity(memberCount);
+        List<TemplateMember> members = new ArrayList<>(memberCount);
 
         for (int i = 0; i < memberCount; i++) {
             String memberName = readNullTerminatedString(buffer);

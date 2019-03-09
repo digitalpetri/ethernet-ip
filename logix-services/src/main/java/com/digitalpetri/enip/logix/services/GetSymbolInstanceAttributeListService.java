@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import com.digitalpetri.enip.logix.structs.SymbolInstance;
 import io.netty.buffer.ByteBuf;
 
-public class GetSymbolInstanceAttributeListService extends GenericGetInstanceAttributeListService<SymbolInstance> {
+public class GetSymbolInstanceAttributeListService extends GetInstanceAttributeListService<SymbolInstance> {
 
     private static final int SYMBOL_CLASS_ID = 0x6B;
 

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.digitalpetri.enip</groupId>
         <artifactId>enip</artifactId>
-        <version>1.2.1-SNAPSHOT</version>
+        <version>1.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>enip-client</artifactId>
@@ -14,12 +14,12 @@
         <dependency>
             <groupId>com.digitalpetri.enip</groupId>
             <artifactId>cip-core</artifactId>
-            <version>1.2.1-SNAPSHOT</version>
+            <version>1.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.digitalpetri.enip</groupId>
             <artifactId>enip-core</artifactId>
-            <version>1.2.1-SNAPSHOT</version>
+            <version>1.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -32,9 +32,9 @@
             <version>4.0.56.Final</version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
+            <groupId>com.digitalpetri.netty</groupId>
+            <artifactId>netty-channel-fsm</artifactId>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
