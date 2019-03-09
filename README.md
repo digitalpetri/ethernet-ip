@@ -6,11 +6,21 @@ Asynchronous, non-blocking, EtherNet/IP client implementation for Java
 
 # Maven
 
+## EtherNet/IP Client
 ```xml
 <dependency>
     <groupId>com.digitalpetri.enip</groupId>
     <artifactId>enip-client</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
+</dependency>
+```
+
+## CIP Client
+```xml
+<dependency>
+    <groupId>com.digitalpetri.enip</groupId>
+    <artifactId>cip-client</artifactId>
+    <version>1.3.0</version>
 </dependency>
 ```
 
