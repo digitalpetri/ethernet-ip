@@ -48,6 +48,11 @@ client.listIdentity().whenComplete((li, ex) -> {
         ex.printStackTrace();
     }
 });
+
+client.disconnect.get();
+
+// Call this before application / JVM shutdown
+EtherNetIpShared.releaseSharedResources();
 ```
 #### CIP Service Example
 ```java
@@ -88,6 +93,11 @@ client.invokeUnconnected(service).whenComplete((as, ex) -> {
         ex.printStackTrace();
     }
 });
+
+client.disconnect.get();
+
+// Call this before application / JVM shutdown
+EtherNetIpShared.releaseSharedResources();
 ```
 
 #### Logix Example
