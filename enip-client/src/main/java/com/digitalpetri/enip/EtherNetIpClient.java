@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.digitalpetri.enip.codec.EnipCodec;
@@ -163,9 +164,11 @@ public class EtherNetIpClient {
             if (tt.isCancelled()) return;
             PendingRequest<?> p = pendingRequests.remove(packet.getSenderContext());
             if (p != null) {
-                String message = String.format("senderContext=%s timed out waiting %sms for response",
-                    packet.getSenderContext(), config.getTimeout().toMillis());
-                p.promise.completeExceptionally(new Exception(message));
+                String message = String.format(
+                    "senderContext=%s timed out waiting %sms for response",
+                    packet.getSenderContext(), config.getTimeout().toMillis()
+                );
+                p.promise.completeExceptionally(new TimeoutException(message));
             }
         }, config.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
 

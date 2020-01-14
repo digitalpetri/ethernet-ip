@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -172,9 +173,11 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
             if (tt.isCancelled()) return;
             CompletableFuture<ByteBuf> f = pending.remove(sequenceNumber);
             if (f != null) {
-                String message = String.format("sequenceNumber=%s timed out waiting %sms for response",
-                    sequenceNumber, getConfig().getTimeout().toMillis());
-                f.completeExceptionally(new Exception(message));
+                String message = String.format(
+                    "sequenceNumber=%s timed out waiting %sms for response",
+                    sequenceNumber, getConfig().getTimeout().toMillis()
+                );
+                f.completeExceptionally(new TimeoutException(message));
             }
         }, getConfig().getTimeout().toMillis(), TimeUnit.MILLISECONDS);
 
