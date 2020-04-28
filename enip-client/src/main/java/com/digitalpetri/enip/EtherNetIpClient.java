@@ -43,6 +43,7 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import static com.digitalpetri.enip.util.FutureUtils.complete;
 
@@ -74,6 +75,7 @@ public class EtherNetIpClient {
             .setExecutor(config.getExecutor())
             .setScheduler(config.getScheduledExecutor())
             .setLoggerName("com.digitalpetri.enip.ChannelFsm")
+            .setLoggingContext(config.getLoggingContext())
             .build();
 
         channelFsm = ChannelFsmFactory.newChannelFsm(fsmConfig);
@@ -193,7 +195,12 @@ public class EtherNetIpClient {
             if (status == EnipStatus.EIP_SUCCESS) {
                 onUnitDataReceived((SendUnitData) packet.getCommand());
             } else {
-                logger.warn("Received SendUnitData command with status: {}", status);
+                config.getLoggingContext().forEach(MDC::put);
+                try {
+                    logger.warn("Received SendUnitData command with status: {}", status);
+                } finally {
+                    config.getLoggingContext().keySet().forEach(MDC::remove);
+                }
             }
         } else {
             if (commandCode == CommandCode.RegisterSession) {
@@ -215,7 +222,12 @@ public class EtherNetIpClient {
                     pending.promise.completeExceptionally(new Exception("EtherNet/IP status: " + status));
                 }
             } else {
-                logger.debug("Received response for unknown context: {}", packet.getSenderContext());
+                config.getLoggingContext().forEach(MDC::put);
+                try {
+                    logger.debug("Received response for unknown context: {}", packet.getSenderContext());
+                } finally {
+                    config.getLoggingContext().keySet().forEach(MDC::remove);
+                }
 
                 if (packet.getCommand() instanceof SendRRData) {
                     CpfPacket cpfPacket = ((SendRRData) packet.getCommand()).getPacket();
@@ -233,13 +245,23 @@ public class EtherNetIpClient {
     }
 
     private void onChannelInactive(ChannelHandlerContext ctx) {
-        logger.debug("onChannelInactive() {} <-> {}",
-            ctx.channel().localAddress(), ctx.channel().remoteAddress());
+        config.getLoggingContext().forEach(MDC::put);
+        try {
+            logger.debug("onChannelInactive() {} <-> {}",
+                ctx.channel().localAddress(), ctx.channel().remoteAddress());
+        } finally {
+            config.getLoggingContext().keySet().forEach(MDC::remove);
+        }
     }
 
     private void onExceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        logger.debug("onExceptionCaught() {} <-> {}",
-            ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
+        config.getLoggingContext().forEach(MDC::put);
+        try {
+            logger.debug("onExceptionCaught() {} <-> {}",
+                ctx.channel().localAddress(), ctx.channel().remoteAddress(), cause);
+        } finally {
+            config.getLoggingContext().keySet().forEach(MDC::remove);
+        }
 
         ctx.channel().close();
     }
@@ -294,7 +316,12 @@ public class EtherNetIpClient {
             return listIdentity()
                 .whenComplete((li, ex) -> {
                     if (ex != null) {
-                        logger.debug("Keep alive failed: {}", ex.getMessage(), ex);
+                        config.getLoggingContext().forEach(MDC::put);
+                        try {
+                            logger.debug("Keep alive failed: {}", ex.getMessage(), ex);
+                        } finally {
+                            config.getLoggingContext().keySet().forEach(MDC::remove);
+                        }
                     }
                 })
                 .thenApply(li -> null);

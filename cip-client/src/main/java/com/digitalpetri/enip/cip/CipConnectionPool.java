@@ -18,6 +18,7 @@ package com.digitalpetri.enip.cip;
 
 import java.time.Duration;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -40,10 +41,13 @@ import com.digitalpetri.enip.cip.structs.NetworkConnectionParameters;
 import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
 
 public class CipConnectionPool {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Map<String, String> loggingContext;
 
     private final Queue<CipConnection> queue = new LinkedList<>();
 
@@ -54,12 +58,22 @@ public class CipConnectionPool {
     private final CipConnectionFactory connectionFactory;
 
     public CipConnectionPool(int connectionLimit, CipClient client, PaddedEPath connectionPath, int connectionSize) {
-        this(connectionLimit, new DefaultConnectionFactory(client, connectionPath, connectionSize));
+        this(
+            connectionLimit,
+            new DefaultConnectionFactory(client, connectionPath, connectionSize),
+            client.getConfig().getLoggingContext()
+        );
     }
 
-    public CipConnectionPool(int connectionLimit, CipConnectionFactory connectionFactory) {
+    public CipConnectionPool(
+        int connectionLimit,
+        CipConnectionFactory connectionFactory,
+        Map<String, String> loggingContext
+    ) {
+
         this.connectionLimit = connectionLimit;
         this.connectionFactory = connectionFactory;
+        this.loggingContext = loggingContext;
     }
 
     public synchronized CompletableFuture<CipConnection> acquire() {
@@ -108,11 +122,22 @@ public class CipConnectionPool {
                         } else {
                             queue.add(c);
                         }
-                        logger.debug("Forward open succeeded: {}", c);
+                        loggingContext.forEach(MDC::put);
+                        try {
+                            logger.debug("Forward open succeeded: {}", c);
+                        } finally {
+                            loggingContext.keySet().forEach(MDC::remove);
+                        }
                     } else {
                         count.decrementAndGet();
                         if (waiter != null) waiter.completeExceptionally(ex);
-                        logger.debug("Forward open failed: {}", ex.getMessage(), ex);
+
+                        loggingContext.forEach(MDC::put);
+                        try {
+                            logger.debug("Forward open failed: {}", ex.getMessage(), ex);
+                        } finally {
+                            loggingContext.keySet().forEach(MDC::remove);
+                        }
                     }
                 });
             } else {
@@ -135,7 +160,15 @@ public class CipConnectionPool {
 
     public synchronized void remove(CipConnection connection) {
         connectionFactory.close(connection).thenRun(
-            () -> logger.debug("Connection closed: {}", connection));
+            () -> {
+                loggingContext.forEach(MDC::put);
+                try {
+                    logger.debug("Connection closed: {}", connection);
+                } finally {
+                    loggingContext.keySet().forEach(MDC::remove);
+                }
+            }
+        );
 
         queue.remove(connection);
         count.decrementAndGet();

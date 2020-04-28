@@ -1,6 +1,8 @@
 package com.digitalpetri.enip;
 
 import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
@@ -25,6 +27,7 @@ public class EtherNetIpClientConfig {
     private final EventLoopGroup eventLoop;
     private final HashedWheelTimer wheelTimer;
     private final Consumer<Bootstrap> bootstrapConsumer;
+    private final Map<String, String> loggingContext;
 
     public EtherNetIpClientConfig(
         String hostname,
@@ -40,7 +43,9 @@ public class EtherNetIpClientConfig {
         ScheduledExecutorService scheduledExecutor,
         EventLoopGroup eventLoop,
         HashedWheelTimer wheelTimer,
-        Consumer<Bootstrap> bootstrapConsumer) {
+        Consumer<Bootstrap> bootstrapConsumer,
+        Map<String, String> loggingContext
+    ) {
 
         this.hostname = hostname;
         this.port = port;
@@ -56,6 +61,7 @@ public class EtherNetIpClientConfig {
         this.eventLoop = eventLoop;
         this.wheelTimer = wheelTimer;
         this.bootstrapConsumer = bootstrapConsumer;
+        this.loggingContext = loggingContext;
     }
 
     public String getHostname() {
@@ -139,6 +145,17 @@ public class EtherNetIpClientConfig {
         return bootstrapConsumer;
     }
 
+    /**
+     * Get the logging context Map.
+     * <p>
+     * Keys and values in the Map will be set on the SLF4J {@link org.slf4j.MDC} when logging.
+     *
+     * @return the logging context Map an {@link EtherNetIpClient} instance will use when logging.
+     */
+    public Map<String, String> getLoggingContext() {
+        return loggingContext;
+    }
+
     public static Builder builder(String hostname) {
         return new Builder().setHostname(hostname);
     }
@@ -159,6 +176,7 @@ public class EtherNetIpClientConfig {
         private EventLoopGroup eventLoop;
         private HashedWheelTimer wheelTimer;
         private Consumer<Bootstrap> bootstrapConsumer = (b) -> {};
+        private Map<String, String> loggingContext = new ConcurrentHashMap<>();
 
         public Builder setHostname(String hostname) {
             this.hostname = hostname;
@@ -242,6 +260,21 @@ public class EtherNetIpClientConfig {
             return this;
         }
 
+        /**
+         * Set the logging context Map an {@link EtherNetIpClient} instance will use.
+         * <p>
+         * Keys and values in the Map will be set on the SLF4J {@link org.slf4j.MDC} when logging.
+         * <p>
+         * This method makes a defensive copy of {@code loggingContext}.
+         *
+         * @param loggingContext the logging context for this {@link EtherNetIpClient} instance.
+         * @return this {@link Builder} instance.
+         */
+        public Builder setLoggingContext(Map<String, String> loggingContext) {
+            this.loggingContext = new ConcurrentHashMap<>(loggingContext);
+            return this;
+        }
+
         public EtherNetIpClientConfig build() {
             if (executor == null) {
                 executor = EtherNetIpShared.sharedExecutorService();
@@ -270,7 +303,8 @@ public class EtherNetIpClientConfig {
                 scheduledExecutor,
                 eventLoop,
                 wheelTimer,
-                bootstrapConsumer
+                bootstrapConsumer,
+                loggingContext
             );
         }
     }

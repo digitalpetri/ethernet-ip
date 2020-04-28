@@ -32,6 +32,7 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
 
@@ -130,8 +131,14 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
                         boolean requestTimedOut = Arrays.stream(e.getAdditionalStatus()).anyMatch(i -> i == 0x0204);
 
                         if (requestTimedOut && count < maxRetries) {
-                            logger.debug("Unconnected request timed out; " +
-                                "retrying, count={}, max={}", count, maxRetries);
+                            getConfig().getLoggingContext().forEach(MDC::put);
+                            try {
+                                logger.debug("Unconnected request timed out; " +
+                                    "retrying, count={}, max={}", count, maxRetries);
+                            } finally {
+                                getConfig().getLoggingContext().keySet().forEach(MDC::remove);
+                            }
+
                             invoke(service, future, count + 1, maxRetries);
                         } else {
                             future.completeExceptionally(e);
