@@ -8,6 +8,7 @@ import com.digitalpetri.enip.cip.services.CipService;
 import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 
 public class WriteTagFragmentedService implements CipService<ByteBuf> {
@@ -24,14 +25,14 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
     private final int offset;
 
     /**
-     * @param requestPath {@link PaddedEPath Path} of tag
-     * @param structured True if tag is structured
-     * @param tagType Type of tag
+     * @param requestPath  {@link PaddedEPath Path} of tag
+     * @param structured   True if tag is structured
+     * @param tagType      Type of tag
      * @param elementCount Total number of elements being sent. Usually the number of bytes, but
      *                     can vary based on data type.
-     * @param offset Total number of bytes of data transferred in previous requests
-     * @param data {@link ByteBuf Data} to be sent in request. Data should be a slice of original data, starting
-     *             at offset and ending at an appropriate length for the CIP connection size.
+     * @param offset       Total number of bytes of data transferred in previous requests
+     * @param data         {@link ByteBuf Data} to be sent in request. Data should be a slice of original data, starting
+     *                     at offset and ending at an appropriate length for the CIP connection size.
      */
     public WriteTagFragmentedService(
         PaddedEPath requestPath,
@@ -39,7 +40,8 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
         int tagType,
         int elementCount,
         int offset,
-        ByteBuf data) {
+        ByteBuf data
+    ) {
 
         this.requestPath = requestPath;
         this.structured = structured;
@@ -51,17 +53,16 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
 
     @Override
     public void encodeRequest(ByteBuf buffer) {
-
         MessageRouterRequest request = new MessageRouterRequest(
-                SERVICE_CODE,
-                requestPath,
-                dataEncoder);
+            SERVICE_CODE,
+            requestPath,
+            dataEncoder
+        );
 
         MessageRouterRequest.encode(request, buffer);
     }
 
     private void encode(ByteBuf buffer) {
-
         if (structured) {
             buffer.writeByte(0xA0).writeByte(0x02);
         }
@@ -73,8 +74,7 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
     }
 
     @Override
-    public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException, PartialResponseException {
-
+    public ByteBuf decodeResponse(ByteBuf buffer) throws CipResponseException {
         MessageRouterResponse response = MessageRouterResponse.decode(buffer);
 
         int generalStatus = response.getGeneralStatus();
@@ -88,7 +88,6 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
         } finally {
             ReferenceCountUtil.release(response.getData());
         }
-
     }
 
 }
