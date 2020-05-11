@@ -81,7 +81,7 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
 
         try {
             if (generalStatus == 0x00) {
-                return null;
+                return Unpooled.EMPTY_BUFFER;
             } else {
                 throw new CipResponseException(generalStatus, response.getAdditionalStatus());
             }
