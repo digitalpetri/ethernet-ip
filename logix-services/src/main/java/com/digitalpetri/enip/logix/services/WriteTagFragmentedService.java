@@ -22,22 +22,30 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
     private final int tagType;
     private final ByteBuf data;
     private final int offset;
-    private final int fragmentSize;
 
-    public WriteTagFragmentedService(PaddedEPath requestPath,
-            boolean structured,
-            int tagType,
-            int elementCount,
-            int offset,
-            int fragmentSize,
-            ByteBuf data) {
+    /**
+     * @param requestPath {@link PaddedEPath Path} of tag
+     * @param structured True if tag is structured
+     * @param tagType Type of tag
+     * @param elementCount Total number of elements being sent. Usually the number of bytes, but
+     *                     can vary based on data type.
+     * @param offset Total number of bytes of data transferred in previous requests
+     * @param data {@link ByteBuf Data} to be sent in request. Data should be a slice of original data, starting
+     *             at offset and ending at an appropriate length for the CIP connection size.
+     */
+    public WriteTagFragmentedService(
+        PaddedEPath requestPath,
+        boolean structured,
+        int tagType,
+        int elementCount,
+        int offset,
+        ByteBuf data) {
 
         this.requestPath = requestPath;
         this.structured = structured;
         this.tagType = tagType;
         this.elementCount = elementCount;
         this.offset = offset;
-        this.fragmentSize = fragmentSize;
         this.data = data;
     }
 
@@ -61,10 +69,7 @@ public class WriteTagFragmentedService implements CipService<ByteBuf> {
         buffer.writeShort(tagType);
         buffer.writeShort(elementCount);
         buffer.writeInt(offset);
-
-        data.readerIndex(offset);
-        int sliceLength = Math.min(data.readableBytes(), fragmentSize);
-        buffer.writeBytes(data.readSlice(sliceLength));
+        buffer.writeBytes(data);
     }
 
     @Override
