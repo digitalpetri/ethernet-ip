@@ -40,6 +40,9 @@ public abstract class CpfItem {
             case UnconnectedDataItemRequest.TYPE_ID:
                 return UnconnectedDataItemRequest.encode((UnconnectedDataItemRequest) item, buffer);
 
+            case CipSecurityItem.TYPE_ID:
+                return CipSecurityItem.encode((CipSecurityItem) item, buffer);
+
             default:
                 throw new RuntimeException(String.format("unhandled item type: 0x%02X", item.getTypeId()));
         }
@@ -73,6 +76,9 @@ public abstract class CpfItem {
             case UnconnectedDataItemResponse.TYPE_ID:
                 return UnconnectedDataItemResponse.decode(buffer);
 
+            case CipSecurityItem.TYPE_ID:
+                return CipSecurityItem.decode(buffer);
+                
             default:
                 throw new RuntimeException(String.format("unhandled item type: 0x%02X", typeId));
         }
