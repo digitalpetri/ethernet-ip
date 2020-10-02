@@ -26,6 +26,7 @@ public class CpfItemTest extends SerializationTest<CpfItem> {
             {new SequencedAddressItem(1L, 2L)},
             {new SockAddrItemO2t(new SockAddr(1, 2, new byte[]{1, 2, 3, 4}, 0L))},
             {new SockAddrItemT2o(new SockAddr(1, 2, new byte[]{1, 2, 3, 4}, 0L))},
+            {new CipSecurityItem(1, 2, 3, 4)}
         };
     }
 
