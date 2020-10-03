@@ -11,7 +11,7 @@ Asynchronous, non-blocking, EtherNet/IP client implementation for Java
 <dependency>
     <groupId>com.digitalpetri.enip</groupId>
     <artifactId>enip-client</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.4</version>
 </dependency>
 ```
 
@@ -20,7 +20,7 @@ Asynchronous, non-blocking, EtherNet/IP client implementation for Java
 <dependency>
     <groupId>com.digitalpetri.enip</groupId>
     <artifactId>cip-client</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.4</version>
 </dependency>
 ```
 
@@ -49,7 +49,7 @@ client.listIdentity().whenComplete((li, ex) -> {
     }
 });
 
-client.disconnect.get();
+client.disconnect().get();
 
 // Call this before application / JVM shutdown
 EtherNetIpShared.releaseSharedResources();
@@ -94,7 +94,7 @@ client.invokeUnconnected(service).whenComplete((as, ex) -> {
     }
 });
 
-client.disconnect.get();
+client.disconnect().get();
 
 // Call this before application / JVM shutdown
 EtherNetIpShared.releaseSharedResources();
