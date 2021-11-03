@@ -110,7 +110,7 @@ public class EtherNetIpClient {
     public CompletableFuture<Void> sendUnitData(SendUnitData command) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        channelFsm.getChannel().whenComplete((ch, ex) -> {
+        channelFsm.getChannel(config.getWaitForReconnect()).whenComplete((ch, ex) -> {
             if (ch != null) {
                 EnipPacket packet = new EnipPacket(
                     command.getCommandCode(),
@@ -142,7 +142,7 @@ public class EtherNetIpClient {
     public <T extends Command> CompletableFuture<T> sendCommand(Command command) {
         CompletableFuture<T> future = new CompletableFuture<>();
 
-        channelFsm.getChannel().whenComplete((ch, ex) -> {
+        channelFsm.getChannel(config.getWaitForReconnect()).whenComplete((ch, ex) -> {
             if (ch != null) writeCommand(ch, command, future);
             else future.completeExceptionally(ex);
         });

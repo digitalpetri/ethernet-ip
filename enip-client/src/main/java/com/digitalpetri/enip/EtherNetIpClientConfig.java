@@ -22,6 +22,7 @@ public class EtherNetIpClientConfig {
     private final int maxReconnectDelaySeconds;
     private final boolean lazy;
     private final boolean persistent;
+    private final boolean waitForReconnect;
     private final ExecutorService executor;
     private final ScheduledExecutorService scheduledExecutor;
     private final EventLoopGroup eventLoop;
@@ -39,6 +40,7 @@ public class EtherNetIpClientConfig {
         int maxReconnectDelaySeconds,
         boolean lazy,
         boolean persistent,
+        boolean waitForReconnect,
         ExecutorService executor,
         ScheduledExecutorService scheduledExecutor,
         EventLoopGroup eventLoop,
@@ -56,6 +58,7 @@ public class EtherNetIpClientConfig {
         this.maxReconnectDelaySeconds = maxReconnectDelaySeconds;
         this.lazy = lazy;
         this.persistent = persistent;
+        this.waitForReconnect = waitForReconnect;
         this.executor = executor;
         this.scheduledExecutor = scheduledExecutor;
         this.eventLoop = eventLoop;
@@ -125,6 +128,14 @@ public class EtherNetIpClientConfig {
         return persistent;
     }
 
+    /**
+     * @return {@code true} if, when the channel state machine is between reconnect attempts, channel operations wait
+     * for the result of the subsequent reconnect attempt, or {@code false} if they fail immediately.
+     */
+    public boolean getWaitForReconnect() {
+        return waitForReconnect;
+    }
+
     public ExecutorService getExecutor() {
         return executor;
     }
@@ -171,6 +182,7 @@ public class EtherNetIpClientConfig {
         private int maxReconnectDelaySeconds = 16;
         private boolean lazy = true;
         private boolean persistent = true;
+        private boolean waitForReconnect = true;
         private ExecutorService executor;
         private ScheduledExecutorService scheduledExecutor;
         private EventLoopGroup eventLoop;
@@ -232,6 +244,14 @@ public class EtherNetIpClientConfig {
          */
         public Builder setPersistent(boolean persistent) {
             this.persistent = persistent;
+            return this;
+        }
+
+        /**
+         * @see EtherNetIpClientConfig#getWaitForReconnect()
+         */
+        public Builder setWaitForReconnect(boolean waitForReconnect) {
+            this.waitForReconnect = waitForReconnect;
             return this;
         }
 
@@ -299,6 +319,7 @@ public class EtherNetIpClientConfig {
                 maxReconnectDelaySeconds,
                 lazy,
                 persistent,
+                waitForReconnect,
                 executor,
                 scheduledExecutor,
                 eventLoop,
