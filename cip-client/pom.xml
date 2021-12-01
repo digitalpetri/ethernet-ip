@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.digitalpetri.enip</groupId>
         <artifactId>enip</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>cip-client</artifactId>
@@ -14,17 +14,17 @@
         <dependency>
             <groupId>com.digitalpetri.enip</groupId>
             <artifactId>cip-core</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.digitalpetri.enip</groupId>
             <artifactId>enip-core</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.digitalpetri.enip</groupId>
             <artifactId>enip-client</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
