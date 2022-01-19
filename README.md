@@ -11,7 +11,7 @@ Asynchronous, non-blocking, EtherNet/IP client implementation for Java
 <dependency>
     <groupId>com.digitalpetri.enip</groupId>
     <artifactId>enip-client</artifactId>
-    <version>1.3.4</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
@@ -20,7 +20,7 @@ Asynchronous, non-blocking, EtherNet/IP client implementation for Java
 <dependency>
     <groupId>com.digitalpetri.enip</groupId>
     <artifactId>cip-client</artifactId>
-    <version>1.3.4</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
