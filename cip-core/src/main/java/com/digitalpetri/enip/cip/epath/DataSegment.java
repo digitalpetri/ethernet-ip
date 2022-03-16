@@ -1,6 +1,7 @@
 package com.digitalpetri.enip.cip.epath;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import io.netty.buffer.ByteBuf;
 
@@ -18,23 +19,27 @@ public abstract class DataSegment<T> extends EPathSegment {
 
         public static final int SUBTYPE = 0x11;
 
-        private static final Charset ASCII = Charset.forName("US-ASCII");
-
         private final String data;
+        private final Charset charset;
 
         public AnsiDataSegment(String data) {
+            this(data, StandardCharsets.US_ASCII);
+        }
+
+        public AnsiDataSegment(String data, Charset charset) {
             this.data = data;
+            this.charset = charset;
         }
 
         @Override
         protected ByteBuf encode(ByteBuf buffer) {
-            String data = this.data.length() <= 255 ?
-                this.data : this.data.substring(0, 255);
+            byte[] dataBytes = data.getBytes(charset);
+            int dataLength = Math.min(dataBytes.length, 255);
 
             buffer.writeByte(SEGMENT_TYPE | SUBTYPE);
-            buffer.writeByte(data.length());
-            buffer.writeBytes(data.getBytes(ASCII));
-            if (data.length() % 2 != 0) buffer.writeByte(0);
+            buffer.writeByte(dataLength);
+            buffer.writeBytes(dataBytes, 0, dataLength);
+            if (dataLength % 2 != 0) buffer.writeByte(0);
 
             return buffer;
         }
