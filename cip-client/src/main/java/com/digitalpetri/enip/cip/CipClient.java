@@ -61,9 +61,11 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
         return invokeConnected(connectionId, service, future);
     }
 
-    private <T> CompletableFuture<T> invokeConnected(int connectionId,
-                                                     CipService<T> service,
-                                                     CompletableFuture<T> future) {
+    private <T> CompletableFuture<T> invokeConnected(
+        int connectionId,
+        CipService<T> service,
+        CompletableFuture<T> future
+    ) {
 
         sendConnectedData(service::encodeRequest, connectionId).whenComplete((buffer, ex) -> {
             if (buffer != null) {
@@ -75,6 +77,10 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
                     invokeConnected(connectionId, service, future);
                 } catch (CipResponseException e) {
                     future.completeExceptionally(e);
+                } catch (Throwable t) {
+                    logger.error("Uncaught Throwable by CipService::decodeResponse", t);
+
+                    future.completeExceptionally(t);
                 } finally {
                     ReferenceCountUtil.release(buffer);
                 }
