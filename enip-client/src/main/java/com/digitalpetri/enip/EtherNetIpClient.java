@@ -291,9 +291,13 @@ public class EtherNetIpClient {
         public CompletableFuture<Void> disconnect(FsmContext<State, Event> ctx, Channel channel) {
             CompletableFuture<Void> disconnectFuture = new CompletableFuture<>();
 
-            // When the remote receives UnRegisterSession it's likely to just close the connection, which will
-            // result in an "IOException: Connection reset by peer" that isn't caught anywhere.
+            // When the remote receives UnRegisterSession it's likely to just close the connection.
             channel.pipeline().addFirst(new ChannelInboundHandlerAdapter() {
+                @Override
+                public void channelInactive(ChannelHandlerContext ctx) {
+                    disconnectFuture.complete(null);
+                }
+
                 @Override
                 public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
                     disconnectFuture.complete(null);
