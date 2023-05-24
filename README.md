@@ -100,6 +100,20 @@ client.disconnect().get();
 EtherNetIpShared.releaseSharedResources();
 ```
 
+#### Broadcast Example
+```
+BroadcastListIdentity bli = new BroadcastListIdentity(
+        (i) -> System.out.println(i.getProductName())
+);
+
+BroadcastListIdentity.bootstrap(bli).whenComplete((c, ex) -> {
+    if (c != null)
+        bli.listIdentity(c, "10.20.4.255");
+    else
+        ex.printStackTrace();
+});
+```
+
 #### Logix Example
 
 [See the logix-services README!](logix-services/README.md)
