@@ -1,9 +1,11 @@
 package com.digitalpetri.enip;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -58,6 +60,8 @@ public class EtherNetIpClient {
 
     private volatile long sessionHandle;
 
+    private final List<ChannelStateListener> channelStateListeners = new CopyOnWriteArrayList<>();
+
     private final ChannelFsm channelFsm;
     private final EtherNetIpClientConfig config;
 
@@ -79,6 +83,11 @@ public class EtherNetIpClient {
             .build();
 
         channelFsm = ChannelFsmFactory.newChannelFsm(fsmConfig);
+
+        channelFsm.addTransitionListener(
+            (from, to, via) ->
+                channelStateListeners.forEach(l -> l.onChannelStateChanged(from, to))
+        );
     }
 
     public CompletableFuture<EtherNetIpClient> connect() {
@@ -97,6 +106,25 @@ public class EtherNetIpClient {
 
     public String getState() {
         return channelFsm.getState().toString();
+    }
+
+    /**
+     * Add a {@link ChannelStateListener} that will get notified when the underlying channel
+     * {@link State} changes.
+     *
+     * @param listener the {@link ChannelStateListener} to add.
+     */
+    public void addChannelStateListener(ChannelStateListener listener) {
+        channelStateListeners.add(listener);
+    }
+
+    /**
+     * Remove a previously-registered {@link ChannelStateListener}.
+     *
+     * @param listener the {@link ChannelStateListener} to remove.
+     */
+    public void removeChannelStateListener(ChannelStateListener listener) {
+        channelStateListeners.remove(listener);
     }
 
     public CompletableFuture<ListIdentity> listIdentity() {
@@ -422,6 +450,18 @@ public class EtherNetIpClient {
                 }
             });
         }
+
+    }
+
+    public interface ChannelStateListener {
+
+        /**
+         * The underlying channel state has changed from {@code previous} to {@code current}.
+         *
+         * @param previous the previous channel {@link State}.
+         * @param current  the current channel {@link State}.
+         */
+        void onChannelStateChanged(State previous, State current);
 
     }
 
