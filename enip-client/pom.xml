@@ -24,17 +24,17 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec</artifactId>
-            <version>4.1.70.Final</version>
+            <version>4.1.112.Final</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
-            <version>4.1.70.Final</version>
+            <version>4.1.112.Final</version>
         </dependency>
         <dependency>
             <groupId>com.digitalpetri.netty</groupId>
             <artifactId>netty-channel-fsm</artifactId>
-            <version>0.8</version>
+            <version>1.0.0-RC2</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>

@@ -1,15 +1,6 @@
 package com.digitalpetri.enip;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicLong;
+import static com.digitalpetri.enip.util.FutureUtils.complete;
 
 import com.digitalpetri.enip.codec.EnipCodec;
 import com.digitalpetri.enip.commands.Command;
@@ -23,13 +14,13 @@ import com.digitalpetri.enip.cpf.ConnectedDataItemResponse;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import com.digitalpetri.enip.cpf.UnconnectedDataItemResponse;
 import com.digitalpetri.enip.util.IntUtil;
+import com.digitalpetri.fsm.FsmContext;
 import com.digitalpetri.netty.fsm.ChannelActions;
 import com.digitalpetri.netty.fsm.ChannelFsm;
 import com.digitalpetri.netty.fsm.ChannelFsmConfig;
 import com.digitalpetri.netty.fsm.ChannelFsmFactory;
 import com.digitalpetri.netty.fsm.Event;
 import com.digitalpetri.netty.fsm.State;
-import com.digitalpetri.strictmachine.FsmContext;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -43,11 +34,19 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.Timeout;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
-import static com.digitalpetri.enip.util.FutureUtils.complete;
 
 public class EtherNetIpClient {
 

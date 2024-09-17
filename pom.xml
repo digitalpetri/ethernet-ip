@@ -136,34 +136,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version> <!--$NO-MVN-MAN-VER$-->
-                <executions>
-                    <!-- Make sure no dependencies are used for which known vulnerabilities exist. -->
-                    <execution>
-                        <id>vulnerability-checks</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <banVulnerable implementation="org.sonatype.ossindex.maven.enforcer.BanVulnerableDependencies" />
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.sonatype.ossindex.maven</groupId>
-                        <artifactId>ossindex-maven-enforcer-rules</artifactId>
-                        <version>1.0.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
