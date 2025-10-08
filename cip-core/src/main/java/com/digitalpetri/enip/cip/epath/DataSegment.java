@@ -31,6 +31,24 @@ public abstract class DataSegment<T> extends EPathSegment {
             this.charset = charset;
         }
 
+        /**
+         * Get the data string.
+         *
+         * @return the data string.
+         */
+        public String getData() {
+            return data;
+        }
+
+        /**
+         * Get the charset used to encode the data.
+         *
+         * @return the charset.
+         */
+        public Charset getCharset() {
+            return charset;
+        }
+
         @Override
         protected ByteBuf encode(ByteBuf buffer) {
             byte[] dataBytes = data.getBytes(charset);
@@ -52,6 +70,15 @@ public abstract class DataSegment<T> extends EPathSegment {
 
         public SimpleDataSegment(short[] data) {
             this.data = data;
+        }
+
+        /**
+         * Get the data array.
+         *
+         * @return the data array.
+         */
+        public short[] getData() {
+            return data;
         }
 
         @Override
