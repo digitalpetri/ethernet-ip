@@ -219,7 +219,7 @@ public class CipClient extends EtherNetIpClient implements CipServiceInvoker {
             if (command != null) {
                 CpfItem[] items = command.getPacket().getItems();
 
-                if (items.length == 2 &&
+                if (items.length >= 2 &&
                     items[0].getTypeId() == NullAddressItem.TYPE_ID &&
                     items[1].getTypeId() == UnconnectedDataItemResponse.TYPE_ID) {
 
