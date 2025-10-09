@@ -1,8 +1,7 @@
 package com.digitalpetri.enip.commands;
 
-import java.util.Arrays;
-
 import io.netty.buffer.ByteBuf;
+import java.util.Arrays;
 
 public final class Nop extends Command {
 

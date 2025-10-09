@@ -1,5 +1,7 @@
 package com.digitalpetri.enip;
 
+import static org.testng.Assert.assertEquals;
+
 import com.digitalpetri.enip.commands.Command;
 import com.digitalpetri.enip.commands.ListIdentity;
 import com.digitalpetri.enip.commands.ListInterfaces;
@@ -12,8 +14,6 @@ import com.digitalpetri.enip.commands.UnRegisterSession;
 import com.digitalpetri.enip.cpf.CpfPacket;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
 
 public class EnipPacketTest extends SerializationTest<EnipPacket> {
 

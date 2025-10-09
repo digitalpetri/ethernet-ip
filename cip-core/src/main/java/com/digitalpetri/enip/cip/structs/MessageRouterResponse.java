@@ -1,9 +1,8 @@
 package com.digitalpetri.enip.cip.structs;
 
-import javax.annotation.Nonnull;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import javax.annotation.Nonnull;
 
 public class MessageRouterResponse {
 

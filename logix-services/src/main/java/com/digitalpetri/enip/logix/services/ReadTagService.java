@@ -1,7 +1,5 @@
 package com.digitalpetri.enip.logix.services;
 
-import java.util.function.Consumer;
-
 import com.digitalpetri.enip.cip.CipResponseException;
 import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.services.CipService;
@@ -9,6 +7,7 @@ import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
+import java.util.function.Consumer;
 
 public class ReadTagService implements CipService<ByteBuf> {
 

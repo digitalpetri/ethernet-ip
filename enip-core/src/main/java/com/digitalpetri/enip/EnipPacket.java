@@ -1,7 +1,5 @@
 package com.digitalpetri.enip;
 
-import javax.annotation.Nullable;
-
 import com.digitalpetri.enip.commands.Command;
 import com.digitalpetri.enip.commands.CommandCode;
 import com.digitalpetri.enip.commands.ListIdentity;
@@ -13,6 +11,7 @@ import com.digitalpetri.enip.commands.SendRRData;
 import com.digitalpetri.enip.commands.SendUnitData;
 import com.digitalpetri.enip.commands.UnRegisterSession;
 import io.netty.buffer.ByteBuf;
+import javax.annotation.Nullable;
 
 /**
  * All encapsulation messages, sent via TCP or sent to UDP port 0xAF12, shall be composed of a fixed-length header of

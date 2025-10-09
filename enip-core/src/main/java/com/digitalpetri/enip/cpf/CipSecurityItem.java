@@ -1,8 +1,7 @@
 package com.digitalpetri.enip.cpf;
 
-import java.util.Objects;
-
 import io.netty.buffer.ByteBuf;
+import java.util.Objects;
 
 public class CipSecurityItem extends CpfItem {
 

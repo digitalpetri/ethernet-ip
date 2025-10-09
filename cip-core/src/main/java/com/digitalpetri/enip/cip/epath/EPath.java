@@ -1,8 +1,7 @@
 package com.digitalpetri.enip.cip.epath;
 
-import java.util.List;
-
 import io.netty.buffer.ByteBuf;
+import java.util.List;
 
 public abstract class EPath {
 

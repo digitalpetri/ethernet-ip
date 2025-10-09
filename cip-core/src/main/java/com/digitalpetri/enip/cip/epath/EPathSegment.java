@@ -1,5 +1,3 @@
 package com.digitalpetri.enip.cip.epath;
 
-public abstract class EPathSegment {
-
-}
+public abstract class EPathSegment {}

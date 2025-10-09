@@ -1,10 +1,10 @@
 package com.digitalpetri.enip.cpf;
 
+import static org.testng.Assert.assertEquals;
+
 import com.digitalpetri.enip.SerializationTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
 
 public class ConnectedAddressItemTest extends SerializationTest<ConnectedAddressItem> {
 

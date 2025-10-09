@@ -1,10 +1,9 @@
 package com.digitalpetri.enip.cip.structs;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class LargeForwardOpenResponse {
 

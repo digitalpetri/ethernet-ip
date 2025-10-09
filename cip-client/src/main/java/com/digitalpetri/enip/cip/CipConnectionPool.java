@@ -16,14 +16,6 @@
 
 package com.digitalpetri.enip.cip;
 
-import java.time.Duration;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.epath.LogicalSegment.ClassId;
 import com.digitalpetri.enip.cip.epath.LogicalSegment.InstanceId;
@@ -39,10 +31,16 @@ import com.digitalpetri.enip.cip.structs.LargeForwardOpenRequest;
 import com.digitalpetri.enip.cip.structs.LargeForwardOpenResponse;
 import com.digitalpetri.enip.cip.structs.NetworkConnectionParameters;
 import io.netty.util.ReferenceCountUtil;
+import java.time.Duration;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
 
 public class CipConnectionPool {
 

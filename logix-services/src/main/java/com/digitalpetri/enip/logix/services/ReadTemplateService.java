@@ -1,12 +1,5 @@
 package com.digitalpetri.enip.logix.services;
 
-import java.nio.ByteOrder;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Function;
-
 import com.digitalpetri.enip.cip.CipResponseException;
 import com.digitalpetri.enip.cip.epath.EPath.PaddedEPath;
 import com.digitalpetri.enip.cip.services.CipService;
@@ -19,6 +12,12 @@ import com.digitalpetri.enip.util.IntUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.ReferenceCountUtil;
+import java.nio.ByteOrder;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
 public class ReadTemplateService implements CipService<TemplateInstance> {
 

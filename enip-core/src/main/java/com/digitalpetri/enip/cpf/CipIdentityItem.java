@@ -1,8 +1,7 @@
 package com.digitalpetri.enip.cpf;
 
-import java.nio.charset.Charset;
-
 import io.netty.buffer.ByteBuf;
+import java.nio.charset.Charset;
 
 public final class CipIdentityItem extends CpfItem {
 

@@ -4,20 +4,19 @@ import io.netty.buffer.ByteBuf;
 
 public class AttributeRequest {
 
-    private final int id;
-    private final ByteBuf data;
+  private final int id;
+  private final ByteBuf data;
 
-    public AttributeRequest(int id, ByteBuf data) {
-        this.id = id;
-        this.data = data;
-    }
+  public AttributeRequest(int id, ByteBuf data) {
+    this.id = id;
+    this.data = data;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public ByteBuf getData() {
-        return data;
-    }
-
+  public ByteBuf getData() {
+    return data;
+  }
 }

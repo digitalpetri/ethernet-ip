@@ -1,12 +1,5 @@
 package com.digitalpetri.enip.logix.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.digitalpetri.enip.cip.CipResponseException;
 import com.digitalpetri.enip.cip.epath.DataSegment;
 import com.digitalpetri.enip.cip.epath.EPath;
@@ -16,6 +9,12 @@ import com.digitalpetri.enip.cip.structs.MessageRouterRequest;
 import com.digitalpetri.enip.cip.structs.MessageRouterResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class GetInstanceAttributeListService<T> implements CipService<List<T>> {
 

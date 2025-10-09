@@ -1,8 +1,7 @@
 package com.digitalpetri.enip.cpf;
 
-import java.util.Arrays;
-
 import io.netty.buffer.ByteBuf;
+import java.util.Arrays;
 
 public final class CpfPacket {
 
