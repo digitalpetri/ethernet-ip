@@ -3,7 +3,7 @@ package com.digitalpetri.enip.logix.services;
 import com.digitalpetri.enip.logix.structs.SymbolInstance;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class GetSymbolInstanceAttributeListService
     extends GetInstanceAttributeListService<SymbolInstance> {

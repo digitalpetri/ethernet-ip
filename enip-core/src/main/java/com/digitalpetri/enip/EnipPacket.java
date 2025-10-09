@@ -11,7 +11,7 @@ import com.digitalpetri.enip.commands.SendRRData;
 import com.digitalpetri.enip.commands.SendUnitData;
 import com.digitalpetri.enip.commands.UnRegisterSession;
 import io.netty.buffer.ByteBuf;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * All encapsulation messages, sent via TCP or sent to UDP port 0xAF12, shall be composed of a
@@ -25,7 +25,7 @@ public final class EnipPacket {
   private final EnipStatus status;
   private final long senderContext;
 
-  @Nullable private final Command command;
+  private final @Nullable Command command;
 
   public EnipPacket(
       CommandCode commandCode,

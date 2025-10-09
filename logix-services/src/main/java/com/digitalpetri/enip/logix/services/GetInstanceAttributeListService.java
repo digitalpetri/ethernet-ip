@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public class GetInstanceAttributeListService<T> implements CipService<List<T>> {
 
@@ -33,7 +33,7 @@ public class GetInstanceAttributeListService<T> implements CipService<List<T>> {
   public GetInstanceAttributeListService(
       @Nullable String program,
       int classId,
-      @Nonnull int[] attributes,
+      int @NonNull [] attributes,
       AttributesDecoder<T> attributesDecoder) {
 
     this.program = program;

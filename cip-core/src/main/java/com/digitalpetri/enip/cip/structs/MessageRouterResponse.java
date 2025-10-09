@@ -2,7 +2,7 @@ package com.digitalpetri.enip.cip.structs;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public class MessageRouterResponse {
 
@@ -13,7 +13,7 @@ public class MessageRouterResponse {
   private final ByteBuf data;
 
   public MessageRouterResponse(
-      int serviceCode, int generalStatus, int[] additionalStatus, @Nonnull ByteBuf data) {
+      int serviceCode, int generalStatus, int[] additionalStatus, @NonNull ByteBuf data) {
 
     this.serviceCode = serviceCode;
     this.generalStatus = generalStatus;
@@ -33,8 +33,7 @@ public class MessageRouterResponse {
     return additionalStatus;
   }
 
-  @Nonnull
-  public ByteBuf getData() {
+  public @NonNull ByteBuf getData() {
     return data;
   }
 
