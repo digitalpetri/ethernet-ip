@@ -1,0 +1,23 @@
+name: check google-java-format
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4.6.0
+        with:
+          distribution: "temurin"
+          java-version: 21
+      - uses: axel-op/googlejavaformat-action@v4
+        with:
+          args: "--set-exit-if-changed"
