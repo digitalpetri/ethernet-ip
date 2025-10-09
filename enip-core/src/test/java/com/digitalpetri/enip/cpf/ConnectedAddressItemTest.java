@@ -8,22 +8,18 @@ import org.testng.annotations.Test;
 
 public class ConnectedAddressItemTest extends SerializationTest<ConnectedAddressItem> {
 
-    @Test(dataProvider = "getConnectionId")
-    public void testSerialization(int connectionId) {
-        ConnectedAddressItem item = new ConnectedAddressItem(connectionId);
+  @Test(dataProvider = "getConnectionId")
+  public void testSerialization(int connectionId) {
+    ConnectedAddressItem item = new ConnectedAddressItem(connectionId);
 
-        ConnectedAddressItem decoded = encodeDecode(item, ConnectedAddressItem::encode, ConnectedAddressItem::decode);
+    ConnectedAddressItem decoded =
+        encodeDecode(item, ConnectedAddressItem::encode, ConnectedAddressItem::decode);
 
-        assertEquals(item, decoded);
-    }
+    assertEquals(item, decoded);
+  }
 
-    @DataProvider
-    private static Object[][] getConnectionId() {
-        return new Object[][]{
-            {0},
-            {1},
-            {Integer.MAX_VALUE}
-        };
-    }
-
+  @DataProvider
+  private static Object[][] getConnectionId() {
+    return new Object[][] {{0}, {1}, {Integer.MAX_VALUE}};
+  }
 }
