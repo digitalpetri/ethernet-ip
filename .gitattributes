@@ -1,0 +1,9 @@
+# Explicitly unset the text attribute.
+# When text is unset, Git will not perform any line ending conversions for
+# these files. It will treat them as binary for the purpose of line ending
+# handling, meaning it won't try to normalize them.
+* -text
+
+# Java and Kotlin files always normalized and converted on checkout
+*.java text eol=lf
+*.kt text eol=lf
