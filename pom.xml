@@ -189,6 +189,34 @@
                     <excludeFilterFile>${basedir}/../findbugs-exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                  <allowMajorUpdates>false</allowMajorUpdates>
+                  <ruleSet>
+                    <ignoreVersions>
+                      <ignoreVersion>
+                        <type>regex</type>
+                        <version>(?i).*[-_\.](alpha|b|beta|rc|m|ea)[-_\.]?[0-9]*</version>
+                      </ignoreVersion>
+                    </ignoreVersions>
+                    <rules>
+                      <rule>
+                        <groupId>io.netty</groupId>
+                        <artifactId>*</artifactId>
+                        <ignoreVersions>
+                          <ignoreVersion>
+                            <type>range</type>
+                            <version>[4.2,)</version>
+                          </ignoreVersion>
+                        </ignoreVersions>
+                      </rule>
+                    </rules>
+                  </ruleSet>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
