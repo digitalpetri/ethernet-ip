@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>logix-services</artifactId>
+  <name>EtherNet/IP :: Logix Services</name>
 
   <dependencies>
     <dependency>

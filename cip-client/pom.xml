@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>cip-client</artifactId>
+  <name>EtherNet/IP :: CIP Client</name>
 
   <dependencies>
     <dependency>

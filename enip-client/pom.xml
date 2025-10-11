@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>enip-client</artifactId>
+  <name>EtherNet/IP :: EtherNet/IP Client</name>
 
   <dependencies>
     <dependency>

@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>cip-core</artifactId>
+  <name>EtherNet/IP :: CIP Core</name>
 
   <dependencies>
     <dependency>

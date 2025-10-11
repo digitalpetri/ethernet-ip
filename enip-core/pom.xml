@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>enip-core</artifactId>
+  <name>EtherNet/IP :: Core</name>
 
   <dependencies>
     <dependency>
